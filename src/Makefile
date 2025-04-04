@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 
 NAME = minishell
  
-SRC = teste.c
+SRC = minishell.c
 
 LIB = ../lib
 

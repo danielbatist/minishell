@@ -1,2 +1,2 @@
-# minishell
-42 - minishell
+# lib
+libft

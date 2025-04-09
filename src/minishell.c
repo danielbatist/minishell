@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 22:27:27 by dbatista          #+#    #+#             */
-/*   Updated: 2025/04/03 22:27:29 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/04/08 21:18:44 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int	main(void)
 {
 	char	*input;
 	char 	*token;
+	char	*token_clean;
 
 	while (1)
 	{
@@ -83,7 +84,12 @@ int	main(void)
 		token = ft_strtoken(input, ' ');
 		while (token)
 		{
-			printf("Token: %s\n", token);
+			token_clean = ft_strtrim(token, "\'\"");
+			if (token_clean)
+			{
+				printf("Token: %s\n", token_clean);
+				free(token_clean);
+			}
 			token = ft_strtoken(NULL, ' ');
 		}
 		free(input);

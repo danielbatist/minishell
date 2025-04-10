@@ -1,12 +1,12 @@
 SHELL = /bin/bash
 
-CC = cc 
+CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g 
+CFLAGS = -Wall -Wextra -Werror -g
 
 NAME = minishell
- 
-SRC = minishell.c
+
+SRC = minishell.c scanner.c
 
 LIB = ../lib
 
@@ -14,7 +14,7 @@ OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJ) $(LIB)/libft.a 
+$(NAME): $(OBJ) $(LIB)/libft.a
 	@clear
 	@$(CC) $(OBJ) -L$(LIB) -lft -lreadline -o $(NAME)
 	@echo -n "  Compiling"
@@ -25,10 +25,10 @@ $(NAME): $(OBJ) $(LIB)/libft.a
 $(LIB)/libft.a:
 	@make -s -C $(LIB)
 
-.c.o: 
+.c.o:
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-clean: 
+clean:
 	@make clean -s -C $(LIB)
 	@rm -f $(OBJ)
 

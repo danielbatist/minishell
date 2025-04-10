@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eteofilo <eteofilo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 22:27:27 by dbatista          #+#    #+#             */
-/*   Updated: 2025/04/08 21:18:44 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/04/10 13:41:56 by eteofilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,34 +65,34 @@ char	*ft_strtoken(const char *str, char delim)
 	return (token);
 }
 
-int	main(void)
-{
-	char	*input;
-	char 	*token;
-	char	*token_clean;
+// int	main(void)
+// {
+// 	char	*input;
+// 	char 	*token;
+// 	char	*token_clean;
 
-	while (1)
-	{
-		input = readline("minishell> ");
-		if (!input)
-		{
-			printf("\nSaindo do minishell...\n");
-			break ;
-		}
-		if (*input)
-			add_history(input);
-		token = ft_strtoken(input, ' ');
-		while (token)
-		{
-			token_clean = ft_strtrim(token, "\'\"");
-			if (token_clean)
-			{
-				printf("Token: %s\n", token_clean);
-				free(token_clean);
-			}
-			token = ft_strtoken(NULL, ' ');
-		}
-		free(input);
-	}
-	return (0);
-}
+// 	while (1)
+// 	{
+// 		input = readline("minishell> ");
+// 		if (!input)
+// 		{
+// 			printf("\nSaindo do minishell...\n");
+// 			break ;
+// 		}
+// 		if (*input)
+// 			add_history(input);
+// 		token = ft_strtoken(input, ' ');
+// 		while (token)
+// 		{
+// 			token_clean = ft_strtrim(token, "\'\"");
+// 			if (token_clean)
+// 			{
+// 				printf("Token: %s\n", token_clean);
+// 				free(token_clean);
+// 			}
+// 			token = ft_strtoken(NULL, ' ');
+// 		}
+// 		free(input);
+// 	}
+// 	return (0);
+// }

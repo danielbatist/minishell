@@ -3,15 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 22:27:27 by dbatista          #+#    #+#             */
-/*   Updated: 2025/04/08 21:18:44 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/04/10 00:29:20 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../inc/minishell.h"
+
+int	check_quotes_valid(const char *str)
+{
+	int	i;
+	char	open_quotes;
+	
+	i = 0;
+	open_quotes = '\0';
+	while (str[i])
+	{
+		if ((str[i] == '\"' || str[i] == '\'') && (i == 0 || str[i - 1] != '\\'))
+		{
+			if (!open_quotes)
+				open_quotes = str[i];
+			else if (str[i] == open_quotes)
+				open_quotes = '\0';
+		}
+		i++;
+	}
+	if (open_quotes)
+	{
+		printf("Error: Unclosed quotes\n");
+		return (1);
+	}
+	return (0);
+}
+
+
 
 char	*ft_strtoken(const char *str, char delim)
 {
@@ -36,32 +64,32 @@ char	*ft_strtoken(const char *str, char delim)
 		buffer_token = NULL;
 		return (NULL);
 	}
-	start = next_token;
-	while (*start && *start == delim)
-		start++;
-	if (*start == '\0')
+	while (*next_token && *next_token == delim)
+		next_token++;
+	if (*next_token == '\0')
 		return (NULL);
+	start = next_token;
 	token = start;
 	while (*next_token)
 	{
-		if (*next_token == '\"' || *next_token == '\'')
+		if ((*next_token == '\'' || *next_token == '\"') && !in_quotes)
 		{
-			if (in_quotes == 0)
-			{
-				in_quotes = 1;
-				quote_type = *next_token;
-			}
-			else if (*next_token == quote_type)
+			in_quotes = 1;
+			quote_type = *next_token;
+		}
+		else if (*next_token == quote_type && in_quotes)
 				in_quotes = 0;
-		}
-		else if (*next_token == delim && in_quotes == 0)
-		{
-			*next_token = '\0';
-			next_token++;
+		else if (*next_token == delim && !in_quotes)
 			break;
-		}
 		next_token++;
 	}
+	if (*next_token)
+	{
+		*next_token = '\0';
+		next_token++;
+	}
+	else
+		next_token = NULL;
 	return (token);
 }
 
@@ -81,6 +109,11 @@ int	main(void)
 		}
 		if (*input)
 			add_history(input);
+		if (check_quotes_valid(input))
+		{
+			free(input);
+			continue;
+		}
 		token = ft_strtoken(input, ' ');
 		while (token)
 		{

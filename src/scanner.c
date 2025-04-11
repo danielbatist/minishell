@@ -6,7 +6,7 @@
 /*   By: eteofilo <eteofilo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 20:04:56 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/04/10 13:48:14 by eteofilo         ###   ########.fr       */
+/*   Updated: 2025/04/11 15:16:11 by eteofilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ void	add_token(t_scanner *scanner, t_token_type token_type)
 	t_list	*token_node;
 
 	if (token_type == PIPE)
-		scanner->line = 1;
-	else scanner->line = 0;
+		scanner->is_command = TRUE;
+	if (token_type == REDIRECT_IN || token_type == REDIRECT_OUT)
+		scanner->is_command = REDIRECT;
 	token = malloc(sizeof(t_token));
 	token->lexeme = ft_substr(scanner->src, scanner->start, scanner->current - scanner->start);
 	token->type = token_type;
@@ -46,8 +47,15 @@ void	add_str_token(t_scanner *scanner, t_token_type token_type)
 
 void	add_multichar_token(t_scanner *scanner, t_token_type token_type)
 {
+	if (token_type == TARGET)
+		scanner->is_command = TRUE;
+	else if (token_type == COMMAND)
+		scanner->is_command = FALSE;
 	if (token_type == APPEND || token_type == HEREDOC)
-	scanner->current++;
+	{
+		scanner->is_command = REDIRECT;
+		scanner->current++;
+	}
 	else
 	{
 		while (scanner->src[scanner->current]
@@ -70,9 +78,7 @@ static void scan_token(t_scanner *scanner)
 	char	*s;
 
 	s = scanner->src + scanner->current++;
-	if (scanner->start == 0 || scanner->line > 0)
-		add_multichar_token(scanner, COMMAND);
-	else if (*s == '|')
+	if (*s == '|')
 		add_token(scanner, PIPE);
 	else if (s[0] == '>' && s[1] == '>')
 		add_multichar_token(scanner, APPEND);
@@ -86,6 +92,10 @@ static void scan_token(t_scanner *scanner)
 		add_str_token(scanner, DOUBLE_QUOTED);
 	else if (*s == '\'')
 		add_str_token(scanner, SINGLE_QUOTED);
+	else if (scanner->is_command == TRUE  && *s != ' ')
+		add_multichar_token(scanner, COMMAND);
+	else if (scanner->is_command == REDIRECT && *s != ' ')
+		add_multichar_token(scanner, TARGET);
 	else if (*s == '-')
 		add_multichar_token(scanner, FLAG);
 	else if (*s != ' ')
@@ -116,6 +126,7 @@ t_scanner	*init_scanner(char *input)
 	scanner = malloc(sizeof(t_scanner));
 	scanner->current = 0;
 	scanner->line = 0;
+	scanner->is_command = TRUE;
 	scanner->start = 0;
 	scanner->src = input;
 	scanner->tokens = NULL;
@@ -158,6 +169,8 @@ int	main(void)
 				printf("Token: %s \nType: %s\n ------------------\n", ((t_token *)(scanner->tokens->content))->lexeme, "HEREDOC");
 			if (((t_token *)(scanner->tokens->content))->type == APPEND)
 				printf("Token: %s \nType: %s\n ------------------\n", ((t_token *)(scanner->tokens->content))->lexeme, "APPEND");
+			if (((t_token *)(scanner->tokens->content))->type == TARGET)
+				printf("Token: %s \nType: %s\n ------------------\n", ((t_token *)(scanner->tokens->content))->lexeme, "TARGET");
 			if (((t_token *)(scanner->tokens->content))->type == SINGLE_QUOTED)
 				printf("Token: %s \nType: %s\n ------------------\n", ((t_token *)(scanner->tokens->content))->lexeme, "SINGLE_QUOTED");
 			if (((t_token *)(scanner->tokens->content))->type == DOUBLE_QUOTED)

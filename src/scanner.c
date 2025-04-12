@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scanner.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eteofilo <eteofilo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 20:04:56 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/04/11 15:16:11 by eteofilo         ###   ########.fr       */
+/*   Updated: 2025/04/11 20:10:05 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,11 @@ int	main(void)
 			add_history(input);
 		scanner = init_scanner(input);
 		scan_tokens(scanner);
+		if (handle_error(scanner->tokens))
+		{
+			free(input);
+			continue;
+		}
 		while (scanner->tokens)
 		{
 			if (((t_token *)(scanner->tokens->content))->type == COMMAND)

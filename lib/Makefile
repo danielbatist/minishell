@@ -25,12 +25,10 @@ all: $(NAME)
 .c.o: 
 	@$(CC) $(CFLAGS) -c $< -o ${<:.c=.o}
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) $(OBJ_BONUS)
 	@ar rcs $@ $(OBJ)
-
-bonus: $(OBJ_BONUS) $(NAME)
 	@ar rcs $(NAME) $(OBJ_BONUS)
-
+	
 clean: 
 	@rm -f $(OBJ) $(OBJ_BONUS)
 

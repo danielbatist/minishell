@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eteofilo <eteofilo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:02:14 by dbatista          #+#    #+#             */
-/*   Updated: 2025/04/11 21:00:12 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/04/14 10:36:09 by eteofilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ int	handle_error(t_list *tokens)
 			&& (next->type != PARAMETER && next->type != TARGET \
 			&& next->type != SINGLE_QUOTED && next->type != DOUBLE_QUOTED))
 		{
-			ft_putstr_fd("bash: syntax error near \
-			unexpected token `newline'\n", 2);
+			ft_putstr_fd("bash: syntax error near "
+			"unexpected token `newline'\n", 2);
 			return (1);
 		}
 		last_token = token;

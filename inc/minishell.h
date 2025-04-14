@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eteofilo <eteofilo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/04/11 20:10:56 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/04/14 15:22:28 by eteofilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL
-# define MINISHELL
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
+# include "../lib/libft.h"
+# include <readline/history.h>
+# include <readline/readline.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "../lib/libft.h"
 
 typedef enum e_token_type
 {
@@ -34,20 +34,20 @@ typedef enum e_token_type
 	DOUBLE_QUOTED = 34,
 	UNCLOSED,
 	EOF_TOKEN
-}	t_token_type;
+}					t_token_type;
 
 typedef enum e_is_command
 {
 	FALSE,
 	TRUE,
 	REDIRECT
-}	t_is_command;
+}					t_is_command;
 
 typedef struct s_token
 {
 	t_token_type	type;
 	char			*lexeme;
-}	t_token;
+}					t_token;
 typedef struct s_scanner
 {
 	int				start;
@@ -56,10 +56,20 @@ typedef struct s_scanner
 	int				line;
 	char			*src;
 	t_list			*tokens;
-}	t_scanner;
+}					t_scanner;
 
+typedef struct s_env
+{
+	char	*name;
+	char	*value;
+}	t_env;
 
-t_list	*tokenizer(char *input);
-int		handle_error(t_list *tokens);
+void				scan_tokens(t_scanner *scanner);
+t_scanner			*init_scanner(char *input);
+void				add_token(t_scanner *scanner, t_token_type token_type);
+void				add_str_token(t_scanner *scanner, t_token_type token_type);
+void				add_multichar_token(t_scanner *scanner,
+						t_token_type token_type);
+int					handle_error(t_list *tokens);
 
 #endif

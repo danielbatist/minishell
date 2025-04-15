@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eteofilo <eteofilo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:34:40 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/04/14 15:22:18 by eteofilo         ###   ########.fr       */
+/*   Updated: 2025/04/14 20:52:59 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,13 @@ int	main(int ac, char **av, char **envp)
 		}
 		if (*input)
 			add_history(input);
-		scanner = init_scanner(input);
-		scan_tokens(scanner);
-		if (handle_error(scanner->tokens))
+		if (handle_error(input))
 		{
 			free(input);
-			rl_clear_history();
 			continue;
 		}
+		scanner = init_scanner(input);
+		scan_tokens(scanner);
 		tmp_tokens = scanner->tokens;
 		while (scanner->tokens)
 		{

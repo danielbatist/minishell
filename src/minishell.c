@@ -6,7 +6,7 @@
 /*   By: eteofilo <eteofilo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:34:40 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/04/14 15:22:18 by eteofilo         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:40:45 by eteofilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@ int	main(int ac, char **av, char **envp)
 	char	*input;
 	t_scanner	*scanner;
 	t_list		*tmp_tokens;
+	t_list		*env_list;
 	//char	*token_clean;
 
 	(void)ac;
 	(void)av;
+	env_list = catch_env(envp);
 	while (1)
 	{
 		input = readline("minishell> ");
@@ -42,6 +44,7 @@ int	main(int ac, char **av, char **envp)
 			add_history(input);
 		scanner = init_scanner(input);
 		scan_tokens(scanner);
+		env_expansion(env_list, scanner);
 		if (handle_error(scanner->tokens))
 		{
 			free(input);
@@ -55,6 +58,7 @@ int	main(int ac, char **av, char **envp)
 			{
 				while (*envp)
 				{
+
 					printf("%s\n", *envp);
 					envp++;
 				}

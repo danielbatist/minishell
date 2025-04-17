@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 
 NAME = minishell
 
-SRC =  scanner.c handle_error.c tokens.c env_expansion.c minishell.c utils.c
+SRC =  env_expansion.c handle_error.c minishell.c scanner.c tokens.c utils.c
 
 LIB = ../lib
 

@@ -6,7 +6,7 @@
 /*   By: eteofilo <eteofilo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:02:10 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/04/17 18:34:18 by eteofilo         ###   ########.fr       */
+/*   Updated: 2025/04/17 22:40:08 by eteofilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char *search_env(char *str, t_list *env_list)
 	while (tmp_list)
 	{
 		tmp_str = ((t_env *)(tmp_list->content))->name;
-		if (ft_strncmp(str, tmp_str, ft_strlen(str)) == 0)
+		if (ft_strncmp(str, tmp_str, ft_strlen(str) + 1) == 0)
 		{
 			str_return = ft_strdup(((t_env *)(tmp_list->content))->value);
 			free(str);

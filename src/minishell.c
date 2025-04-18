@@ -6,7 +6,7 @@
 /*   By: eteofilo <eteofilo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:34:40 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/04/17 17:40:45 by eteofilo         ###   ########.fr       */
+/*   Updated: 2025/04/17 22:35:12 by eteofilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	main(int ac, char **av, char **envp)
 	t_scanner	*scanner;
 	t_list		*tmp_tokens;
 	t_list		*env_list;
+	t_list		*tmp_env;
 	//char	*token_clean;
 
 	(void)ac;
@@ -52,15 +53,15 @@ int	main(int ac, char **av, char **envp)
 			continue;
 		}
 		tmp_tokens = scanner->tokens;
+		tmp_env = env_list;
 		while (scanner->tokens)
 		{
 			if (((t_token *)(scanner->tokens->content))->lexeme[0] == 'E')
 			{
-				while (*envp)
+				while (tmp_env)
 				{
-
-					printf("%s\n", *envp);
-					envp++;
+					printf("%s | %s\n", ((t_env *)(tmp_env->content))->name, ((t_env *)(tmp_env->content))->value);
+					tmp_env = tmp_env->next;
 				}
 			}
 			if (((t_token *)(scanner->tokens->content))->type == COMMAND)

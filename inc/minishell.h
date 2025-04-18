@@ -6,7 +6,7 @@
 /*   By: eteofilo <eteofilo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/04/17 16:05:15 by eteofilo         ###   ########.fr       */
+/*   Updated: 2025/04/17 22:06:12 by eteofilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_token
 {
 	t_token_type	type;
 	char			*lexeme;
+	t_is_command	plus;
 }					t_token;
 typedef struct s_scanner
 {

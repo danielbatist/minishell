@@ -1,19 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_error.c                                     :+:      :+:    :+:   */
+/*   handle_error2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/11 17:02:14 by dbatista          #+#    #+#             */
-/*   Updated: 2025/04/17 14:54:35 by dbatista         ###   ########.fr       */
+/*   Created: 2025/04/18 01:21:12 by dbatista          #+#    #+#             */
+/*   Updated: 2025/04/18 01:24:27 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-// Error de  > no final da string /
-// Error de > > espaço entre redirect
-// Error de  >> > ou >>> e < << ou <<< mais de redirect em append ou heredoc
 
 int	handle_pipe(t_list *tokens)
 {
@@ -42,7 +39,7 @@ int	handle_error(t_list *tokens)
 {
 	if (handle_pipe(tokens))
 		return (1);
-	/*if (handle_redirect(tokens))
-		return (1);*/
+	if (handle_redirect(tokens))
+		return (1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: eteofilo <eteofilo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 20:04:56 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/04/14 15:22:30 by eteofilo         ###   ########.fr       */
+/*   Updated: 2025/04/18 06:14:50 by eteofilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_scanner	*init_scanner(char *input)
 
 	scanner = malloc(sizeof(t_scanner));
 	scanner->current = 0;
-	scanner->line = 0;
+	scanner->line = 1;
 	scanner->is_command = TRUE;
 	scanner->start = 0;
 	scanner->src = input;

@@ -6,7 +6,7 @@
 /*   By: eteofilo <eteofilo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:02:10 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/04/17 22:40:08 by eteofilo         ###   ########.fr       */
+/*   Updated: 2025/04/18 05:19:19 by eteofilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	get_end(char *str)
 	i = 0;
 	while (str[i] != 0 && str[i] != ' ' && str[i] != '$')
 		i++;
-	printf("end: %i\n", i);
 	return (i);
 }
 

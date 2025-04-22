@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/04/22 19:41:53 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/04/22 12:10:09 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void		add_multichar_token(t_scanner *scanner, t_token_type token_type);
 int			handle_error(t_list *tokens);
 int			print_error(t_token *token);
 int			handle_redirect(t_list *tokens);
-int			check_redirect_end(t_token *last, t_list *tokens);
+int			check_redirect_end(t_token *token);
 int			check_redirects(t_token *token, t_token *next);
 int			check_redirect_out(t_token *token, t_token *next);
 int			check_redirect_in(t_token *token, t_token *next);

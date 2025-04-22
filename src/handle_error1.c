@@ -3,34 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   handle_error1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 01:20:21 by dbatista          #+#    #+#             */
-/*   Updated: 2025/04/18 06:06:02 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/04/22 20:05:11 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static int	check_redirect_in(t_token *token, t_token *next)
+int	check_redirect_in(t_token *token, t_token *next)
 {
 	if ((token->type == REDIRECT_IN && next->type == REDIRECT_IN) \
 		|| (token->type == REDIRECT_IN && next->type == PIPE))
-		return (print_error(next->lexeme[0]));
+		return (print_error(next));
 	if (token->type == REDIRECT_IN && next->type == TARGET)
 	{
 		if (access(next->lexeme, F_OK) != 0)
 		{
-			ft_putstr_fd("bash: ", 2);
-			ft_putstr_fd(next->lexeme, 2);
-			ft_putstr_fd(": No such file or directory\n", 2);
+			print_error(next);
 			return (1);
 		}
 	}
 	return (0);
 }
 
-static int	check_redirect_out(t_token *token, t_token *next)
+int	check_redirect_out(t_token *token, t_token *next)
 {
 	int	fd;
 
@@ -50,45 +48,23 @@ static int	check_redirect_out(t_token *token, t_token *next)
 	return (0);
 }
 
-static int	check_redirects(t_token *token, t_token *next)
+int	check_redirect_end(t_token *last, t_list *tokens)
 {
-	if ((token->type == REDIRECT_IN && next->type == REDIRECT_IN) \
-	|| (token->type == REDIRECT_OUT && next->type == REDIRECT_OUT) \
-	|| (token->type == APPEND && next->type == REDIRECT_IN) \
-	|| (token->type == HEREDOC && next->type == REDIRECT_OUT))
-		return (print_error(next->lexeme[0]));
+	if (last && (last->type == REDIRECT_IN || last->type == REDIRECT_OUT \
+	|| last->type == APPEND || last->type == HEREDOC))
+		return (print_error((t_token *)tokens->content));
 	return (0);
 }
 
-static int	check_redirect_end(t_token *token)
+static int	is_redirect(t_token_type type)
 {
-	if (token && (token->type == REDIRECT_IN || token->type == REDIRECT_OUT \
-	|| token->type == APPEND || token->type == HEREDOC))
-		return (print_error(' '));
-	return (0);
+	return (type == REDIRECT_IN || type == REDIRECT_OUT \
+	|| type == APPEND || type == HEREDOC);
 }
 
-int	handle_redirect(t_list *tokens)
+int	check_redirects(t_token *token, t_token *next)
 {
-	t_token	*token;
-	t_token	*next;
-
-	if (!tokens || !tokens->next)
-		return (0);
-	while (tokens && tokens->next)
-	{
-		token = tokens->content;
-		next = tokens->next->content;
-		if (check_redirect_in(token, next))
-			return (1);
-		if (check_redirect_out(token, next))
-			return (1);
-		if (check_redirects(token, next))
-			return (1);
-		tokens = tokens->next;
-	}
-	if (check_redirect_end(token))
-		return (1);
-
+	if (is_redirect(token->type) && is_redirect(next->type))
+		return (print_error(next));
 	return (0);
 }

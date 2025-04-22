@@ -3,35 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/08 00:49:55 by dbatista          #+#    #+#             */
-/*   Updated: 2025/04/03 16:36:05 by dbatista         ###   ########.fr       */
+/*   Created: 2025/01/23 16:05:53 by dbatista          #+#    #+#             */
+/*   Updated: 2025/04/22 12:40:12 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-void	ft_putnbr_fd(int n, int fd)
+int	ft_putnbr_fd(int nb, int fd)
 {
-	if (n == -2147483648)
+	unsigned int	num_long;
+	int				count;
+
+	count = 0;
+	if (nb < 0)
 	{
-		ft_putstr_fd("-2147483648", fd);
-		return ;
-	}
-	if (n < 0)
-	{
-		ft_putchar_fd('-', fd);
-		n *= -1;
-	}
-	if (n < 10)
-	{
-		ft_putchar_fd((n + '0'), fd);
-		return ;
+		count += ft_putchar_fd(('-'), fd);
+		num_long = nb * -1;
 	}
 	else
-	{
-		ft_putnbr_fd ((n / 10), fd);
-		ft_putnbr_fd ((n % 10), fd);
-	}
+		num_long = nb;
+	if (num_long >= 10)
+		count += ft_putnbr_fd(num_long / 10, fd);
+	count += ft_putchar_fd((num_long % 10) + '0', fd);
+	return (count);
 }

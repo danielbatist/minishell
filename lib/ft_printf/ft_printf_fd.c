@@ -3,40 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 18:23:13 by dbatista          #+#    #+#             */
-/*   Updated: 2025/01/23 16:10:53 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/04/22 11:46:51 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_selector(const char *format, va_list args)
+static int	ft_selector_fd(const char *format, va_list args, int fd)
 {
 	int		c;
 
 	c = 0;
 	if (*format == '%')
-		c += ft_putchar('%');
+		c += ft_putchar_fd('%', fd);
 	else if (*format == 'c')
-		c += ft_putchar((char)va_arg(args, int));
+		c += ft_putchar_fd((char)va_arg(args, int), fd);
 	else if (*format == 's')
-		c += ft_putstr(va_arg(args, char *));
+		c += ft_putstr_fd(va_arg(args, char *), fd);
 	else if (*format == 'p')
-		c += ft_putptr(va_arg(args, unsigned long), 0);
+		c += ft_putptr_fd(va_arg(args, unsigned long), 0, fd);
 	else if (*format == 'd' || *format == 'i')
-		c += ft_putnbr(va_arg(args, int));
+		c += ft_putnbr_fd(va_arg(args, int), fd);
 	else if (*format == 'u')
-		c += ft_putnbr_u(va_arg(args, unsigned int));
+		c += ft_putnbr_u_fd(va_arg(args, unsigned int), fd);
 	else if (*format == 'x')
-		c += ft_putnbr_hex_low(va_arg(args, unsigned int));
+		c += ft_putnbr_hex_low_fd(va_arg(args, unsigned int), fd);
 	else if (*format == 'X')
-		c += ft_putnbr_hex_up(va_arg(args, unsigned int));
+		c += ft_putnbr_hex_up_fd(va_arg(args, unsigned int), fd);
 	return (c);
 }
 
-int	ft_printf(const char *format, ...)
+int	ft_printf_fd(int fd, const char *format, ...)
 {
 	va_list	args;
 	int		i;
@@ -50,11 +50,11 @@ int	ft_printf(const char *format, ...)
 		if (format[i] == '%')
 		{
 			i++;
-			count += ft_selector(&format[i], args);
+			count += ft_selector_fd(&format[i], args, fd);
 		}
 		else
 		{
-			write (1, &format[i], 1);
+			write (fd, &format[i], 1);
 			count += 1;
 		}
 		i++;

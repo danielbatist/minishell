@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_hex_low.c                                :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/23 16:08:54 by dbatista          #+#    #+#             */
-/*   Updated: 2025/01/23 16:10:11 by dbatista         ###   ########.fr       */
+/*   Created: 2025/01/23 16:05:25 by dbatista          #+#    #+#             */
+/*   Updated: 2025/04/22 12:15:16 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_putnbr_hex_low(unsigned int nb)
+int	ft_putstr_fd(char *str, int fd)
 {
-	int	count;
+	int		i;
 
-	count = 0;
-	if (nb > 15)
-		count += ft_putnbr_hex_low(nb / 16);
-	count += ft_putchar("0123456789abcdef"[nb % 16]);
-	return (count);
+	if (!str)
+		return (ft_putstr_fd("(null)", fd));
+	i = 0;
+	while (str[i])
+	{
+		ft_putchar_fd(str[i], fd);
+		i++;
+	}
+	return (i);
 }

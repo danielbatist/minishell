@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:34:40 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/04/17 14:33:31 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/04/24 17:39:39 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,12 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	while (1)
 	{
+		set_signal();
 		input = readline("minishell> ");
 		if (!input)
 		{
 			free(input);
-			printf("\nSaindo do minishell...\n");
+			printf("exit\n");
 			break ;
 		}
 		if (*input)

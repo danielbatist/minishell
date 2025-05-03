@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eteofilo <eteofilo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:37:00 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/04/18 05:24:38 by eteofilo         ###   ########.fr       */
+/*   Updated: 2025/05/03 18:27:32 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,15 @@
 
 void	set_plus(t_token *token, char c, t_token_type token_type)
 {
-	if (token_type != REDIRECT_IN && token_type != REDIRECT_OUT
-		&& token_type != PIPE && token_type != APPEND
-		&& token_type != HEREDOC && token_type != UNCLOSED
-		&& c != ' ' && c != '|' && c != '>' && c != '<'
-	)
+	if (token_type == EOF_TOKEN || token_type == PIPE
+		|| token_type == REDIRECT_IN || token_type == REDIRECT_OUT
+		|| token_type == APPEND || token_type == HEREDOC
+		|| token_type == UNCLOSED)
+	{
+		token->plus = FALSE;
+		return ;
+	}
+	if (c && c != ' ' && c != '|' && c != '>' && c != '<')
 		token->plus = TRUE;
 	else
 		token->plus = FALSE;
@@ -26,9 +30,13 @@ void	set_plus(t_token *token, char c, t_token_type token_type)
 
 void	add_token(t_scanner *scanner, t_token_type token_type)
 {
+	int		len;
 	t_token	*token;
 	t_list	*token_node;
 
+	len = scanner->current - scanner->start;
+	if (len <= 0)
+		return ;
 	if (token_type == PIPE)
 	{
 		scanner->is_command = TRUE;

@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 20:04:56 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/02 21:29:43 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/03 16:27:39 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,13 @@ static void	scan_token(t_scanner *scanner)
 	char	*s;
 
 	s = scanner->src + scanner->current++;
-	if (*s == '|')
+	if (*s == ' ')
+		return ;
+	else if (*s == '|')
 		add_token(scanner, PIPE);
-	else if (s[0] == '>' && s[1] == '>')
+	else if (*s == '>' && scanner->src[scanner->current] == '>')
 		add_multichar_token(scanner, APPEND);
-	else if (s[0] == '<' && s[1] == '<')
+	else if (*s == '<' && scanner->src[scanner->current] == '<')
 		add_multichar_token(scanner, HEREDOC);
 	else if (*s == '>')
 		add_token(scanner, REDIRECT_OUT);
@@ -38,13 +40,16 @@ static void	scan_token(t_scanner *scanner)
 		add_str_token(scanner, DOUBLE_QUOTED);
 	else if (*s == '\'')
 		add_str_token(scanner, SINGLE_QUOTED);
-	else if (scanner->is_command == TRUE && *s != ' ')
-		add_multichar_token(scanner, COMMAND);
-	else if (scanner->is_command == REDIRECT && *s != ' ')
-		add_multichar_token(scanner, TARGET);
-	else if (*s == '-')
+	else if (is_flag(scanner, s))
 		add_multichar_token(scanner, FLAG);
-	else if (*s != ' ')
+	else if (scanner->is_command == TRUE)
+	{
+		add_multichar_token(scanner, COMMAND);
+		scanner->is_command = FALSE;
+	}
+	else if (scanner->is_command == REDIRECT)
+		add_multichar_token(scanner, TARGET);
+	else
 		add_multichar_token(scanner, PARAMETER);
 }
 
@@ -60,7 +65,7 @@ void	scan_tokens(t_scanner *scanner)
 		scanner->start = scanner->current;
 		scan_token(scanner);
 	}
-	eof->type = EOF;
+	eof->type = EOF_TOKEN;
 	eof->lexeme = strdup("");
 	eof->plus = FALSE;
 	ft_lstadd_back(&scanner->tokens, ft_lstnew(eof));

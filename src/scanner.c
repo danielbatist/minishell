@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scanner.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eteofilo <eteofilo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 20:04:56 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/04/18 06:14:50 by eteofilo         ###   ########.fr       */
+/*   Updated: 2025/05/02 21:29:43 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	scan_tokens(t_scanner *scanner)
 	}
 	eof->type = EOF;
 	eof->lexeme = strdup("");
+	eof->plus = FALSE;
 	ft_lstadd_back(&scanner->tokens, ft_lstnew(eof));
 }
 

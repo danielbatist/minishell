@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eteofilo <eteofilo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/04/18 06:25:33 by eteofilo         ###   ########.fr       */
+/*   Updated: 2025/05/02 21:19:49 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,17 @@ typedef struct s_commands
 	int		fd_out;
 }	t_command;
 
+void				print_token_list(t_list *tokens);
+void				print_commands(t_command *cmd);
+void				free_scanner(t_scanner *scanner);
+void				free_env_list(t_list *env_list);
+void				free_complex_command(t_command *cmds);
+char 				**extract_simple_cmd(t_list **token_list);
 void				scan_tokens(t_scanner *scanner);
 t_scanner			*init_scanner(char *input);
 void				add_token(t_scanner *scanner, t_token_type token_type);
 void				add_str_token(t_scanner *scanner, t_token_type token_type);
-void				add_multichar_token(t_scanner *scanner,
-						t_token_type token_type);
+void				add_multichar_token(t_scanner *scanner, t_token_type token_type);
 int					handle_error(t_list *tokens);
 t_list				*catch_env(char **envp);
 void				env_expansion(t_list *env_list, t_scanner *scanner);

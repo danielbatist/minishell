@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 05:14:47 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/02 21:28:35 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/09 20:25:25 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,66 +45,60 @@ int	count_pipes(t_scanner *scanner)
 	return (count);
 }
 
-char	*concat_token(t_list *token_list)
-{
-	char	*tmp1;
-	char	*tmp2;
-
-	if (!token_list || !token_list->next)
-		return (NULL);
-	if (!token_list->content || !token_list->next->content)
-		return (NULL);
-	tmp1 = ((t_token *)(token_list->content))->lexeme;
-	tmp2 = ((t_token *)(token_list->next->content))->lexeme;
-	if (!tmp1 || !tmp2)
-		return (NULL);
-	return (ft_strjoin(tmp1, tmp2));
-}
 
 char **extract_simple_cmd(t_list **token_list)
 {
 	t_token	*token;
-	t_list *start;
+	t_token	*next_token;
+	t_list	*start;
+	t_list	*current;
 	int		count;
 	char	**cmd;
+	char	*tmp;
+	char	*joined;
 	int		i;
 
 	start = *token_list;
 	count = 0;
-	while (*token_list && ((t_token *)(*token_list)->content)->type != PIPE)
+	current = start;
+	while (current && ((t_token *)(current->content))->type != PIPE)
 	{
 		count++;
-		*token_list = (*token_list)->next;
+		current = current->next;
 	}
 	cmd = ft_calloc(count + 1, sizeof(char *));
 	if (!cmd)
 		return (NULL);
 	*token_list = start;
 	i = 0;
-	while (i < count && *token_list)
+	printf("Parser status token:\n");
+	while (*token_list && ((t_token *)(*token_list)->content)->type != PIPE)
 	{
-		if (!(*token_list) || !(*token_list)->content)
-			break ;
-		token =(t_token *)(*token_list)->content;
-		if (token->plus == TRUE && (*token_list)->next && (*token_list)->next->content)
+		token = (t_token *)(*token_list)->content;
+		joined = ft_strdup(token->lexeme);
+		if (!joined)
+			return (NULL);
+		while ((*token_list)->next)
 		{
-			cmd[i] = concat_token(*token_list);
-			if (!cmd[i])
+			next_token = (t_token *)(*token_list)->next->content;
+			if (token->plus == TRUE && next_token->has_space == FALSE
+				&& (token->type == DOUBLE_QUOTED || token->type == PARAMETER
+				|| token->type == SINGLE_QUOTED) && !(is_metachar(next_token->type)))
 			{
-				printf("Error ao concatenar");
-				return (NULL);
+				*token_list = (*token_list)->next;
+				token = (t_token *)(*token_list)->content;
+				tmp = ft_strjoin(joined, next_token->lexeme);
+				free(joined);
+				joined = tmp;
 			}
-			printf("token: %s, plus: %d\n", token->lexeme, token->plus);
-			*token_list = (*token_list)->next->next;
-
+			else
+				break ;
 		}
-		else
-		{
-			cmd[i] = ft_strdup(token->lexeme);
-			*token_list = (*token_list)->next;
-		}
-		i++;
+		cmd[i++] = joined;
+		*token_list = (*token_list)->next;
+		printf("Token %d: %s, Plus: %d, Has space: %d\n", i, token->lexeme, token->plus, token->has_space);
 	}
+	printf("\n");
 	if (*token_list && ((t_token *)(*token_list)->content)->type == PIPE)
 		*token_list = (*token_list)->next;
 	return (cmd);

@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 20:36:10 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/03 16:12:35 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/09 20:20:33 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,22 @@ char	*get_token_type(int type)
 void	print_token_list(t_list *tokens)
 {
 	t_token	*token;
-
+	int		i;
+	
+	printf("Token List:\n");
+	i = 0;
 	while (tokens)
 	{
 		token = (t_token *)tokens->content;
-		printf("[TOKEN] lexeme: '");
+		printf("Token %d: ", i++);
 		if (token->lexeme)
 			printf("%s", token->lexeme);
 		else
 			printf("(null)");
-		printf("' | type: %s | plus: %d\n", get_token_type(token->type), token->plus);
+		printf(" | type: %s | plus: %d\n", get_token_type(token->type), token->plus);
 		tokens = tokens->next;
 	}
+	printf("\n");
 }
 
 void	print_commands(t_command *cmd)
@@ -68,7 +72,7 @@ void	print_commands(t_command *cmd)
 	i = 0;
 	while (cmd[i].simple_command)
 	{
-		printf("Simple Command %d\n", i);
+		printf("Main:\n");
 		j = 0;
 		while (cmd[i].simple_command[j])
 		{
@@ -88,4 +92,10 @@ int	is_flag(t_scanner *scanner, char *s)
 	if (scanner->src[scanner->current] != '\0' && ft_isalnum(scanner->src[scanner->current]))
 		return (1);
 	return (0);
+}
+
+int	is_metachar(t_token_type type)
+{
+	return (type == PIPE || type ==  REDIRECT_IN || type == REDIRECT_OUT
+		|| type == APPEND || type == HEREDOC || type == UNCLOSED);
 }

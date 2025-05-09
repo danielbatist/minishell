@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 20:04:56 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/03 16:27:39 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/09 19:32:28 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ static void	scan_token(t_scanner *scanner)
 
 	s = scanner->src + scanner->current++;
 	if (*s == ' ')
+	{
+		scanner->start = scanner->current;
 		return ;
+	}
 	else if (*s == '|')
 		add_token(scanner, PIPE);
 	else if (*s == '>' && scanner->src[scanner->current] == '>')

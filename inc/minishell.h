@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/02 21:19:49 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/09 20:24:36 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_token
 	t_token_type	type;
 	char			*lexeme;
 	t_is_command	plus;
+	t_is_command	has_space;
 }					t_token;
 typedef struct s_scanner
 {
@@ -84,6 +85,8 @@ void				add_token(t_scanner *scanner, t_token_type token_type);
 void				add_str_token(t_scanner *scanner, t_token_type token_type);
 void				add_multichar_token(t_scanner *scanner, t_token_type token_type);
 int					handle_error(t_list *tokens);
+int					is_flag(t_scanner *scanner, char *s);
+int					is_metachar(t_token_type type);
 t_list				*catch_env(char **envp);
 void				env_expansion(t_list *env_list, t_scanner *scanner);
 t_command			*parser(char *input, t_list *env_list);

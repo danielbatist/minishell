@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/09 21:29:02 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/10 16:11:16 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ typedef struct s_scanner
 	int				start;
 	int				current;
 	t_is_command	is_command;
-	int				line;
 	char			*src;
 	t_list			*tokens;
 }					t_scanner;
@@ -79,6 +78,7 @@ void				free_commands(t_command *cmd);
 void				free_scanner(t_scanner *scanner);
 void				free_env_list(t_list *env_list);
 void				free_complex_command(t_command *cmds);
+t_command			*free_and_return(t_scanner *scanner);
 char 				**extract_simple_cmd(t_list **token_list);
 void				scan_tokens(t_scanner *scanner);
 t_scanner			*init_scanner(char *input);
@@ -88,6 +88,7 @@ void				add_multichar_token(t_scanner *scanner, t_token_type token_type);
 int					handle_error(t_list *tokens);
 int					is_flag(t_scanner *scanner, char *s);
 int					is_metachar(t_token_type type);
+int					tokens_len(t_scanner *scanner);
 t_list				*catch_env(char **envp);
 void				env_expansion(t_list *env_list, t_scanner *scanner);
 t_command			*parser(char *input, t_list *env_list);

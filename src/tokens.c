@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:37:00 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/09 19:36:57 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/10 16:47:49 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void	add_token(t_scanner *scanner, t_token_type token_type)
 	token->type = token_type;
 	set_plus(token, scanner->src[scanner->current], token_type);
 	if ((scanner->start > 0) && (scanner->src[scanner->start - 1] == ' '
-		|| scanner->src[scanner->start - 1] == '\t'
-		|| scanner->src[scanner->start - 1] == '\n'))
+			|| scanner->src[scanner->start - 1] == '\t'
+			|| scanner->src[scanner->start - 1] == '\n'))
 		token->has_space = TRUE;
 	else
 		token->has_space = FALSE;
@@ -76,7 +76,12 @@ void	add_str_token(t_scanner *scanner, t_token_type token_type)
 		scanner->start = scanner->current;
 	}
 	else
+	{
+		scanner->start--;
+		while (scanner->src[scanner->current])
+			scanner->current++;
 		add_token(scanner, UNCLOSED);
+	}
 }
 
 void	add_multichar_token(t_scanner *scanner, t_token_type token_type)

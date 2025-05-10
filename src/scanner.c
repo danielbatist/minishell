@@ -6,13 +6,13 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 20:04:56 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/09 22:15:17 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/10 16:10:55 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static void	handle_metachar(t_scanner *scanner, char *s)
+static void	handle_special_token(t_scanner *scanner, char *s)
 {
 	if (*s == '|')
 		add_token(scanner, PIPE);
@@ -30,7 +30,7 @@ static void	handle_metachar(t_scanner *scanner, char *s)
 		add_str_token(scanner, SINGLE_QUOTED);
 }
 
-static void	handle_token(t_scanner *scanner, char *s)
+static void	handle_general_token(t_scanner *scanner, char *s)
 {
 	if (is_flag(scanner, s))
 		add_multichar_token(scanner, FLAG);
@@ -56,9 +56,9 @@ static void	scan_token(t_scanner *scanner)
 		return ;
 	}
 	if (ft_strchr("|<>\"\'", *s))
-		handle_metachar(scanner, s);
+		handle_special_token(scanner, s);
 	else
-		handle_token(scanner, s);
+		handle_general_token(scanner, s);
 }
 
 
@@ -88,7 +88,6 @@ t_scanner	*init_scanner(char *input)
 	if (!scanner)
 		return (NULL);
 	scanner->current = 0;
-	scanner->line = 1;
 	scanner->is_command = TRUE;
 	scanner->start = 0;
 	scanner->src = input;

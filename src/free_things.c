@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 20:02:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/09 21:43:50 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/10 10:21:22 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,11 @@ void	free_scanner(t_scanner *scanner)
 		return ;
 	if (scanner->tokens)
 		ft_lstclear(&scanner->tokens, free_token);
+}
+
+t_command	*free_and_return(t_scanner *scanner)
+{
+	if (scanner)
+		free_scanner(scanner);
+	return (NULL);
 }

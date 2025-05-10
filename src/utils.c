@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 20:36:10 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/09 20:20:33 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/10 16:10:30 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,3 +99,19 @@ int	is_metachar(t_token_type type)
 	return (type == PIPE || type ==  REDIRECT_IN || type == REDIRECT_OUT
 		|| type == APPEND || type == HEREDOC || type == UNCLOSED);
 }
+
+int	tokens_len(t_scanner *scanner)
+{
+	t_list	*tmp;
+	int		i;
+
+	tmp = scanner->tokens;
+	i = 0;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	return (i);
+}
+

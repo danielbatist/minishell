@@ -8,7 +8,7 @@ NAME = minishell
 
 SRC =  scanner.c handle_error.c tokens.c env_expansion.c \
 	   catch_env.c parser.c minishell.c free_things.c\
-	   utils.c
+	   utils.c extract_cmd.c
 
 LIB = ../lib
 

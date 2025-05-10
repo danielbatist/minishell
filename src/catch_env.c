@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   catch_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eteofilo <eteofilo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 15:20:43 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/04/18 05:15:25 by eteofilo         ###   ########.fr       */
+/*   Updated: 2025/05/10 09:57:58 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ t_list	*catch_env(char **envp)
 	t_list	*env_list;
 	t_env	*env;
 	int		i;
+
 	env = NULL;
 	env_list = NULL;
-	while(*envp)
+	while (*envp)
 	{
 		i = 0;
 		while ((*envp)[i] && (*envp)[i] != '=')

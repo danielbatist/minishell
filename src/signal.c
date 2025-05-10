@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 16:20:25 by dbatista          #+#    #+#             */
-/*   Updated: 2025/04/24 17:39:21 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/10 19:00:41 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,3 @@ void	set_signal(void)
 	signal(SIGINT, sigint_signal);
 	signal(SIGQUIT, SIG_IGN);
 }
-

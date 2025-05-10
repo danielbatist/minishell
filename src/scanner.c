@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 20:04:56 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/10 16:10:55 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/10 19:01:00 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ static void	scan_token(t_scanner *scanner)
 	else
 		handle_general_token(scanner, s);
 }
-
 
 void	scan_tokens(t_scanner *scanner)
 {

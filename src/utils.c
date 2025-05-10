@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 20:36:10 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/10 18:40:39 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/10 18:59:03 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,46 +41,6 @@ char	*get_token_type(int type)
 	if (type == EOF_TOKEN)
 		return ("EOF_TOKEN");
 	return ("UNKNOWN");	
-}
-
-void	print_token_list(t_list *tokens)
-{
-	t_token	*token;
-	int		i;
-	
-	printf("Token List:\n");
-	i = 0;
-	while (tokens)
-	{
-		token = (t_token *)tokens->content;
-		printf("Token %d: ", i++);
-		if (token->lexeme)
-			printf("%s", token->lexeme);
-		else
-			printf("(null)");
-		printf(" | type: %s | plus: %d\n", get_token_type(token->type), token->plus);
-		tokens = tokens->next;
-	}
-	printf("\n");
-}
-
-void	print_commands(t_command *cmd)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (cmd[i].simple_command)
-	{
-		printf("Main:\n");
-		j = 0;
-		while (cmd[i].simple_command[j])
-		{
-			printf(" %s\n", cmd[i].simple_command[j]);
-			j++;
-		}
-		i++;
-	}
 }
 
 int	is_flag(t_scanner *scanner, char *s)

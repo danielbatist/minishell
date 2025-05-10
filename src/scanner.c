@@ -3,32 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   scanner.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eteofilo <eteofilo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 20:04:56 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/04/14 15:22:30 by eteofilo         ###   ########.fr       */
+/*   Updated: 2025/05/10 16:10:55 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static int	is_at_end(t_scanner *scanner)
+static void	handle_special_token(t_scanner *scanner, char *s)
 {
-	if (scanner->src[scanner->current] == '\0')
-		return (1);
-	return (0);
-}
-
-static void	scan_token(t_scanner *scanner)
-{
-	char	*s;
-
-	s = scanner->src + scanner->current++;
 	if (*s == '|')
 		add_token(scanner, PIPE);
-	else if (s[0] == '>' && s[1] == '>')
+	else if (*s == '>' && scanner->src[scanner->current] == '>')
 		add_multichar_token(scanner, APPEND);
-	else if (s[0] == '<' && s[1] == '<')
+	else if (*s == '<' && scanner->src[scanner->current] == '<')
 		add_multichar_token(scanner, HEREDOC);
 	else if (*s == '>')
 		add_token(scanner, REDIRECT_OUT);
@@ -38,15 +28,39 @@ static void	scan_token(t_scanner *scanner)
 		add_str_token(scanner, DOUBLE_QUOTED);
 	else if (*s == '\'')
 		add_str_token(scanner, SINGLE_QUOTED);
-	else if (scanner->is_command == TRUE && *s != ' ')
-		add_multichar_token(scanner, COMMAND);
-	else if (scanner->is_command == REDIRECT && *s != ' ')
-		add_multichar_token(scanner, TARGET);
-	else if (*s == '-')
+}
+
+static void	handle_general_token(t_scanner *scanner, char *s)
+{
+	if (is_flag(scanner, s))
 		add_multichar_token(scanner, FLAG);
-	else if (*s != ' ')
+	else if (scanner->is_command == TRUE)
+	{
+		add_multichar_token(scanner, COMMAND);
+		scanner->is_command = FALSE;
+	}
+	else if (scanner->is_command == REDIRECT)
+		add_multichar_token(scanner, TARGET);
+	else
 		add_multichar_token(scanner, PARAMETER);
 }
+
+static void	scan_token(t_scanner *scanner)
+{
+	char	*s;
+
+	s = scanner->src + scanner->current++;
+	if (*s == ' ')
+	{
+		scanner->start = scanner->current;
+		return ;
+	}
+	if (ft_strchr("|<>\"\'", *s))
+		handle_special_token(scanner, s);
+	else
+		handle_general_token(scanner, s);
+}
+
 
 void	scan_tokens(t_scanner *scanner)
 {
@@ -55,13 +69,14 @@ void	scan_tokens(t_scanner *scanner)
 	eof = malloc(sizeof(t_token));
 	if (!eof)
 		return ;
-	while (!is_at_end(scanner))
+	while (scanner->src[scanner->current])
 	{
 		scanner->start = scanner->current;
 		scan_token(scanner);
 	}
-	eof->type = EOF;
+	eof->type = EOF_TOKEN;
 	eof->lexeme = strdup("");
+	eof->plus = FALSE;
 	ft_lstadd_back(&scanner->tokens, ft_lstnew(eof));
 }
 
@@ -70,8 +85,9 @@ t_scanner	*init_scanner(char *input)
 	t_scanner	*scanner;
 
 	scanner = malloc(sizeof(t_scanner));
+	if (!scanner)
+		return (NULL);
 	scanner->current = 0;
-	scanner->line = 0;
 	scanner->is_command = TRUE;
 	scanner->start = 0;
 	scanner->src = input;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/04/22 19:41:53 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/10 18:38:01 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,14 @@ typedef struct s_token
 {
 	t_token_type	type;
 	char			*lexeme;
+	t_is_command	plus;
+	t_is_command	has_space;
 }					t_token;
 typedef struct s_scanner
 {
 	int				start;
 	int				current;
 	t_is_command	is_command;
-	int				line;
 	char			*src;
 	t_list			*tokens;
 }					t_scanner;
@@ -65,16 +66,32 @@ typedef struct s_env
 	char	*value;
 }	t_env;
 
-void		scan_tokens(t_scanner *scanner);
-t_scanner	*init_scanner(char *input);
-void		add_token(t_scanner *scanner, t_token_type token_type);
-void		add_str_token(t_scanner *scanner, t_token_type token_type);
-void		add_multichar_token(t_scanner *scanner, t_token_type token_type);
-int			handle_error(t_list *tokens);
-int			print_error(t_token *token);
-int			handle_redirect(t_list *tokens);
-int			check_redirect_end(t_token *last, t_list *tokens);
-int			check_redirects(t_token *token, t_token *next);
-int			check_redirect_out(t_token *token, t_token *next);
-int			check_redirect_in(t_token *token, t_token *next);
+typedef struct s_commands
+{
+	char **simple_command;
+	int		fd_in;
+	int		fd_out;
+}	t_command;
+
+void				print_token_list(t_list *tokens);
+void				print_commands(t_command *cmd);
+void				free_commands(t_command *cmd);
+void				free_scanner(t_scanner *scanner);
+void				free_env_list(t_list *env_list);
+void				free_complex_command(t_command *cmds);
+t_command			*free_and_return(t_scanner *scanner);
+char 				**extract_simple_cmd(t_list **token_list);
+void				scan_tokens(t_scanner *scanner);
+t_scanner			*init_scanner(char *input);
+void				add_token(t_scanner *scanner, t_token_type token_type);
+void				add_str_token(t_scanner *scanner, t_token_type token_type);
+void				add_multichar_token(t_scanner *scanner, t_token_type token_type);
+int					handle_error(t_list *tokens);
+int					is_flag(t_scanner *scanner, char *s);
+int					is_metachar(t_token_type type);
+int					tokens_len(t_scanner *scanner);
+t_list				*catch_env(char **envp);
+void				env_expansion(t_list *env_list, t_scanner *scanner);
+t_command			*parser(char *input, t_list *env_list);
+
 #endif

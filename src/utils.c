@@ -3,39 +3,114 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/16 14:12:16 by dbatista          #+#    #+#             */
-/*   Updated: 2025/04/22 20:02:39 by dbatista         ###   ########.fr       */
+/*   Created: 2025/05/02 20:36:10 by dbatista          #+#    #+#             */
+/*   Updated: 2025/05/10 18:40:39 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	print_error(t_token *token)
+char	*get_token_type(int type)
 {
-	if (token->lexeme[0] == '\0')
+	if (type == COMMAND)
+		return ("COMMAND");
+	if (type == FLAG)
+		return ("FLAG");	
+	if (type == PIPE)
+		return ("PIPE");	
+	if (type == REDIRECT_IN)
+		return ("REDIRECT_IN");	
+	if (type == REDIRECT_OUT)
+		return ("REDIRECT_OUT");	
+	if (type == APPEND)
+		return ("APPEND");	
+	if (type == HEREDOC)
+		return ("HEREDOC");	
+	if (type == TARGET)
+		return ("TARGET");	
+	if (type == PARAMETER)
+		return ("PARAMETER");	
+	if (type == SINGLE_QUOTED)
+		return ("SINGLE_QUOTED");	
+	if (type == DOUBLE_QUOTED)
+		return ("DOUBLE_QUOTED");	
+	if (type == UNCLOSED)
+		return ("UNCLOSED");	
+	if (type == EOF_TOKEN)
+		return ("EOF_TOKEN");
+	return ("UNKNOWN");	
+}
+
+void	print_token_list(t_list *tokens)
+{
+	t_token	*token;
+	int		i;
+	
+	printf("Token List:\n");
+	i = 0;
+	while (tokens)
 	{
-		ft_printf_fd(2, "-bash: syntax error");
-		ft_printf_fd(2, " near unexpected token `newline'\n");
-		return (1);
+		token = (t_token *)tokens->content;
+		printf("Token %d: ", i++);
+		if (token->lexeme)
+			printf("%s", token->lexeme);
+		else
+			printf("(null)");
+		printf(" | type: %s | plus: %d\n", get_token_type(token->type), token->plus);
+		tokens = tokens->next;
 	}
-	else if (token->type == TARGET)
+	printf("\n");
+}
+
+void	print_commands(t_command *cmd)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (cmd[i].simple_command)
 	{
-		ft_printf_fd(2, "bash: %s: No such file or director\n", token->lexeme);
-		return (1);
+		printf("Main:\n");
+		j = 0;
+		while (cmd[i].simple_command[j])
+		{
+			printf(" %s\n", cmd[i].simple_command[j]);
+			j++;
+		}
+		i++;
 	}
-	else if (token->type == UNCLOSED)
-	{
-		ft_printf_fd(2, "bash: %c syntax error", token->lexeme[0]);
-		ft_printf_fd(2, "unexpected end of file (unclosed quote)\n");
+}
+
+int	is_flag(t_scanner *scanner, char *s)
+{
+	if (*s != '-')
+		return (0);
+	if (scanner->src[scanner->current] == '-')
 		return (1);
-	}
-	else
-	{
-		ft_printf_fd(2, "-bash: syntax error");
-		ft_printf_fd(2, "near unexpected token `%c'\n", token->lexeme[0]);
+	if (scanner->src[scanner->current] != '\0' && ft_isalnum(scanner->src[scanner->current]))
 		return (1);
-	}
 	return (0);
+}
+
+int	is_metachar(t_token_type type)
+{
+	return (type == PIPE || type ==  REDIRECT_IN || type == REDIRECT_OUT
+		|| type == APPEND || type == HEREDOC || type == UNCLOSED);
+}
+
+int	tokens_len(t_scanner *scanner)
+{
+	t_list	*tmp;
+	int		i;
+
+	tmp = scanner->tokens;
+	i = 0;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/09 20:24:36 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/09 21:29:02 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct s_commands
 
 void				print_token_list(t_list *tokens);
 void				print_commands(t_command *cmd);
+void				free_commands(t_command *cmd);
 void				free_scanner(t_scanner *scanner);
 void				free_env_list(t_list *env_list);
 void				free_complex_command(t_command *cmds);

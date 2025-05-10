@@ -6,30 +6,15 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 20:04:56 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/09 19:32:28 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/09 22:15:17 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static int	is_at_end(t_scanner *scanner)
+static void	handle_metachar(t_scanner *scanner, char *s)
 {
-	if (scanner->src[scanner->current] == '\0')
-		return (1);
-	return (0);
-}
-
-static void	scan_token(t_scanner *scanner)
-{
-	char	*s;
-
-	s = scanner->src + scanner->current++;
-	if (*s == ' ')
-	{
-		scanner->start = scanner->current;
-		return ;
-	}
-	else if (*s == '|')
+	if (*s == '|')
 		add_token(scanner, PIPE);
 	else if (*s == '>' && scanner->src[scanner->current] == '>')
 		add_multichar_token(scanner, APPEND);
@@ -43,7 +28,11 @@ static void	scan_token(t_scanner *scanner)
 		add_str_token(scanner, DOUBLE_QUOTED);
 	else if (*s == '\'')
 		add_str_token(scanner, SINGLE_QUOTED);
-	else if (is_flag(scanner, s))
+}
+
+static void	handle_token(t_scanner *scanner, char *s)
+{
+	if (is_flag(scanner, s))
 		add_multichar_token(scanner, FLAG);
 	else if (scanner->is_command == TRUE)
 	{
@@ -56,6 +45,23 @@ static void	scan_token(t_scanner *scanner)
 		add_multichar_token(scanner, PARAMETER);
 }
 
+static void	scan_token(t_scanner *scanner)
+{
+	char	*s;
+
+	s = scanner->src + scanner->current++;
+	if (*s == ' ')
+	{
+		scanner->start = scanner->current;
+		return ;
+	}
+	if (ft_strchr("|<>\"\'", *s))
+		handle_metachar(scanner, s);
+	else
+		handle_token(scanner, s);
+}
+
+
 void	scan_tokens(t_scanner *scanner)
 {
 	t_token	*eof;
@@ -63,7 +69,7 @@ void	scan_tokens(t_scanner *scanner)
 	eof = malloc(sizeof(t_token));
 	if (!eof)
 		return ;
-	while (!is_at_end(scanner))
+	while (scanner->src[scanner->current])
 	{
 		scanner->start = scanner->current;
 		scan_token(scanner);
@@ -79,6 +85,8 @@ t_scanner	*init_scanner(char *input)
 	t_scanner	*scanner;
 
 	scanner = malloc(sizeof(t_scanner));
+	if (!scanner)
+		return (NULL);
 	scanner->current = 0;
 	scanner->line = 1;
 	scanner->is_command = TRUE;

@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 20:02:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/02 20:42:44 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/09 21:43:50 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,11 @@ void	free_complex_command(t_command *cmds)
 		free(simple);
 		i++;
 	}
+	/*
+	if (cmd->fd_in > 2)
+		close(cmd->fd_in);
+	if (cmd->fd_out > 2)
+		close(cmd->fd_out);*/
 	free (cmds);
 }
 
@@ -63,4 +68,3 @@ void	free_scanner(t_scanner *scanner)
 	if (scanner->tokens)
 		ft_lstclear(&scanner->tokens, free_token);
 }
-

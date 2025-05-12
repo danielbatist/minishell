@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 05:14:47 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/10 18:42:47 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/12 20:34:31 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,18 @@ int	count_pipes(t_scanner *scanner)
 	return (count);
 }
 
+t_command	extract_command(t_list **token_list)
+{
+	t_command	cmd;
+	t_list		*start;
+
+	ft_bzero(&cmd, sizeof(t_command));
+	start = *token_list;
+	cmd.simple_command = extract_simple_cmd(token_list);
+	handle_redirects(start, &cmd);
+	return (cmd);
+}
+
 t_command	*parser(char *input, t_list *env_list)
 {
 	t_scanner	*scanner;
@@ -61,7 +73,7 @@ t_command	*parser(char *input, t_list *env_list)
 	current = scanner->tokens;
 	i = 0;
 	while (current && i < cmds_count)
-		commands[i++].simple_command = extract_simple_cmd(&current);
+		commands[i++] = extract_command(&current);
 	free_scanner(scanner);
 	return (commands);
 }

@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 10:29:06 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/10 14:04:38 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/12 20:19:56 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ static void	handle_token_join(t_list **tokens, char **cmd, int *i)
 	token = (t_token *)(*tokens)->content;
 	joined = join_tokens_loop(tokens, token);
 	cmd[*i] = joined;
-	printf("Token %d: %s, plus: %d, has space: %d\n",
-		*i + 1, token->lexeme, token->plus, token->has_space);
 	*i += 1;
 }
 
@@ -80,15 +78,21 @@ char	**extract_simple_cmd(t_list **token_list)
 	char	**cmd;
 	int		count;
 	int		i;
+	t_token	*token;
 
 	count = count_cmd_tokens(*token_list);
 	i = 0;
 	cmd = ft_calloc(count + 1, sizeof(char *));
-	if (!cmd)
-		return (NULL);
-	printf("Parser status token:\n");
 	while (*token_list && ((t_token *)(*token_list)->content)->type != PIPE)
 	{
+		token = (t_token *)(*token_list)->content;
+		if (is_redirect(token->type))
+		{
+			*token_list = (*token_list)->next;
+			if (*token_list)
+				*token_list = (*token_list)->next;
+			continue ;
+		}
 		handle_token_join(token_list, cmd, &i);
 		*token_list = (*token_list)->next;
 	}

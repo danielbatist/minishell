@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 01:20:21 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/10 19:03:27 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/12 20:02:52 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,7 @@ int	check_redirect_out(t_token *token, t_token *next)
 	return (0);
 }
 
-int	check_redirect_end(t_token *last, t_list *tokens)
-{
-	if (last && (last->type == REDIRECT_IN || last->type == REDIRECT_OUT \
-	|| last->type == APPEND || last->type == HEREDOC))
-		return (print_error((t_token *)tokens->content));
-	return (0);
-}
-
-static int	is_redirect(t_token_type type)
+int	is_redirect(t_token_type type)
 {
 	return (type == REDIRECT_IN || type == REDIRECT_OUT \
 	|| type == APPEND || type == HEREDOC);

@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:56:02 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/10 19:07:00 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/12 19:00:35 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,21 @@ void	print_commands(t_command *cmd)
 	i = 0;
 	while (cmd[i].simple_command)
 	{
-		printf("Main:\n");
+		printf("\n=== Comando %d ===\n", i);
 		j = 0;
 		while (cmd[i].simple_command[j])
 		{
-			printf(" %s\n", cmd[i].simple_command[j]);
+			printf("Arg[%d]: %s\n", j, cmd[i].simple_command[j]);
 			j++;
 		}
+		if (cmd[i].infile)
+			printf("infile: %s\n", cmd[i].infile);
+		if (cmd[i].outfile)
+			printf("outfile: %s\n", cmd[i].outfile);
+		if (cmd[i].append_file)
+			printf("append: %s\n", cmd[i].append_file);
+		if (cmd[i].heredoc_delim)
+			printf("heredoc: %s\n", cmd[i].heredoc_delim);
 		i++;
 	}
 }

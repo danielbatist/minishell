@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirects.c                                        :+:      :+:    :+:   */
+/*   redirects_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/12 20:22:24 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/12 20:34:22 by dbatista         ###   ########.fr       */
+/*   Created: 2025/05/13 20:18:08 by dbatista          #+#    #+#             */
+/*   Updated: 2025/05/13 20:43:02 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
-void	set_redirect(t_token *token, t_command *cmd, char *filename)
+static void	set_redirect(t_token *token, t_command *cmd, char *filename)
 {
 	if (!filename)
 		return ;
@@ -56,4 +56,3 @@ void	handle_redirects(t_list *start, t_command *cmd)
 		start = start->next;
 	}
 }
-

@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/10 18:38:01 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/13 20:40:57 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <fcntl.h>
+# include <signal.h>
 
 typedef enum e_token_type
 {
@@ -68,30 +69,56 @@ typedef struct s_env
 
 typedef struct s_commands
 {
-	char **simple_command;
+	char	**simple_command;
 	int		fd_in;
 	int		fd_out;
+	char	*infile;
+	char	*outfile;
+	char	*append_file;
+	char	*heredoc_delim;
 }	t_command;
 
-void				print_token_list(t_list *tokens);
-void				print_commands(t_command *cmd);
+//token
+void				add_token(t_scanner *scanner, t_token_type token_type);
+void				add_str_token(t_scanner *scanner, t_token_type token_type);
+void				add_multichar_token(t_scanner *scanner, t_token_type token_type);
+char				*get_token_type(int type);
+int					tokens_len(t_scanner *scanner);
+//scanner
+t_scanner			*init_scanner(char *input);
+void				scan_tokens(t_scanner *scanner);
+
+//free
 void				free_commands(t_command *cmd);
 void				free_scanner(t_scanner *scanner);
 void				free_env_list(t_list *env_list);
 void				free_complex_command(t_command *cmds);
 t_command			*free_and_return(t_scanner *scanner);
-char 				**extract_simple_cmd(t_list **token_list);
-void				scan_tokens(t_scanner *scanner);
-t_scanner			*init_scanner(char *input);
-void				add_token(t_scanner *scanner, t_token_type token_type);
-void				add_str_token(t_scanner *scanner, t_token_type token_type);
-void				add_multichar_token(t_scanner *scanner, t_token_type token_type);
+
+//print
+int					print_error(t_token *token);
+void				print_token_list(t_list *tokens);
+void				print_commands(t_command *cmd);
+
+//redirects
+void				handle_redirects(t_list *start, t_command *cmd);
+int					apply_redirect(t_command *cmd);
+
+//execution
+void				execute_command(t_command *cmd);
+
+//utils
+int					is_redirect(t_token_type type);
 int					handle_error(t_list *tokens);
 int					is_flag(t_scanner *scanner, char *s);
 int					is_metachar(t_token_type type);
-int					tokens_len(t_scanner *scanner);
-t_list				*catch_env(char **envp);
+int					check_redirect_in(t_token *token, t_token *next);
+int					check_redirect_out(t_token *token, t_token *next);
+int					check_redirects(t_token *token, t_token *next);
+void				set_signal(void);
 void				env_expansion(t_list *env_list, t_scanner *scanner);
+char				**extract_simple_cmd(t_list **token_list);
+t_list				*catch_env(char **envp);
 t_command			*parser(char *input, t_list *env_list);
 
 #endif

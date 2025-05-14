@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 10:29:06 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/12 20:19:56 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/14 19:01:31 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,11 @@ char	**extract_simple_cmd(t_list **token_list)
 	while (*token_list && ((t_token *)(*token_list)->content)->type != PIPE)
 	{
 		token = (t_token *)(*token_list)->content;
+		if (token->type == EOF_TOKEN)
+			break ;
 		if (is_redirect(token->type))
 		{
-			*token_list = (*token_list)->next;
-			if (*token_list)
-				*token_list = (*token_list)->next;
+			redirects_token(token_list);
 			continue ;
 		}
 		handle_token_join(token_list, cmd, &i);

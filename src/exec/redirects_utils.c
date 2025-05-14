@@ -6,11 +6,18 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 20:18:08 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/13 20:43:02 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/14 18:59:24 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+void	redirects_token(t_list **token_list)
+{
+	*token_list = (*token_list)->next;
+	if (*token_list)
+		*token_list = (*token_list)->next;
+}
 
 static void	set_redirect(t_token *token, t_command *cmd, char *filename)
 {

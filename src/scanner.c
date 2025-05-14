@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 20:04:56 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/10 19:01:00 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/14 20:42:07 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,15 @@ void	scan_tokens(t_scanner *scanner)
 		scanner->start = scanner->current;
 		scan_token(scanner);
 	}
-	eof->type = EOF_TOKEN;
 	eof->lexeme = strdup("");
+	if (!eof->lexeme)
+	{
+		free(eof);
+		return ;
+	}
+	eof->type = EOF_TOKEN;
 	eof->plus = FALSE;
+	eof->has_space = FALSE;
 	ft_lstadd_back(&scanner->tokens, ft_lstnew(eof));
 }
 
@@ -86,9 +92,9 @@ t_scanner	*init_scanner(char *input)
 	scanner = malloc(sizeof(t_scanner));
 	if (!scanner)
 		return (NULL);
+	scanner->start = 0;
 	scanner->current = 0;
 	scanner->is_command = TRUE;
-	scanner->start = 0;
 	scanner->src = input;
 	scanner->tokens = NULL;
 	return (scanner);

@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:34:40 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/13 20:41:04 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:37:07 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	process_input(char *input, t_list *env_list)
 	i = 0;
 	while (complex_command[i].simple_command)
 		execute_command(&complex_command[i++]);
-	//print_commands(complex_command);
+	print_commands(complex_command);
 	free_complex_command(complex_command);
 }
 

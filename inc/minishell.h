@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/13 20:40:57 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/14 19:44:00 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <signal.h>
+# include <sys/wait.h>
 
 typedef enum e_token_type
 {
@@ -47,8 +48,8 @@ typedef enum e_is_command
 
 typedef struct s_token
 {
-	t_token_type	type;
 	char			*lexeme;
+	t_token_type	type;
 	t_is_command	plus;
 	t_is_command	has_space;
 }					t_token;
@@ -101,6 +102,7 @@ void				print_token_list(t_list *tokens);
 void				print_commands(t_command *cmd);
 
 //redirects
+void				redirects_token(t_list **token_list);
 void				handle_redirects(t_list *start, t_command *cmd);
 int					apply_redirect(t_command *cmd);
 

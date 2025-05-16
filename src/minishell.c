@@ -6,20 +6,19 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:34:40 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/14 17:37:07 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:41:03 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static int	handle_exit(char *input)
+static void	handle_exit(char *input, t_list *env_list)
 {
-	if (!input)
-	{
-		printf("exit\n");
-		return (1);
-	}
-	return (0);
+	printf("exit\n");
+	if (input)
+		free(input);
+	free_env_list(env_list);
+	exit(0);
 }
 
 static void	process_input(char *input, t_list *env_list)
@@ -51,11 +50,10 @@ int	main(int ac, char **av, char **envp)
 	{
 		set_signal();
 		input = readline("minishell> ");
-		if (handle_exit(input))
-			break ;
+		if (!input)
+			handle_exit(NULL, env_list);
 		process_input(input, env_list);
 		free(input);
 	}
-	free_env_list(env_list);
 	return (0);
 }

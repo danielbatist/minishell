@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/14 19:44:00 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/15 20:41:23 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <fcntl.h>
 # include <signal.h>
 # include <sys/wait.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 
 typedef enum e_token_type
 {
@@ -90,7 +92,7 @@ t_scanner			*init_scanner(char *input);
 void				scan_tokens(t_scanner *scanner);
 
 //free
-void				free_commands(t_command *cmd);
+void				free_token(void *content);
 void				free_scanner(t_scanner *scanner);
 void				free_env_list(t_list *env_list);
 void				free_complex_command(t_command *cmds);

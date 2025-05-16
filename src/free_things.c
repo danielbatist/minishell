@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 20:02:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/10 10:21:22 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/15 19:44:56 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,10 @@ void	free_complex_command(t_command *cmds)
 		while (simple[j])
 			free(simple[j++]);
 		free(simple);
+		free(cmds[i].infile);
+		free(cmds[i].outfile);
+		free(cmds[i].append_file);
+		free(cmds[i].heredoc_delim);
 		i++;
 	}
 	/*
@@ -51,12 +55,19 @@ void	free_complex_command(t_command *cmds)
 void	free_env_list(t_list *env_list)
 {
 	t_list	*tmp;
+	t_env	*env;
 
 	while (env_list)
 	{
 		tmp = env_list;
 		env_list = env_list->next;
-		free(tmp->content);
+		env = (t_env *)tmp->content;
+		if (env)
+		{
+			free(env->name);
+			free(env->value);
+			free(env);
+		}
 		free(tmp);
 	}
 }
@@ -67,6 +78,7 @@ void	free_scanner(t_scanner *scanner)
 		return ;
 	if (scanner->tokens)
 		ft_lstclear(&scanner->tokens, free_token);
+	free(scanner);
 }
 
 t_command	*free_and_return(t_scanner *scanner)

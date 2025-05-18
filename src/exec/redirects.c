@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 20:22:24 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/17 21:25:16 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/18 17:49:38 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static int	open_infile(char *infile)
+int	open_infile(char *infile)
 {
 	int	fd;
 
@@ -28,12 +28,12 @@ static int	open_infile(char *infile)
 		close(fd);
 		return (-1);
 	}
-	if (fd != STDOUT_FILENO)
+	if (fd != STDIN_FILENO)
 		close(fd);
 	return (fd);
 }
 
-static int	open_outfile(char *outfile)
+int	open_outfile(char *outfile)
 {
 	int	fd;
 
@@ -54,7 +54,7 @@ static int	open_outfile(char *outfile)
 	return (fd);
 }
 
-static int	open_append(char *append)
+int	open_append(char *append)
 {
 	int	fd;
 

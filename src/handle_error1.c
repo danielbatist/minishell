@@ -6,11 +6,25 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 01:20:21 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/15 21:07:04 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:42:29 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+int	validate_output_file(char *lexeme)
+{
+	struct stat	stat_buf;
+
+	if (access(lexeme, F_OK) == 0)
+	{
+		if (stat(lexeme, &stat_buf) == 0 && S_ISDIR(stat_buf.st_mode))
+			return (print_error_direc_perm(lexeme, IS_DIR));
+		if (access(lexeme, W_OK) != 0)
+			return (print_error_direc_perm(lexeme, PERM_DENIED));
+	}
+	return (0);
+}
 
 int	check_redirect_in(t_token *token, t_token *next)
 {
@@ -30,30 +44,8 @@ int	check_redirect_in(t_token *token, t_token *next)
 
 int	check_redirect_out(t_token *token, t_token *next)
 {
-	struct stat	stat_buf;
-	int			fd;
-
-	if (token->type == REDIRECT_OUT && next->type == TARGET)
-	{
-		if (access(next->lexeme, F_OK) != 0)
-		{
-			if (stat(next->lexeme, &stat_buf) == 0)
-				if (S_ISDIR(stat_buf.st_mode))
-					print_error(next); // tratar essa função não esta certa.
-			if (access(next->lexeme, W_OK) != 0)
-				print_error(next);  // tratar essa função não esta certa.
-		}
-		else
-		{
-			fd = open(next->lexeme, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-			if (fd < 0)
-			{
-				perror("open");
-				return (1);
-			}
-			close(fd);
-		}
-	}
+	if (token->type == REDIRECT_OUT)
+		return (validate_output_file(next->lexeme));
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:34:40 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/15 16:41:03 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/18 18:16:58 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	handle_exit(char *input, t_list *env_list)
 	printf("exit\n");
 	if (input)
 		free(input);
-	free_env_list(env_list);
+	redirects_token(&env_list);
 	exit(0);
 }
 

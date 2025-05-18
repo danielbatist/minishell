@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/17 21:24:36 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/18 18:17:24 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,14 +102,17 @@ t_command	*free_and_return(t_scanner *scanner);
 
 //print
 int			print_error(t_token *token);
-int			print_error_direc_perm(t_token *token, t_is_command flag);
+int			print_error_direc_perm(char *lexeme, t_is_command flag);
 void		print_token_list(t_list *tokens);
 void		print_commands(t_command *cmd);
 
 //redirects
 void		redirects_token(t_list **token_list);
-void		handle_redirects(t_list *start, t_command *cmd);
+int			handle_redirects(t_list *start, t_command *cmd);
 int			apply_redirect(t_command *cmd);
+int			open_infile(char *infile);
+int			open_outfile(char *outfile);
+int			open_append(char *append);
 
 //execution
 void		execute_command(t_command *cmd);

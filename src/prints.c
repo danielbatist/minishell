@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   prints.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:56:02 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/12 19:00:35 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/17 21:20:45 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+int	print_error_direc_perm(t_token *token, t_is_command flag)
+{
+	ft_printf_fd(2, "bash: %s: ", token->lexeme);
+	if (flag == IS_DIR)
+		ft_printf_fd(2, "is a directory\n");
+	else if (flag == PERM_DENIED)
+		ft_printf_fd(2, "Permission denied\n");
+}
 
 int	print_error(t_token *token)
 {

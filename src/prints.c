@@ -6,14 +6,19 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:56:02 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/18 16:27:33 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/19 19:57:07 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	print_error_direc_perm(char *lexeme, t_is_command flag)
+int	print_error_direc_and_file(char *lexeme, t_is_command flag)
 {
+	if (flag == FILE_NOT_FOUND)
+	{
+		ft_printf_fd(2, "bash: %s: No such file or director\n", lexeme);
+		return (1);
+	}
 	if (flag == IS_DIR)
 	{
 		ft_printf_fd(2, "bash: %s: Is a directory\n", lexeme);
@@ -33,11 +38,6 @@ int	print_error(t_token *token)
 	{
 		ft_printf_fd(2, "-bash: syntax error");
 		ft_printf_fd(2, " near unexpected token `newline'\n");
-		return (1);
-	}
-	else if (token->type == TARGET)
-	{
-		ft_printf_fd(2, "bash: %s: No such file or director\n", token->lexeme);
 		return (1);
 	}
 	else if (token->type == UNCLOSED)

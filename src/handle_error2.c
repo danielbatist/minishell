@@ -6,13 +6,13 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 01:21:12 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/12 19:57:38 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:35:55 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	handle_quotes(t_list *tokens)
+int	handle_error_quotes(t_list *tokens)
 {
 	t_token	*token;
 
@@ -31,7 +31,7 @@ int	handle_quotes(t_list *tokens)
 	return (0);
 }
 
-int	handle_pipe(t_list *tokens)
+int	handle_error_pipe(t_list *tokens)
 {
 	t_token	*token;
 	t_token	*next;
@@ -54,7 +54,7 @@ int	handle_pipe(t_list *tokens)
 	return (0);
 }
 
-int	handle_redirect(t_list *tokens)
+int	handle_error_redirect(t_list *tokens)
 {
 	t_token	*token;
 	t_token	*next;
@@ -83,11 +83,11 @@ int	handle_redirect(t_list *tokens)
 
 int	handle_error(t_list *tokens)
 {
-	if (handle_quotes(tokens))
+	if (handle_error_quotes(tokens))
 		return (1);
-	if (handle_pipe(tokens))
+	if (handle_error_pipe(tokens))
 		return (1);
-	if (handle_redirect(tokens))
+	if (handle_error_redirect(tokens))
 		return (1);
 	return (0);
 }

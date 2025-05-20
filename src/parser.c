@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 05:14:47 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/12 20:34:31 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/19 16:01:01 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ t_command	extract_command(t_list **token_list)
 
 	ft_bzero(&cmd, sizeof(t_command));
 	start = *token_list;
+	cmd.fd_in = STDIN_FILENO;
+	cmd.fd_out = STDOUT_FILENO;
 	cmd.simple_command = extract_simple_cmd(token_list);
 	handle_redirects(start, &cmd);
 	return (cmd);

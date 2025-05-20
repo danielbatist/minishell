@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 19:17:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/18 16:46:41 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/19 17:19:27 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	execute_command(t_command *cmd)
 	{
 		if (apply_redirect(cmd) < 0)
 			exit (1);
+		setup_execution(cmd);
 		if (cmd->simple_command && cmd->simple_command[0])
 		{
 			execvp(cmd->simple_command[0], cmd->simple_command);

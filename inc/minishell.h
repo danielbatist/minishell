@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/19 20:06:16 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/20 21:16:35 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ int			apply_redirect(t_command *cmd);
 int			open_infile(char *infile);
 int			open_outfile(char *outfile);
 int			open_append(char *append);
+int			open_heredoc(t_command *cmd, char *delim);
 int			validate_file(t_token *token, char *lexeme);
 
 

@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 20:36:10 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/15 20:54:02 by dbatista         ###   ########.fr       */
+/*   Created: 2025/05/20 20:24:41 by dbatista          #+#    #+#             */
+/*   Updated: 2025/05/20 21:35:57 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 char	*get_token_type(int type)
 {

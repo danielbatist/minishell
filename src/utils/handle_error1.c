@@ -6,11 +6,11 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 01:20:21 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/19 20:59:27 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/20 20:23:31 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 int	validate_file(t_token *token, char *lexeme)
 {

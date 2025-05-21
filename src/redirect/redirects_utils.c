@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 20:18:08 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/19 17:44:40 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/20 21:25:20 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ int	handle_redirects(t_list *start, t_command *cmd)
 				fd = open_infile(filename);
 			else if (token->type == APPEND)
 				fd = open_append(filename);
+			else if (token->type == HEREDOC)
+				fd = open_heredoc(cmd, filename);
 			else
 				fd = -1;
 			if (fd < 0)

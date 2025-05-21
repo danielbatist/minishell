@@ -6,11 +6,11 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 16:20:25 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/10 19:00:41 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/20 20:24:09 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 void	sigint_signal(int sig)
 {

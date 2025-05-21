@@ -6,11 +6,11 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 15:20:43 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/10 09:57:58 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/20 20:21:53 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 t_list	*catch_env(char **envp)
 {

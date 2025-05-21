@@ -6,11 +6,11 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:37:00 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/10 16:47:49 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/20 20:22:50 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 void	set_plus(t_token *token, char c, t_token_type token_type)
 {

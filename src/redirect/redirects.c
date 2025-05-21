@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 20:22:24 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/19 16:00:08 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/20 21:32:27 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,14 @@ int	apply_redirect(t_command *cmd)
 		if (fd < 0)
 			return (-1);
 		cmd->fd_out = fd;
+	}
+	if (cmd->heredoc_delim)
+	{
+		printf("Redirecionando para o Heredoc: %s\n", cmd->infile);
+		fd = open_infile(cmd->infile);
+		if (fd < 0)
+			return (-1);
+		cmd->fd_in = fd;
 	}
 	return (0);
 }

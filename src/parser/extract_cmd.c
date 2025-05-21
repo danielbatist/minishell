@@ -6,11 +6,11 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 10:29:06 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/14 19:01:31 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/20 20:22:28 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 static int	count_cmd_tokens(t_list *current)
 {

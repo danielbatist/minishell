@@ -6,10 +6,13 @@ CFLAGS = -Wall -Wextra -Werror -g
 
 NAME = minishell
 
-SRC =  scanner.c handle_error1.c handle_error2.c tokens.c env_expansion.c \
-	   catch_env.c parser.c minishell.c free_things.c utils.c extract_cmd.c \
-	   prints.c signal.c exec/execution.c exec/redirects.c exec/redirects_utils.c 
-
+SRC =  main/minishell.c \
+       exec/execution.c \
+	   parser/extract_cmd.c parser/parser.c parser/scanner.c parser/tokens.c\
+	   expansion/env_expansion.c expansion/catch_env.c\
+	   utils/handle_error1.c utils/handle_error2.c utils/free_things.c utils/utils.c utils/prints.c utils/signal.c\
+	   redirect/redirects_utils.c redirect/redirects.c redirect/heredoc.c
+	  
 LIB = ../lib
 
 OBJ = $(SRC:.c=.o)

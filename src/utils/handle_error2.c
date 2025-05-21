@@ -6,11 +6,11 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 01:21:12 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/19 15:35:55 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/20 20:23:39 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 int	handle_error_quotes(t_list *tokens)
 {

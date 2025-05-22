@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 05:14:47 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/20 20:22:36 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/22 09:27:53 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static t_scanner	*init_and_scan(char *input, t_list *env_list)
 	if (!scanner)
 		return (NULL);
 	scan_tokens(scanner);
-	env_expansion(env_list, scanner);
+	env_expansion(env_list, scanner, NULL);
 	print_token_list(scanner->tokens);
 	return (scanner);
 }
@@ -43,7 +43,7 @@ int	count_pipes(t_scanner *scanner)
 	return (count);
 }
 
-t_command	extract_command(t_list **token_list)
+t_command	extract_command(t_list **token_list, t_list *env_list)
 {
 	t_command	cmd;
 	t_list		*start;
@@ -53,7 +53,7 @@ t_command	extract_command(t_list **token_list)
 	cmd.fd_in = STDIN_FILENO;
 	cmd.fd_out = STDOUT_FILENO;
 	cmd.simple_command = extract_simple_cmd(token_list);
-	handle_redirects(start, &cmd);
+	handle_redirects(start, &cmd, env_list);
 	return (cmd);
 }
 
@@ -75,7 +75,7 @@ t_command	*parser(char *input, t_list *env_list)
 	current = scanner->tokens;
 	i = 0;
 	while (current && i < cmds_count)
-		commands[i++] = extract_command(&current);
+		commands[i++] = extract_command(&current, env_list);
 	free_scanner(scanner);
 	return (commands);
 }

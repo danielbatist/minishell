@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 20:18:08 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/20 21:25:20 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/21 22:51:07 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	set_redirect(t_token *token, t_command *cmd, char *filename)
 	}
 }
 
-int	handle_redirects(t_list *start, t_command *cmd)
+int	handle_redirects(t_list *start, t_command *cmd, t_list *env_list)
 {
 	t_token	*token;
 	t_token	*next_token;
@@ -66,25 +66,31 @@ int	handle_redirects(t_list *start, t_command *cmd)
 			next_token = (t_token *)start->content;
 			if (!next_token || !next_token->lexeme)
 				return (print_error(next_token));
-			filename = ft_strdup(next_token->lexeme);
-			if (token->type == REDIRECT_OUT)
-				fd = open_outfile(filename);
-			else if (token->type == REDIRECT_IN)
-				fd = open_infile(filename);
-			else if (token->type == APPEND)
-				fd = open_append(filename);
-			else if (token->type == HEREDOC)
-				fd = open_heredoc(cmd, filename);
+			if (token->type == HEREDOC)
+				return (handle_heredoc(cmd, &filename, next_token->lexeme, env_list));
 			else
-				fd = -1;
-			if (fd < 0)
 			{
-				ft_printf_fd(2, "Error");
-				free(filename);
-				return (1);
+				filename = ft_strdup(next_token->lexeme);
+				if (token->type == REDIRECT_OUT)
+					fd = open_outfile(filename);
+				else if (token->type == REDIRECT_IN)
+					fd = open_infile(filename);
+				else if (token->type == APPEND)
+					fd = open_append(filename);
+				else
+					fd = -1;
+
+				if (fd < 0)
+				{
+					ft_printf_fd(2, "Error\n");
+					free(filename);
+					return (1);
+				}
+				close(fd);
 			}
-			close(fd);
 			set_redirect(token, cmd, filename);
+			free(filename);
+			continue ;
 		}
 		start = start->next;
 	}

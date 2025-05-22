@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 20:22:24 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/20 21:32:27 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/21 11:07:06 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	setup_execution(t_command *cmd)
 {
-	if (cmd->fd_in != STDIN_FILENO && cmd->fd_out > 0)
+	if (cmd->fd_in > 0 && cmd->fd_in != STDIN_FILENO)
 	{
 		dup2(cmd->fd_in, STDIN_FILENO);
 		close(cmd->fd_in);
 	}
-	if (cmd->fd_out != STDOUT_FILENO && cmd->fd_out > 0)
+	if (cmd->fd_out > 0 && cmd->fd_out != STDOUT_FILENO)
 	{
 		dup2(cmd->fd_out, STDOUT_FILENO);
 		close(cmd->fd_out);
@@ -93,10 +93,10 @@ int	apply_redirect(t_command *cmd)
 			return (-1);
 		cmd->fd_out = fd;
 	}
-	if (cmd->heredoc_delim)
+	if (cmd->heredoc_file) // Corrigir para usar heredoc_file
 	{
-		printf("Redirecionando para o Heredoc: %s\n", cmd->infile);
-		fd = open_infile(cmd->infile);
+		printf("Redirecionando para o Heredoc: %s\n", cmd->heredoc_file);
+		fd = open_infile(cmd->heredoc_file);
 		if (fd < 0)
 			return (-1);
 		cmd->fd_in = fd;

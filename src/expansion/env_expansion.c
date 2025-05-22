@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_expansion.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:02:10 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/20 20:22:08 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:20:39 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ char *search_env(char *str, t_list *env_list)
 	t_list	*tmp_list;
 	char	*tmp_str;
 	char	*str_return;
-	int		is_env;
+	//int		is_env;
 
 	tmp_list = env_list;
-	is_env = 0;
+	//is_env = 0;
 	while (tmp_list)
 	{
 		tmp_str = ((t_env *)(tmp_list->content))->name;
@@ -99,7 +99,7 @@ void	scan_env(t_token *token, t_list *env_list)
 	}
 }
 
-void	env_expansion(t_list *env_list, t_scanner *scanner)
+void	env_expansion(t_list *env_list, t_scanner *scanner, t_command *cmd)
 {
 	t_list	*tmp_tokens;
 
@@ -111,6 +111,7 @@ void	env_expansion(t_list *env_list, t_scanner *scanner)
 			|| ((t_token *)(scanner->tokens->content))->type == PARAMETER
 			|| ((t_token *)(scanner->tokens->content))->type == TARGET
 			|| ((t_token *)(scanner->tokens->content))->type == DOUBLE_QUOTED
+			|| cmd->heredoc_quoted == FALSE
 		)
 			scan_env(((t_token *)(tmp_tokens->content)), env_list);
 		tmp_tokens = tmp_tokens->next;

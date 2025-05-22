@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:34:40 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/20 22:07:16 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/21 13:09:16 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ int	main(int ac, char **av, char **envp)
 		set_signal();
 		input = readline("minishell> ");
 		if (!input)
+		{
+			printf("readline retornou NULL\n");
 			handle_exit(NULL, env_list);
+		}
 		process_input(input, env_list);
 		free(input);
 	}

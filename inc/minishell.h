@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/20 21:16:35 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/21 22:52:47 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,15 @@ typedef struct s_env
 
 typedef struct s_commands
 {
-	char	**simple_command;
-	int		fd_in;
-	int		fd_out;
-	char	*infile;
-	char	*outfile;
-	char	*append_file;
-	char	*heredoc_delim;
+	char			**simple_command;
+	int				fd_in;
+	int				fd_out;
+	char			*infile;
+	char			*outfile;
+	char			*append_file;
+	char			*heredoc_delim;
+	char			*heredoc_file;
+	t_is_command	heredoc_quoted;
 }	t_command;
 
 //token
@@ -108,19 +110,24 @@ void		print_token_list(t_list *tokens);
 void		print_commands(t_command *cmd);
 
 //redirects
+void		clean_heredoc(t_command *cmd);
 void		redirects_token(t_list **token_list);
-int			handle_redirects(t_list *start, t_command *cmd);
+int			handle_redirects(t_list *start, t_command *cmd, t_list *env_list);
+int			handle_heredoc(t_command *cmd, char **out_file, char *lexeme, t_list *env_list);
 int			apply_redirect(t_command *cmd);
 int			open_infile(char *infile);
 int			open_outfile(char *outfile);
 int			open_append(char *append);
-int			open_heredoc(t_command *cmd, char *delim);
+int			open_heredoc(t_command *cmd, char *delim, t_list *env_list);
 int			validate_file(t_token *token, char *lexeme);
-
 
 //execution
 void		execute_command(t_command *cmd);
 void		setup_execution(t_command *cmd);
+
+//env
+void		env_expansion(t_list *env_list, t_scanner *scanner, t_command *cmd);
+t_list		*catch_env(char **envp);
 
 //utils
 int			is_redirect(t_token_type type);
@@ -131,9 +138,7 @@ int			check_redirect_in(t_token *token, t_token *next);
 int			check_redirect_out(t_token *token, t_token *next);
 int			check_redirects(t_token *token, t_token *next);
 void		set_signal(void);
-void		env_expansion(t_list *env_list, t_scanner *scanner);
 char		**extract_simple_cmd(t_list **token_list);
-t_list		*catch_env(char **envp);
 t_command	*parser(char *input, t_list *env_list);
 
 #endif

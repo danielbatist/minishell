@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/21 22:52:47 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/22 21:38:56 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int			apply_redirect(t_command *cmd);
 int			open_infile(char *infile);
 int			open_outfile(char *outfile);
 int			open_append(char *append);
-int			open_heredoc(t_command *cmd, char *delim, t_list *env_list);
+int			open_heredoc(t_command *cmd, char *delim, char **tmp_filename, t_list *env_list);
 int			validate_file(t_token *token, char *lexeme);
 
 //execution
@@ -126,7 +126,7 @@ void		execute_command(t_command *cmd);
 void		setup_execution(t_command *cmd);
 
 //env
-void		env_expansion(t_list *env_list, t_scanner *scanner, t_command *cmd);
+void		env_expansion(t_list *env_list, t_scanner *scanner);
 t_list		*catch_env(char **envp);
 
 //utils

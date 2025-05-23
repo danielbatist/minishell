@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_expansion.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:02:10 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/21 15:20:39 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/22 20:28:19 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,14 @@ char *search_env(char *str, t_list *env_list)
 	t_list	*tmp_list;
 	char	*tmp_str;
 	char	*str_return;
-	//int		is_env;
 
 	tmp_list = env_list;
-	//is_env = 0;
 	while (tmp_list)
 	{
 		tmp_str = ((t_env *)(tmp_list->content))->name;
 		if (ft_strncmp(str, tmp_str, ft_strlen(str) + 1) == 0)
 		{
 			str_return = ft_strdup(((t_env *)(tmp_list->content))->value);
-			free(str);
 			return (str_return);
 		}
 		tmp_list = tmp_list->next;
@@ -47,29 +44,34 @@ char *search_env(char *str, t_list *env_list)
 
 char	*set_env(char *str, int start, int end, t_list *env_list)
 {
-	char	*str_env;
+	char	*env_key;
+	char	*env_value;
 	char	*str_tmp;
 	char	*str_return;
 
-	str_env = search_env(ft_substr(str, start+1, end), env_list);
-	if(str_env == NULL)
-		return(NULL);
+	env_key = ft_substr(str, start + 1, end);
+	if (!env_key)
+		return (NULL);
+	env_value = search_env(env_key, env_list);
+	free(env_key);
+	if (!env_value)
+		return (NULL);
 	if (start == 0)
 	{
-		str_tmp = ft_substr(str, end+1, ft_strlen(str));
-		str_return = ft_strjoin(str_env, str_tmp);
+		str_tmp = ft_substr(str, end + 1, ft_strlen(str));
+		str_return = ft_strjoin(env_value, str_tmp);
 	}
 	else
 	{
 		str_tmp = ft_substr(str, 0, start);
-		str_return = ft_strjoin(str_tmp, str_env);
+		str_return = ft_strjoin(str_tmp, env_value);
 		free(str_tmp);
-		free(str_env);
+		free(env_value);
 		str_tmp = ft_substr(str, start + end + 1, ft_strlen(str));
-		str_env = str_return;
-		str_return = ft_strjoin(str_env, str_tmp);
+		env_value = str_return;
+		str_return = ft_strjoin(env_value, str_tmp);
 	}
-	free(str_env);
+	free(env_value);
 	free(str_tmp);
 	return (str_return);
 }
@@ -84,36 +86,45 @@ void	scan_env(t_token *token, t_list *env_list)
 	i = 0;
 	start = -1;
 	end = 0;
-	while (token->lexeme[i] && token->lexeme[i] != '$')
-		i++;
-	if (token->lexeme[i] == '$')
+	while (token->lexeme[i])
 	{
-		start = i;
-		end = get_end(token->lexeme + i + 1);
-		str_env = set_env(token->lexeme, start, end, env_list);
-		if (str_env)
+		if (token->lexeme[i] == '$')
 		{
-			free(token->lexeme);
-			token->lexeme = str_env;
+			if (token->lexeme[i + 1] == '\0' || token->lexeme[i + 1] == ' ')
+			{
+				i++;
+				continue ;
+			}
+			else if (token->lexeme[i + 1] == '?')
+			{
+				i += 2;
+				continue ;
+			}
+			start = i;
+			end = get_end(token->lexeme + i + 1);
+			str_env = set_env(token->lexeme, start, end, env_list);
+			if (str_env)
+			{
+				free(token->lexeme);
+				token->lexeme = str_env;
+				i = -1;
+			}
 		}
+		i++;
 	}
 }
 
-void	env_expansion(t_list *env_list, t_scanner *scanner, t_command *cmd)
+void	env_expansion(t_list *env_list, t_scanner *scanner)
 {
+	t_token	*token;
 	t_list	*tmp_tokens;
 
 	tmp_tokens = scanner->tokens;
-	while(tmp_tokens)
+	while (tmp_tokens)
 	{
-		if (((t_token *)(scanner->tokens->content))->type == COMMAND
-			|| ((t_token *)(scanner->tokens->content))->type == FLAG
-			|| ((t_token *)(scanner->tokens->content))->type == PARAMETER
-			|| ((t_token *)(scanner->tokens->content))->type == TARGET
-			|| ((t_token *)(scanner->tokens->content))->type == DOUBLE_QUOTED
-			|| cmd->heredoc_quoted == FALSE
-		)
-			scan_env(((t_token *)(tmp_tokens->content)), env_list);
+		token = (t_token *)tmp_tokens->content;
+		if (token->type != SINGLE_QUOTED)
+			scan_env(token, env_list);
 		tmp_tokens = tmp_tokens->next;
 	}
 }

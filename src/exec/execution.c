@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 19:17:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/21 13:17:44 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/22 16:32:13 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	execute_command(t_command *cmd)
 		setup_execution(cmd);
 		if (cmd->simple_command && cmd->simple_command[0])
 		{
-			printf("Executando: %s\n", cmd->simple_command[0]);
+			ft_printf_fd(2, "Executando: %s\n", cmd->simple_command[0]);
 			execvp(cmd->simple_command[0], cmd->simple_command);
 		}
 		ft_printf_fd(2, "minishell: Erro ao executar o comando: %s\n", cmd->simple_command[0]);

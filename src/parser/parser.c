@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 05:14:47 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/22 09:27:53 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/22 19:05:37 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static t_scanner	*init_and_scan(char *input, t_list *env_list)
 	if (!scanner)
 		return (NULL);
 	scan_tokens(scanner);
-	env_expansion(env_list, scanner, NULL);
+	env_expansion(env_list, scanner);
 	print_token_list(scanner->tokens);
 	return (scanner);
 }

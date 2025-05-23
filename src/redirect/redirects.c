@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 20:22:24 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/21 11:07:06 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/22 21:27:01 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	apply_redirect(t_command *cmd)
 		fd = open_outfile(cmd->outfile);
 		if (fd < 0)
 			return (-1);
-		cmd->fd_out =fd;
+		cmd->fd_out = fd;
 	}
 	if (cmd->append_file)
 	{
@@ -93,7 +93,7 @@ int	apply_redirect(t_command *cmd)
 			return (-1);
 		cmd->fd_out = fd;
 	}
-	if (cmd->heredoc_file) // Corrigir para usar heredoc_file
+	if (cmd->heredoc_file)
 	{
 		printf("Redirecionando para o Heredoc: %s\n", cmd->heredoc_file);
 		fd = open_infile(cmd->heredoc_file);

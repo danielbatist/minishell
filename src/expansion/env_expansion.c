@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_expansion.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:02:10 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/22 20:28:19 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/23 00:03:56 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	get_end(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i] != 0 && str[i] != ' ' && str[i] != '$')
+	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
 		i++;
 	return (i);
 }
@@ -46,6 +46,8 @@ char	*set_env(char *str, int start, int end, t_list *env_list)
 {
 	char	*env_key;
 	char	*env_value;
+	char	*prefix;
+	char	*sufix;
 	char	*str_tmp;
 	char	*str_return;
 
@@ -55,22 +57,13 @@ char	*set_env(char *str, int start, int end, t_list *env_list)
 	env_value = search_env(env_key, env_list);
 	free(env_key);
 	if (!env_value)
-		return (NULL);
-	if (start == 0)
-	{
-		str_tmp = ft_substr(str, end + 1, ft_strlen(str));
-		str_return = ft_strjoin(env_value, str_tmp);
-	}
-	else
-	{
-		str_tmp = ft_substr(str, 0, start);
-		str_return = ft_strjoin(str_tmp, env_value);
-		free(str_tmp);
-		free(env_value);
-		str_tmp = ft_substr(str, start + end + 1, ft_strlen(str));
-		env_value = str_return;
-		str_return = ft_strjoin(env_value, str_tmp);
-	}
+		env_value = ft_strdup("");
+	prefix = ft_substr(str, 0, start);
+	sufix = ft_substr(str, start + end + 1, ft_strlen(str));
+	str_tmp = ft_strjoin(prefix, env_value);
+	str_return = ft_strjoin(str_tmp, sufix);
+	free(prefix);
+	free(sufix);
 	free(env_value);
 	free(str_tmp);
 	return (str_return);
@@ -107,7 +100,8 @@ void	scan_env(t_token *token, t_list *env_list)
 			{
 				free(token->lexeme);
 				token->lexeme = str_env;
-				i = -1;
+				i = 0;
+				continue ;
 			}
 		}
 		i++;

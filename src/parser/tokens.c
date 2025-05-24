@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:37:00 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/20 20:22:50 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/23 18:04:14 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	add_token(t_scanner *scanner, t_token_type token_type)
 	token->lexeme = ft_substr(scanner->src, scanner->start, scanner->current
 			- scanner->start);
 	token->type = token_type;
+	if (is_redirect(token_type))
+		scanner->is_command = REDIRECT;
 	set_plus(token, scanner->src[scanner->current], token_type);
 	if ((scanner->start > 0) && (scanner->src[scanner->start - 1] == ' '
 			|| scanner->src[scanner->start - 1] == '\t'

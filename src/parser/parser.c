@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 05:14:47 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/22 19:05:37 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/23 14:34:40 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,13 @@ t_command	extract_command(t_list **token_list, t_list *env_list)
 	t_list		*start;
 
 	ft_bzero(&cmd, sizeof(t_command));
+	cmd.error_flag = 0;
 	start = *token_list;
 	cmd.fd_in = STDIN_FILENO;
 	cmd.fd_out = STDOUT_FILENO;
 	cmd.simple_command = extract_simple_cmd(token_list);
-	handle_redirects(start, &cmd, env_list);
+	if (handle_redirects(start, &cmd, env_list))
+		cmd.error_flag = 1;
 	return (cmd);
 }
 

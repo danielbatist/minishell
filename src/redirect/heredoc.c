@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 20:44:50 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/22 21:44:55 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/23 18:18:04 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,34 +32,6 @@ char	*here_exp(char *line, t_list *env_list)
 	return (new_line);
 }
 
-int	handle_heredoc(t_command *cmd, char **out_file, char *lexeme, t_list *env_list)
-{
-	int		fd;
-	char	*delim;
-	char	*tmp_filename;
-
-	if (lexeme[0] == '\'' || lexeme[0] == '\"')
-	{
-		cmd->heredoc_quoted = TRUE;
-		delim = ft_strtrim(lexeme, "\"\'");
-	}
-	else
-	{
-		cmd->heredoc_quoted = FALSE;
-		delim = ft_strdup(lexeme);
-	}
-	fd = open_heredoc(cmd, delim, &tmp_filename, env_list);
-	if (fd < 0)
-	{
-		ft_printf_fd(2, "Error");
-		free(delim);
-		return (1);
-	}
-	free(delim);
-	*out_file = tmp_filename;
-	return (0);
-}
-
 void	clean_heredoc(t_command *cmd)
 {
 	if (cmd->infile)
@@ -82,19 +54,79 @@ char	*create_tmp_file(void)
 	return (filename);
 }
 
-int	open_heredoc(t_command *cmd, char *delim, char **tmp_filename, t_list *env_list)
+int	handle_heredoc(t_command *cmd, char **out_file, t_token *next, t_list *env_list)
+{
+	pid_t	pid;
+	int		status;
+	char	*delim;
+	char	*tmp_filename;
+
+	tmp_filename = create_tmp_file();
+	if (!tmp_filename)
+		return (1);
+	if (next->type == SINGLE_QUOTED || next->type == DOUBLE_QUOTED)
+	{
+		cmd->heredoc_quoted = TRUE;
+		delim = ft_strtrim(next->lexeme, "\"\'");
+	}
+	else
+	{
+		cmd->heredoc_quoted = FALSE;
+		delim = ft_strdup(next->lexeme);
+	}
+	signal(SIGINT, SIG_IGN);
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork");
+		free(delim);
+		return (1);
+	}
+	if (pid == 0)
+	{
+		signal(SIGINT, SIG_DFL);
+		if (open_heredoc(cmd, delim, tmp_filename, env_list))
+			exit(1);
+		free(delim);
+		exit(0);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		free(delim);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		{
+			write(STDOUT_FILENO, "\n", 1);
+			unlink(tmp_filename);
+			free(tmp_filename);
+			*out_file = NULL;
+			ft_printf_fd(2, "minishell: heredoc finalizado por sinal.\n");
+			return (130);
+		}
+		if (WEXITSTATUS(status) != 0)
+		{
+			unlink(tmp_filename);
+			free(tmp_filename);
+			*out_file = NULL;
+			ft_printf_fd(2, "minishell: erro ao criar o heredoc.\n");
+			return (1);
+		}
+		*out_file = tmp_filename;
+	}
+	return (0);
+}
+
+int	open_heredoc(t_command *cmd, char *delim, char *tmp_filename, t_list *env_list)
 {
 	int		fd;
-	char	*filename;
 	char	*line;
 	char	*expanded;
 
-	filename = create_tmp_file();
-	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
+	fd = open(tmp_filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
 	if (fd < 0)
 	{
 		ft_printf_fd(2, "Erro na abertura de arquivo temporario do heredoc");
-		free(filename);
+		free(tmp_filename);
 		return (1);
 	}
 	while (1)
@@ -102,7 +134,10 @@ int	open_heredoc(t_command *cmd, char *delim, char **tmp_filename, t_list *env_l
 		line = readline("> ");
 		if (!line)
 		{
-			ft_printf_fd(2, "minishell: heredoc finalizado por fim de arquivo.\n");
+			rl_replace_line("", 0);
+			rl_on_new_line();
+			rl_redisplay();
+			ft_printf_fd(2, "bash: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", delim);
 			break ;
 		}
 		if (ft_strncmp(line, delim, ft_strlen(delim) + 1) == 0)
@@ -114,6 +149,11 @@ int	open_heredoc(t_command *cmd, char *delim, char **tmp_filename, t_list *env_l
 		{
 			expanded = here_exp(line, env_list);
 			free(line);
+			if (!expanded)
+			{
+				close(fd);
+				return (1);
+			}
 			line = expanded;
 		}
 		write(fd, line, ft_strlen(line));
@@ -121,6 +161,5 @@ int	open_heredoc(t_command *cmd, char *delim, char **tmp_filename, t_list *env_l
 		free(line);
 	}
 	close(fd);
-	*tmp_filename = filename;
 	return (0);
 }

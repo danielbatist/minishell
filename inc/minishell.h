@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/22 21:38:56 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/23 11:14:23 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct s_env
 typedef struct s_commands
 {
 	char			**simple_command;
+	int				error_flag;
 	int				fd_in;
 	int				fd_out;
 	char			*infile;
@@ -113,12 +114,12 @@ void		print_commands(t_command *cmd);
 void		clean_heredoc(t_command *cmd);
 void		redirects_token(t_list **token_list);
 int			handle_redirects(t_list *start, t_command *cmd, t_list *env_list);
-int			handle_heredoc(t_command *cmd, char **out_file, char *lexeme, t_list *env_list);
+int			handle_heredoc(t_command *cmd, char **out_file, t_token *next, t_list *env_list);
 int			apply_redirect(t_command *cmd);
 int			open_infile(char *infile);
 int			open_outfile(char *outfile);
 int			open_append(char *append);
-int			open_heredoc(t_command *cmd, char *delim, char **tmp_filename, t_list *env_list);
+int			open_heredoc(t_command *cmd, char *delim, char *tmp_filename, t_list *env_list);
 int			validate_file(t_token *token, char *lexeme);
 
 //execution

@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 20:18:08 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/22 21:37:35 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/23 18:15:38 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,10 @@ int	handle_redirects(t_list *start, t_command *cmd, t_list *env_list)
 				return (print_error(next_token));
 			if (token->type == HEREDOC)
 			{
-				handle_heredoc(cmd, &filename, next_token->lexeme, env_list);
+				if (handle_heredoc(cmd, &filename, next_token, env_list))
+					return (1);
 				set_redirect(token, cmd, filename);
-				return (1);
+				continue ;
 			}
 			filename = ft_strdup(next_token->lexeme);
 			if (token->type == REDIRECT_OUT)

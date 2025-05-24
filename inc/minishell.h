@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/23 11:14:23 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/24 11:34:32 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ typedef struct s_env
 typedef struct s_commands
 {
 	char			**simple_command;
-	int				error_flag;
 	int				fd_in;
 	int				fd_out;
 	char			*infile;
@@ -84,7 +83,9 @@ typedef struct s_commands
 	char			*append_file;
 	char			*heredoc_delim;
 	char			*heredoc_file;
+	t_is_command	error_flag;
 	t_is_command	heredoc_quoted;
+	t_is_command	is_heredoc;
 }	t_command;
 
 //token

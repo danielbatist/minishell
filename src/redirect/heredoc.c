@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 20:44:50 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/23 18:18:04 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/24 11:37:29 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*here_exp(char *line, t_list *env_list)
 
 void	clean_heredoc(t_command *cmd)
 {
-	if (cmd->infile)
+	if (cmd->infile && cmd->is_heredoc)
 	{
 		unlink(cmd->infile);
 		free(cmd->infile);
@@ -112,6 +112,7 @@ int	handle_heredoc(t_command *cmd, char **out_file, t_token *next, t_list *env_l
 			return (1);
 		}
 		*out_file = tmp_filename;
+		cmd->is_heredoc = TRUE;
 	}
 	return (0);
 }

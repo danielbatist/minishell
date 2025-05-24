@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 05:14:47 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/23 14:34:40 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/24 11:36:51 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,14 @@ t_command	extract_command(t_list **token_list, t_list *env_list)
 	t_list		*start;
 
 	ft_bzero(&cmd, sizeof(t_command));
-	cmd.error_flag = 0;
 	start = *token_list;
+	cmd.is_heredoc = FALSE;
+	cmd.error_flag = FALSE;
 	cmd.fd_in = STDIN_FILENO;
 	cmd.fd_out = STDOUT_FILENO;
 	cmd.simple_command = extract_simple_cmd(token_list);
 	if (handle_redirects(start, &cmd, env_list))
-		cmd.error_flag = 1;
+		cmd.error_flag = TRUE;
 	return (cmd);
 }
 

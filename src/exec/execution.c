@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 19:17:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/24 18:20:08 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/24 22:52:42 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	execute_command(t_command *cmd)
 	{
 		if (open_redirect(cmd) < 0)
 			exit (1);
-		dups_redirect(cmd);
+		dup_redirect(cmd);
 		if (cmd->simple_command && cmd->simple_command[0])
 		{
 			ft_printf_fd(2, "Executando: %s\n", cmd->simple_command[0]);

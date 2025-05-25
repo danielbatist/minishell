@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 20:18:08 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/24 18:39:45 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/24 23:00:24 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	set_redirect(t_token *token, t_command *cmd, char *filename)
 	}
 }
 
-int	handle_reditect_file(t_token *token, t_token *next_token, t_command *cmd)
+int	handle_redirect_file(t_token *token, t_token *next_token, t_command *cmd)
 {
 	char	*filename;
 	int		fd;
@@ -102,7 +102,7 @@ int	handle_redirects(t_list *start, t_command *cmd, t_list *env_list)
 	{
 		token = (t_token *)start->content;
 		if (is_redirect(token->type) && start->next)
-		{	
+		{
 			start = start->next;
 			next_token = (t_token *)start->content;
 			if (token->type == HEREDOC)

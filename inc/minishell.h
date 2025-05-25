@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/24 18:34:19 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/24 23:05:34 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void		print_commands(t_command *cmd);
 void		clean_heredoc(t_command *cmd);
 void		redirects_token(t_list **token_list);
 int			handle_redirects(t_list *start, t_command *cmd, t_list *env_list);
-int			handle_reditect_file(t_token *token, t_token *next_token, t_command *cmd);
+int			handle_redirect_file(t_token *token, t_token *next_token, t_command *cmd);
 int			handle_redirect_heredoc(t_token *token, t_token *next_token, t_command *cmd, t_list *env_list);
 int			handle_heredoc(t_command *cmd, char **out_file, t_token *next, t_list *env_list);
 int			open_redirect(t_command *cmd);
@@ -123,6 +123,8 @@ int			open_infile(char *infile);
 int			open_outfile(char *outfile);
 int			open_append(char *append);
 int			open_herefile(char *heredoc);
+char		*create_tmp_file(void);
+char		*here_exp(char *line, t_list *env_list);
 int			open_heredoc(t_command *cmd, char *delim, char *tmp_filename, t_list *env_list);
 int			validate_file(t_token *token, char *lexeme);
 void		dup_redirect(t_command *cmd);

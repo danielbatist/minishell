@@ -10,9 +10,10 @@ SRC =  main/minishell.c \
        exec/execution.c \
 	   parser/extract_cmd.c parser/parser.c parser/scanner.c parser/tokens.c\
 	   expansion/env_expansion.c expansion/catch_env.c expansion/env_utils.c\
-	   utils/handle_error1.c utils/handle_error2.c utils/free_things.c utils/utils.c utils/prints.c utils/signal.c\
-	   redirect/redirects_utils.c redirect/redirects.c redirect/heredoc.c
-	  
+	   utils/handle_error1.c utils/handle_error2.c utils/free_things.c utils/utils.c\
+	   utils/prints.c utils/signal.c\
+	   redirect/redirects_utils.c redirect/redirects.c redirect/heredoc.c redirect/heredoc_utils.c\
+	   redirect/open_file.c redirect/open_heredoc.c
 LIB = ../lib
 
 OBJ = $(SRC:.c=.o)

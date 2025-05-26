@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_things.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 20:02:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/20 20:23:26 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/25 22:51:57 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,6 @@ void	free_complex_command(t_command *cmds)
 		free(cmds[i].heredoc_delim);
 		i++;
 	}
-	/*
-	if (cmd->fd_in > 2)
-		close(cmd->fd_in);
-	if (cmd->fd_out > 2)
-		close(cmd->fd_out);*/
 	free (cmds);
 }
 

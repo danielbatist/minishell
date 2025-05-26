@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/24 23:05:34 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/25 22:53:52 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,10 @@ int			validate_file(t_token *token, char *lexeme);
 void		dup_redirect(t_command *cmd);
 
 //execution
-void		execute_command(t_command *cmd);
+void	execute_command(t_command *cmd, t_list *env_list);
+char	**get_envp(t_list *env_list);
+char	*get_path(char *cmd, t_list *env_list);
+void	free_paths(char **paths);
 
 //env
 void		env_expansion(t_list *env_list, t_scanner *scanner);

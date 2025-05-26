@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:34:40 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/23 14:31:57 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/25 22:47:00 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	process_input(char *input, t_list *env_list)
 			i++;
 			continue ;
 		}
-		execute_command(&complex_command[i++]);
+		execute_command(&complex_command[i++], env_list);
 	}
 	print_commands(complex_command);
 	free_complex_command(complex_command);

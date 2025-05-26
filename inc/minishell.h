@@ -23,6 +23,7 @@
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <sys/stat.h>
+# include <unistd.h>
 
 typedef enum e_token_type
 {
@@ -88,6 +89,11 @@ typedef struct s_commands
 	t_is_command	is_heredoc;
 }	t_command;
 
+typedef struct s_pipefd
+{
+	int	fd[2];
+}	t_pipefd;
+
 //token
 void		add_token(t_scanner *scanner, t_token_type token_type);
 void		add_str_token(t_scanner *scanner, t_token_type token_type);
@@ -129,8 +135,11 @@ int			open_heredoc(t_command *cmd, char *delim, char *tmp_filename, t_list *env_
 int			validate_file(t_token *token, char *lexeme);
 void		dup_redirect(t_command *cmd);
 
+//pipe
+int get_pipefd(t_command *complex_command, t_pipefd **pipefd);
+
 //execution
-void		execute_command(t_command *cmd);
+void		execute_external_command(t_command *cmd);
 
 //env
 void		env_expansion(t_list *env_list, t_scanner *scanner);

@@ -12,7 +12,7 @@
 
 #include "../../inc/minishell.h"
 
-void	execute_command(t_command *cmd)
+void	execute_external_command(t_command *cmd)
 {
 	pid_t	pid;
 

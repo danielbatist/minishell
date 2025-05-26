@@ -25,6 +25,11 @@ static void	process_input(char *input, t_list *env_list)
 {
 	t_command	*complex_command;
 	int			i;
+	int			j;
+	t_pipefd	*pipefd;
+	int			is_pipe;
+	pid_t		*pids;
+	int			is_builtin = FALSE;
 
 	if (*input)
 		add_history(input);
@@ -32,6 +37,8 @@ static void	process_input(char *input, t_list *env_list)
 	if (!complex_command)
 		return ;
 	i = 0;
+	is_pipe = get_pipefd(complex_command, &pipefd);
+	pids = malloc(sizeof(pid_t) * (is_pipe + 1));
 	while (complex_command[i].simple_command)
 	{
 		if (complex_command[i].error_flag)
@@ -40,8 +47,56 @@ static void	process_input(char *input, t_list *env_list)
 			i++;
 			continue ;
 		}
-		execute_command(&complex_command[i++]);
+		if (is_pipe > 0 || !is_builtin)
+		{
+			pids[i] = fork();
+			if (pids[i] == 0)
+			{
+				if (i > 0 && is_pipe > 0)
+					dup2(pipefd[i - 1].fd[0], STDIN_FILENO);
+				if (i < is_pipe)
+					dup2(pipefd[i].fd[1], STDOUT_FILENO);
+				int j = 0;
+				while (j < is_pipe && is_pipe > 0)
+				{
+					close(pipefd[j].fd[0]);
+					close(pipefd[j].fd[1]);
+					j++;
+				}
+				if (open_redirect(&complex_command[i]) < 0)
+					exit (1);
+				dup_redirect(&complex_command[i]);
+				if (complex_command[i].simple_command && &complex_command[i].simple_command[0])
+				{
+					ft_printf_fd(2, "Executando: %s\n", complex_command[i].simple_command[0]);
+					execvp(complex_command[i].simple_command[0], complex_command[i].simple_command);
+				}
+				ft_printf_fd(2, "minishell: Erro ao executar o comando: %s\n", complex_command[i].simple_command[0]);
+				exit(1);
+			}
+			else
+			{
+				//wait(NULL);
+				clean_heredoc(complex_command);
+				//j = 0;
+				// Fechar apenas as extremidades não usadas dos pipes
+				if (i > 0)
+					close(pipefd[i-1].fd[0]);
+				if (i < is_pipe)
+					close(pipefd[i].fd[1]);
+				j = 0;
+				while (j <= is_pipe)
+				{
+					waitpid(pids[j], NULL, 0);
+					j++;
+				}
+			}
+			i++;
+		}
+		//execute_external_command(&complex_command[i++]);
 	}
+	//free(pipefd);
+	//free(pids);
 	print_commands(complex_command);
 	free_complex_command(complex_command);
 }

@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:34:40 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/23 14:31:57 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:04:16 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,57 @@ static void	handle_exit(char *input, t_list *env_list)
 	exit(0);
 }
 
+static int	handle_history_and_parse(char *input, t_list *env_list, t_command **cmd)
+{
+	if (!input || !*input)
+		return (0);
+	add_history(input);
+	*cmd = parser(input, env_list);
+	if (!*cmd)
+		return (0);
+	return (1);
+}
+
+static void	wait_all_processes(pid_t *pids, int count)
+{
+	int	i;
+
+	i = 0;
+	while (i < count)
+	{
+		waitpid(pids[i], NULL, 0);
+		i++;
+	}
+}
+
+static void	clean_and_free(t_command *cmd, t_pipefd *pipefd, pid_t *pids)
+{
+	free_complex_command(cmd);
+	if (pipefd)
+		free(pipefd);
+	if (pids)
+		free(pids);
+}
+
 static void	process_input(char *input, t_list *env_list)
+{
+	t_command	*complex_command;
+	t_pipefd	*pipefd;
+	pid_t		*pids;
+	int			is_pipe;
+
+	if (!handle_history_and_parse(input, env_list, &complex_command))
+		return ;
+	is_pipe = get_pipefd(complex_command, &pipefd);
+	pids = malloc(sizeof(pid_t) * (is_pipe + 1));
+	if (!pids)
+		return ;
+	execute_commands(complex_command, is_pipe, pipefd, pids);
+	wait_all_processes(pids, is_pipe + 1);
+	clean_and_free(complex_command, pipefd, pids);
+}
+
+/*static void	process_input(char *input, t_list *env_list)
 {
 	t_command	*complex_command;
 	int			i;
@@ -99,7 +149,7 @@ static void	process_input(char *input, t_list *env_list)
 	//free(pids);
 	print_commands(complex_command);
 	free_complex_command(complex_command);
-}
+}*/
 
 int	main(int ac, char **av, char **envp)
 {

@@ -6,17 +6,11 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:02:10 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/24 17:59:00 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/26 17:04:21 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-/*static int	is_valid_dollar(char current, char next)
-{
-	return (next && current == '$' && next != '\0'
-		&& next != ' ' && next != '?');
-}*/
 
 static int	process_env_variable(t_token *token, t_list *env_list, int i)
 {

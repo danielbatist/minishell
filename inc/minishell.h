@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/24 23:05:34 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/26 17:54:16 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void		dup_redirect(t_command *cmd);
 int get_pipefd(t_command *complex_command, t_pipefd **pipefd);
 
 //execution
-void		execute_external_command(t_command *cmd);
+void	execute_commands(t_command *cmd, int is_pipe, t_pipefd *pipefd, pid_t *pids);
 
 //env
 void		env_expansion(t_list *env_list, t_scanner *scanner);

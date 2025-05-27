@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 20:02:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/26 18:04:12 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/27 20:08:06 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,19 @@ t_command	*free_and_return(t_scanner *scanner)
 	if (scanner)
 		free_scanner(scanner);
 	return (NULL);
+}
+void	free_pipes(t_pipefd *pipefd, int n_of_pipes)
+{
+	int	i;
+
+	if (!pipefd)
+		return ;
+	i = 0;
+	while (i < n_of_pipes)
+	{
+		close(pipefd[i].fd[0]);
+		close(pipefd[i].fd[1]);
+		i++;
+	}
+	free(pipefd);
 }

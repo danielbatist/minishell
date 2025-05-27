@@ -20,6 +20,8 @@ int	get_pipefd(t_command *complex_command, t_pipefd **pipefd)
 	if (n_of_pipes < 1)
 		return (0);
 	*pipefd = (t_pipefd *)malloc(sizeof(t_pipefd) * n_of_pipes);
+	if (!(*pipefd))
+		return (-1);
 	i = 0;
 	while (i < n_of_pipes)
 	{

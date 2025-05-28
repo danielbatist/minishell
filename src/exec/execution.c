@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 19:17:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/28 18:54:24 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:08:58 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,6 @@ void	execute_commands(t_command *cmd, t_exec *data, t_list *env_list)
 			continue ;
 		}
 		data->is_builtin = FALSE;
-		cmd->env_list = env_list;
 		if (data->is_pipe > 0 || !data->is_builtin)
 		{
 			data->pids[i] = fork();

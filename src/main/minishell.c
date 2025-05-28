@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:34:40 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/27 20:58:15 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:58:23 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	process_input(char *input, t_list *env_list)
 		free(data);
 		return ;
 	}
-	execute_commands(cmd, data);
+	execute_commands(cmd, data, env_list);
 	print_commands(cmd);
 	free_complex_command(cmd);
 	free_pipes(data->pipefd, data->is_pipe);

@@ -6,11 +6,11 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 21:04:24 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/28 18:52:01 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:06:51 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*#include "../../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 void	free_envp(char **envp)
 {
@@ -135,4 +135,4 @@ void	execute_command(t_command *cmd, t_list *env_list)
 		wait(NULL);
 		clean_heredoc(cmd);
 	}
-}*/
+}

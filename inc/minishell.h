@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/28 18:54:06 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:07:59 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ typedef struct s_commands
 	t_is_command	error_flag;
 	t_is_command	heredoc_quoted;
 	t_is_command	is_heredoc;
-	t_env			*env_list;
+	t_list			*env_list;
 }	t_command;
 
 typedef struct s_pipefd

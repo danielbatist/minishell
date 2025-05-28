@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/27 20:12:14 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:54:06 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ typedef struct s_commands
 	t_is_command	error_flag;
 	t_is_command	heredoc_quoted;
 	t_is_command	is_heredoc;
+	t_env			*env_list;
 }	t_command;
 
 typedef struct s_pipefd
@@ -121,6 +122,8 @@ void		free_complex_command(t_command *cmds);
 t_command	*free_and_return(t_scanner *scanner);
 void		free_exec(t_exec *data);
 void		free_pipes(t_pipefd *pipefd, int n_of_pipes);
+void		free_paths(char **paths);
+void		free_envp(char **envp);
 
 //print
 int			print_error(t_token *token);
@@ -156,7 +159,9 @@ int			main(int ac, char **av, char **envp);
 
 //execution
 void		execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd);
-void		execute_commands(t_command *cmd, t_exec *data);
+void		execute_commands(t_command *cmd, t_exec *data, t_list *env_list);
+char		*get_path(char *cmd, t_list *env_list);
+char		*get_env_value(t_list *env_list, const char *name);
 
 //env
 void		env_expansion(t_list *env_list, t_scanner *scanner);

@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/26 17:54:16 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/27 20:12:14 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_token
 	t_is_command	plus;
 	t_is_command	has_space;
 }					t_token;
+
 typedef struct s_scanner
 {
 	int				start;
@@ -94,6 +95,14 @@ typedef struct s_pipefd
 	int	fd[2];
 }	t_pipefd;
 
+typedef struct s_exec
+{
+	int			is_pipe;
+	int			is_builtin;
+	t_pipefd	*pipefd;
+	pid_t		*pids;
+}	t_exec;
+
 //token
 void		add_token(t_scanner *scanner, t_token_type token_type);
 void		add_str_token(t_scanner *scanner, t_token_type token_type);
@@ -110,6 +119,8 @@ void		free_scanner(t_scanner *scanner);
 void		free_env_list(t_list *env_list);
 void		free_complex_command(t_command *cmds);
 t_command	*free_and_return(t_scanner *scanner);
+void		free_exec(t_exec *data);
+void		free_pipes(t_pipefd *pipefd, int n_of_pipes);
 
 //print
 int			print_error(t_token *token);
@@ -138,8 +149,14 @@ void		dup_redirect(t_command *cmd);
 //pipe
 int get_pipefd(t_command *complex_command, t_pipefd **pipefd);
 
+//main
+t_command	*input_and_parser(t_exec *data, char *input, t_list *env_list);
+void		process_input(char *input, t_list *env_list);
+int			main(int ac, char **av, char **envp);
+
 //execution
-void	execute_commands(t_command *cmd, int is_pipe, t_pipefd *pipefd, pid_t *pids);
+void		execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd);
+void		execute_commands(t_command *cmd, t_exec *data);
 
 //env
 void		env_expansion(t_list *env_list, t_scanner *scanner);

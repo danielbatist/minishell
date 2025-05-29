@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_things.c                                      :+:      :+:    :+:   */
+/*   free_things2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 20:02:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/27 20:08:06 by dbatista         ###   ########.fr       */
+/*   Created: 2025/05/29 15:32:48 by dbatista          #+#    #+#             */
+/*   Updated: 2025/05/29 15:33:05 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,35 +65,4 @@ void	free_env_list(t_list *env_list)
 		}
 		free(tmp);
 	}
-}
-
-void	free_scanner(t_scanner *scanner)
-{
-	if (!scanner)
-		return ;
-	if (scanner->tokens)
-		ft_lstclear(&scanner->tokens, free_token);
-	free(scanner);
-}
-
-t_command	*free_and_return(t_scanner *scanner)
-{
-	if (scanner)
-		free_scanner(scanner);
-	return (NULL);
-}
-void	free_pipes(t_pipefd *pipefd, int n_of_pipes)
-{
-	int	i;
-
-	if (!pipefd)
-		return ;
-	i = 0;
-	while (i < n_of_pipes)
-	{
-		close(pipefd[i].fd[0]);
-		close(pipefd[i].fd[1]);
-		i++;
-	}
-	free(pipefd);
 }

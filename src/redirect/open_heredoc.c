@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_heredoc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:00:22 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/24 23:13:57 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:56:55 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	open_heredoc(t_command *cmd, char *delim, char *tmp_filename, t_list *env_li
 	fd = open(tmp_filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
 	if (fd < 0)
 	{
-		ft_printf_fd(2, "Error open heredoc\n");
+		ft_printf_fd(2, "Error creating heredoc\n");
 		free(tmp_filename);
 		return (1);
 	}

@@ -1,40 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_teste.c                                       :+:      :+:    :+:   */
+/*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/27 21:04:24 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/28 19:06:51 by dbatista         ###   ########.fr       */
+/*   Created: 2025/05/29 15:20:00 by dbatista          #+#    #+#             */
+/*   Updated: 2025/05/29 15:49:31 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-void	free_envp(char **envp)
-{
-	int	i;
-
-	if (!envp)
-		return ;
-	i = 0;
-	while (envp[i])
-		free(envp[i++]);
-	free(envp);
-}
-
-void	free_paths(char **paths)
-{
-	int	i;
-
-	if (!paths)
-		return ;
-	i = 0;
-	while (paths[i])
-		free(paths[i++]);
-	free(paths);
-}
 
 char	*get_env_value(t_list *env_list, const char *name)
 {
@@ -43,7 +19,7 @@ char	*get_env_value(t_list *env_list, const char *name)
 	while (env_list)
 	{
 		env = (t_env *)env_list->content;
-		if (ft_strncmp(env->name, name, ft_strlen(name)))
+		if (ft_strncmp(env->name, name, ft_strlen(name)) == 0)
 			return (env->value);
 		env_list = env_list->next;
 	}
@@ -74,7 +50,7 @@ char	*get_path(char *cmd, t_list *env_list)
 		free(full_path);
 		i++;
 	}
-	free_paths(paths);
+	free_exec(paths);
 	return (NULL);
 }
 
@@ -98,41 +74,4 @@ char	**get_envp(t_list *env_list)
 	}
 	envp[i] = NULL;
 	return (envp);
-}
-
-void	execute_command(t_command *cmd, t_list *env_list)
-{
-	pid_t	pid;
-	char	*path;
-	char	**envp;
-
-	pid = fork();
-	if (pid == 0)
-	{
-		if (open_redirect(cmd) < 0)
-			exit (1);
-		dup_redirect(cmd);
-		if (cmd->simple_command && cmd->simple_command[0])
-		{
-			envp = get_envp(env_list);
-			path = get_path(cmd->simple_command[0], env_list);
-			if (!path)
-			{
-				ft_printf_fd(2, "minishell: command not found: %s\n", cmd->simple_command[0]);
-				free(envp);
-				exit(127);
-			}
-			execve(path, cmd->simple_command, envp);
-			ft_printf_fd(2, "minishell: Erro ao executar %s\n", path);
-			free(path);
-			free_envp(envp);
-			exit(1);
-		}
-		exit(0);
-	}
-	else
-	{
-		wait(NULL);
-		clean_heredoc(cmd);
-	}
 }

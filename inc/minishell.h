@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/28 19:07:59 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:00:19 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,16 +120,12 @@ void		free_scanner(t_scanner *scanner);
 void		free_env_list(t_list *env_list);
 void		free_complex_command(t_command *cmds);
 t_command	*free_and_return(t_scanner *scanner);
-void		free_exec(t_exec *data);
+void		free_exec(char **exec);
 void		free_pipes(t_pipefd *pipefd, int n_of_pipes);
-void		free_paths(char **paths);
-void		free_envp(char **envp);
 
 //print
 int			print_error(t_token *token);
 int			print_error_direc_and_file(char *lexeme, t_is_command flag);
-void		print_token_list(t_list *tokens);
-void		print_commands(t_command *cmd);
 
 //redirects
 void		clean_heredoc(t_command *cmd);
@@ -150,17 +146,20 @@ int			validate_file(t_token *token, char *lexeme);
 void		dup_redirect(t_command *cmd);
 
 //pipe
-int get_pipefd(t_command *complex_command, t_pipefd **pipefd);
+int			get_pipefd(t_command *complex_command, t_pipefd **pipefd);
 
 //main
+int			main(int ac, char **av, char **envp);
 t_command	*input_and_parser(t_exec *data, char *input, t_list *env_list);
 void		process_input(char *input, t_list *env_list);
-int			main(int ac, char **av, char **envp);
+void		handle_exit(char *input, t_list *env_list);
+t_exec		*init_exec_data(void);
 
 //execution
 void		execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd);
 void		execute_commands(t_command *cmd, t_exec *data, t_list *env_list);
 char		*get_path(char *cmd, t_list *env_list);
+char		**get_envp(t_list *env_list);
 char		*get_env_value(t_list *env_list, const char *name);
 
 //env

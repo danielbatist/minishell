@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:56:02 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/29 15:59:57 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/29 17:47:14 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,51 @@ int	print_error(t_token *token)
 		return (1);
 	}
 	return (0);
+}
+void	print_token_list(t_list *tokens)
+{
+	t_token	*token;
+	int		i;
+	
+	printf("Token List:\n");
+	i = 0;
+	while (tokens)
+	{
+		token = (t_token *)tokens->content;
+		printf("Token %d: ", i++);
+		if (token->lexeme)
+			printf("%s", token->lexeme);
+		else
+			printf("(null)");
+		printf(" | type: %s | plus: %d\n", get_token_type(token->type), token->plus);
+		tokens = tokens->next;
+	}
+	printf("\n");
+}
+
+void	print_commands(t_command *cmd)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (cmd[i].simple_command)
+	{
+		printf("\n=== Comando %d ===\n", i);
+		j = 0;
+		while (cmd[i].simple_command[j])
+		{
+			printf("Arg[%d]: %s\n", j, cmd[i].simple_command[j]);
+			j++;
+		}
+		if (cmd[i].infile)
+			printf("infile: %s\n", cmd[i].infile);
+		if (cmd[i].outfile)
+			printf("outfile: %s\n", cmd[i].outfile);
+		if (cmd[i].append_file)
+			printf("append: %s\n", cmd[i].append_file);
+		if (cmd[i].heredoc_delim)
+			printf("heredoc: %s\n", cmd[i].heredoc_delim);
+		i++;
+	}
 }

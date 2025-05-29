@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 19:17:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/29 17:45:52 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/29 17:58:47 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ void	execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 	char	**envp;
 	int		j;
 
+	if (i > 0 && is_pipe > 0)
+		dup2(pipefd[i - 1].fd[0], STDIN_FILENO);
+	if (i < is_pipe)
+		dup2(pipefd[i].fd[1], STDOUT_FILENO);
 	if (open_redirect(&cmd[i]) < 0)
 		exit (1);
-	if (cmd[i].fd_in == -1 && i > 0 && is_pipe > 0)
-		dup2(pipefd[i - 1].fd[0], STDIN_FILENO);
-	if (cmd[i].fd_out == -1 && i < is_pipe)
-		dup2(pipefd[i].fd[1], STDOUT_FILENO);
 	dup_redirect(&cmd[i]);
 	j = 0;
 	while (j < is_pipe && is_pipe > 0)
@@ -62,7 +62,7 @@ void	execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 			exit(127);
 		}
 		ft_printf_fd(2, "Executando: %s\n", cmd[i].simple_command[0]);
-		execve(path, cmd->simple_command, envp);
+		execve(path, cmd[i].simple_command, envp);
 		free_exec(&path);
 		free_exec(envp);
 		exit(1);

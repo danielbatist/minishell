@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 19:17:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/29 17:39:07 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/29 17:45:52 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 			free_exec(envp);
 			exit(127);
 		}
+		ft_printf_fd(2, "Executando: %s\n", cmd[i].simple_command[0]);
 		execve(path, cmd->simple_command, envp);
 		free_exec(&path);
 		free_exec(envp);

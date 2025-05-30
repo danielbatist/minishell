@@ -6,23 +6,18 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 19:17:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/29 17:58:47 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/29 21:21:31 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
 
-void	execute_parent(t_exec *data, t_command *cmd, int *i)
+void	execute_parent(t_exec *data)
 {
 	int		j;
 
 	j = 0;
-	clean_heredoc(cmd);
-	if (*i > 0)
-		close(data->pipefd[*i - 1].fd[0]);
-	if (*i < data->is_pipe)
-		close(data->pipefd[*i].fd[1]);
 	while (j <= data->is_pipe)
 	{
 		waitpid(data->pids[j], NULL, 0);
@@ -40,9 +35,6 @@ void	execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 		dup2(pipefd[i - 1].fd[0], STDIN_FILENO);
 	if (i < is_pipe)
 		dup2(pipefd[i].fd[1], STDOUT_FILENO);
-	if (open_redirect(&cmd[i]) < 0)
-		exit (1);
-	dup_redirect(&cmd[i]);
 	j = 0;
 	while (j < is_pipe && is_pipe > 0)
 	{
@@ -50,20 +42,22 @@ void	execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 		close(pipefd[j].fd[1]);
 		j++;
 	}
+	if (open_redirect(&cmd[i]) < 0)
+		exit (1);
+	dup_redirect(&cmd[i]);
 	if (cmd[i].simple_command && cmd[i].simple_command[0])
 	{
 		envp = get_envp(cmd[i].env_list);
 		path = get_path(cmd[i].simple_command[0], cmd[i].env_list);
 		if (!path)
 		{
-			ft_printf_fd(2, "minishell: command not found:");
-			ft_printf_fd(2, "%s\n", cmd[i].simple_command[0]);
+			ft_printf_fd(2, "%s: command not found\n", cmd[i].simple_command[0]);
 			free_exec(envp);
 			exit(127);
 		}
 		ft_printf_fd(2, "Executando: %s\n", cmd[i].simple_command[0]);
 		execve(path, cmd[i].simple_command, envp);
-		free_exec(&path);
+		free(path);
 		free_exec(envp);
 		exit(1);
 	}
@@ -93,9 +87,16 @@ void	execute_commands(t_command *cmd, t_exec *data, t_list *env_list)
 			if (data->pids[i] == 0)
 				execute_child(cmd, i, data->is_pipe, data->pipefd);
 			else
-				execute_parent(data, cmd, &i);
+			{
+				clean_heredoc(cmd);
+				if (i > 0)
+					close(data->pipefd[i - 1].fd[0]);
+				if (i < data->is_pipe)
+					close(data->pipefd[i].fd[1]);
+			}
 			i++;
 		}
 	}
+	execute_parent(data);
 }
 

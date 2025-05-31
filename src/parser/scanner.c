@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 20:04:56 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/20 20:22:43 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/30 21:19:16 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 static void	handle_special_token(t_scanner *scanner, char *s)
 {
 	if (*s == '|')
+	{
 		add_token(scanner, PIPE);
+		scanner->is_command = TRUE;
+	}
 	else if (*s == '>' && scanner->src[scanner->current] == '>')
 		add_multichar_token(scanner, APPEND);
 	else if (*s == '<' && scanner->src[scanner->current] == '<')

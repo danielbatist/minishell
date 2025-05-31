@@ -6,17 +6,39 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 19:17:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/29 21:21:31 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/30 23:02:05 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+void 	dup2_pipes(t_pipefd *pipefd, int is_pipe, int *i)
+{
+	if (*i > 0 && is_pipe > 0)
+		dup2(pipefd[*i - 1].fd[0], STDIN_FILENO);
+	if (*i < is_pipe)
+		dup2(pipefd[*i].fd[1], STDOUT_FILENO);
+}
+
+void 	close_pipes(t_pipefd *pipefd, int n_of_pipes)
+{
+	int	i;
+
+	i = 0;
+	while (i < n_of_pipes)
+	{
+		close(pipefd[i].fd[0]);
+		close(pipefd[i].fd[1]);
+		i++;
+	}
+}
 
 
 void	execute_parent(t_exec *data)
 {
 	int		j;
 
+	close_pipes(data->pipefd, data->is_pipe);
 	j = 0;
 	while (j <= data->is_pipe)
 	{
@@ -29,22 +51,12 @@ void	execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 {
 	char	*path;
 	char	**envp;
-	int		j;
 
-	if (i > 0 && is_pipe > 0)
-		dup2(pipefd[i - 1].fd[0], STDIN_FILENO);
-	if (i < is_pipe)
-		dup2(pipefd[i].fd[1], STDOUT_FILENO);
-	j = 0;
-	while (j < is_pipe && is_pipe > 0)
-	{
-		close(pipefd[j].fd[0]);
-		close(pipefd[j].fd[1]);
-		j++;
-	}
+	dup2_pipes(pipefd, is_pipe, &i);
+	close_pipes(pipefd, is_pipe);
 	if (open_redirect(&cmd[i]) < 0)
 		exit (1);
-	dup_redirect(&cmd[i]);
+	dup2_redirect(&cmd[i]);
 	if (cmd[i].simple_command && cmd[i].simple_command[0])
 	{
 		envp = get_envp(cmd[i].env_list);
@@ -55,7 +67,7 @@ void	execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 			free_exec(envp);
 			exit(127);
 		}
-		ft_printf_fd(2, "Executando: %s\n", cmd[i].simple_command[0]);
+		//ft_printf_fd(2, "Executando: %s\n", cmd[i].simple_command[0]);
 		execve(path, cmd[i].simple_command, envp);
 		free(path);
 		free_exec(envp);
@@ -87,13 +99,7 @@ void	execute_commands(t_command *cmd, t_exec *data, t_list *env_list)
 			if (data->pids[i] == 0)
 				execute_child(cmd, i, data->is_pipe, data->pipefd);
 			else
-			{
-				clean_heredoc(cmd);
-				if (i > 0)
-					close(data->pipefd[i - 1].fd[0]);
-				if (i < data->is_pipe)
-					close(data->pipefd[i].fd[1]);
-			}
+				clean_heredoc(&cmd[i]);
 			i++;
 		}
 	}

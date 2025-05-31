@@ -6,17 +6,17 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/29 17:48:07 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/30 22:55:15 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <stdio.h>
 # include "../lib/libft.h"
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <fcntl.h>
 # include <signal.h>
@@ -145,7 +145,7 @@ char		*create_tmp_file(void);
 char		*here_exp(char *line, t_list *env_list);
 int			open_heredoc(t_command *cmd, char *delim, char *tmp_filename, t_list *env_list);
 int			validate_file(t_token *token, char *lexeme);
-void		dup_redirect(t_command *cmd);
+void		dup2_redirect(t_command *cmd);
 
 //pipe
 int			get_pipefd(t_command *complex_command, t_pipefd **pipefd);

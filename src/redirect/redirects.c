@@ -6,13 +6,13 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 20:22:24 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/24 18:20:15 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/05/30 22:54:55 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	dup_redirect(t_command *cmd)
+void	dup2_redirect(t_command *cmd)
 {
 	if (cmd->fd_in > 0 && cmd->fd_in != STDIN_FILENO)
 	{

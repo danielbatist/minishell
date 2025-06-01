@@ -162,4 +162,11 @@ void		set_signal(void);
 char		**extract_simple_cmd(t_list **token_list);
 t_command	*parser(char *input, t_list *env_list);
 
+//builtins
+int			is_builtins(char *str, char **cmd);
+int			ft_echo(char **cmd);
+int 		ft_cd(char **cmd);
+int			ft_pwd(char **cmd);
+
+
 #endif

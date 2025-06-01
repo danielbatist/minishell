@@ -24,6 +24,7 @@ static void	handle_parent(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 static void	exec_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 {
 	int	j;
+	int	builtin;
 
 	if (i > 0 && is_pipe > 0)
 		dup2(pipefd[i - 1].fd[0], STDIN_FILENO);
@@ -42,7 +43,9 @@ static void	exec_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 	if (cmd[i].simple_command && cmd[i].simple_command[0])
 	{
 		ft_printf_fd(2, "Executando: %s\n", cmd[i].simple_command[0]);
-		execvp(cmd[i].simple_command[0], cmd[i].simple_command);
+		builtin = is_builtins(cmd[i].simple_command[0], cmd[i].simple_command);
+		if (builtin == 0)
+			execvp(cmd[i].simple_command[0], cmd[i].simple_command);
 	}
 	ft_printf_fd(2, "minishell: Erro ao executar o comando: %s\n", cmd[i].simple_command[0]);
 	exit(1);
@@ -51,8 +54,10 @@ static void	exec_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 void	execute_commands(t_command *cmd, int is_pipe, t_pipefd *pipefd, pid_t *pids)
 {
 	int	i;
+	int	builtin;
 
 	i = 0;
+	builtin = 0;
 	while (cmd[i].simple_command)
 	{
 		if (cmd[i].error_flag)
@@ -61,11 +66,16 @@ void	execute_commands(t_command *cmd, int is_pipe, t_pipefd *pipefd, pid_t *pids
 			i++;
 			continue ;
 		}
-		pids[i] = fork();
-		if (pids[i] == 0)
-			exec_child(cmd, i, is_pipe, pipefd);
-		else
-			handle_parent(cmd, i, is_pipe, pipefd);
+		if (is_pipe == 0)
+			builtin = is_builtins(cmd[i].simple_command[0], cmd[i].simple_command);
+		if (builtin == 0)
+		{
+			pids[i] = fork();
+			if (pids[i] == 0)
+				exec_child(cmd, i, is_pipe, pipefd);
+			else
+				handle_parent(cmd, i, is_pipe, pipefd);
+		}
 		i++;
 	}
 }

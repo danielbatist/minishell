@@ -10,3 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../inc/minishell.h"
+
+int ft_pwd(char **cmd)
+{
+    char *pwd;
+
+    if (cmd && cmd[1] && cmd[1][0])
+    {
+        ft_printf_fd(1, "pwd: too many arguments");
+        return (1);
+    }
+    pwd = getcwd(NULL, 0);
+    if (pwd != NULL)
+	{
+        ft_printf_fd(1, pwd);
+        return (1);
+    }
+    return (0);
+}

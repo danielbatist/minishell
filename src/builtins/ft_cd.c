@@ -10,3 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../inc/minishell.h"
+
+int ft_cd(char **cmd)
+{
+    char *home;
+
+    home = getenv("HOME");
+    if (!cmd && !cmd[1] && !cmd[1][0])
+        chdir(home);
+    chdir(cmd[1]);
+    return (1);
+}

@@ -13,7 +13,9 @@ SRC =  main/minishell.c main/process_input.c\
 	   utils/handle_error1.c utils/handle_error2.c utils/free_things1.c utils/free_things2.c utils/utils.c utils/prints.c utils/signal.c\
 	   redirect/redirects_utils.c redirect/redirects.c redirect/heredoc.c redirect/heredoc_utils.c\
 	   redirect/open_file.c redirect/open_heredoc.c \
-	   pipe/pipe.c
+	   pipe/pipe.c\
+	   builtins/builtins.c builtins/ft_cd.c builtins/ft_echo.c 
+
 LIB = ../lib
 
 OBJ = $(SRC:.c=.o)

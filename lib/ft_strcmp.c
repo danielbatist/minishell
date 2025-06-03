@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cd.c                                            :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 16:41:12 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/03 11:30:53 by dbatista         ###   ########.fr       */
+/*   Created: 2025/06/02 15:22:11 by dbatista          #+#    #+#             */
+/*   Updated: 2025/06/02 15:24:14 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "libft.h"
 
-int ft_cd(char **cmd, t_list *env_list)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-    char *home;
+	unsigned char	*str1;
+	unsigned char	*str2;
 
-    home = search_env("HOME", env_list);
-    if (!cmd[1])
-        chdir(home);
-    else
-        chdir(cmd[1]);
-    free(home);
-    return (1);
+	str1 = (unsigned char *)s1;
+	str2 = (unsigned char *)s2;
+	while ((*str1 && *str2) && (*str1 == *str2))
+	{
+		str1++;
+		str2++;
+	}
+	return (*str1 - *str2);
 }

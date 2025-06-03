@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/30 22:55:15 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/03 11:31:11 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,12 @@ t_command	*input_and_parser(t_exec *data, char *input, t_list *env_list);
 void		process_input(char *input, t_list *env_list);
 void		handle_exit(char *input, t_list *env_list);
 t_exec		*init_exec_data(void);
+
+//builtins
+int			ft_echo(char **cmd);
+int			ft_cd(char **cmd, t_list *env_list);
+int			is_builtins(char *str);
+int			exec_builtins(t_command *cmd);
 
 //execution
 void		execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd);

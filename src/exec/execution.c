@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 19:17:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/30 23:02:05 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/03 11:26:46 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 			free_exec(envp);
 			exit(127);
 		}
-		//ft_printf_fd(2, "Executando: %s\n", cmd[i].simple_command[0]);
+		ft_printf_fd(2, "Executando: %s\n", cmd[i].simple_command[0]);
 		execve(path, cmd[i].simple_command, envp);
 		free(path);
 		free_exec(envp);
@@ -92,16 +92,22 @@ void	execute_commands(t_command *cmd, t_exec *data, t_list *env_list)
 			i++;
 			continue ;
 		}
-		data->is_builtin = FALSE;
-		if (data->is_pipe > 0 || !data->is_builtin)
+		if (data->is_pipe == 0 && is_builtins(cmd[i].simple_command[0]))
 		{
-			data->pids[i] = fork();
-			if (data->pids[i] == 0)
-				execute_child(cmd, i, data->is_pipe, data->pipefd);
-			else
-				clean_heredoc(&cmd[i]);
+			open_redirect(&cmd[i]);
+			dup2_redirect(&cmd[i]);
+			exec_builtins(&cmd[i]);
+			clean_heredoc(&cmd[i]);
 			i++;
+			continue ;
 		}
+		data->pids[i] = fork();
+		if (data->pids[i] == 0)
+			execute_child(cmd, i, data->is_pipe, data->pipefd);
+		else
+			clean_heredoc(&cmd[i]);
+		i++;
+		
 	}
 	execute_parent(data);
 }

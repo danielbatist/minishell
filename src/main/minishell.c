@@ -12,6 +12,8 @@
 
 #include "../../inc/minishell.h"
 
+t_list *env_list = NULL;
+
 static void	handle_exit(char *input, t_list *env_list)
 {
 	printf("exit\n");
@@ -44,14 +46,14 @@ static void	wait_all_processes(pid_t *pids, int count)
 	}
 }
 
-static void	clean_and_free(t_command *cmd, t_pipefd *pipefd, pid_t *pids)
+/*static void	clean_and_free(t_command *cmd, t_pipefd *pipefd, pid_t *pids)
 {
 	free_complex_command(cmd);
 	if (pipefd)
 		free(pipefd);
 	if (pids)
 		free(pids);
-}
+}*/
 
 static void	process_input(char *input, t_list *env_list)
 {
@@ -68,7 +70,7 @@ static void	process_input(char *input, t_list *env_list)
 		return ;
 	execute_commands(complex_command, is_pipe, pipefd, pids);
 	wait_all_processes(pids, is_pipe + 1);
-	clean_and_free(complex_command, pipefd, pids);
+	//clean_and_free(complex_command, pipefd, pids);
 }
 
 /*static void	process_input(char *input, t_list *env_list)
@@ -154,7 +156,6 @@ static void	process_input(char *input, t_list *env_list)
 int	main(int ac, char **av, char **envp)
 {
 	char		*input;
-	t_list		*env_list;
 
 	(void)ac;
 	(void)av;

@@ -10,3 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../inc/minishell.h"
+
+int ft_env(void)
+{
+    t_list  *tmp_list;
+
+    tmp_list = env_list;
+    while (tmp_list)
+    {
+        ft_printf_fd(1, "%s=%s\n", ((t_env *)(tmp_list->content))->name, 
+            ((t_env *)(tmp_list->content))->value);
+        tmp_list = tmp_list->next;
+    }
+    return (1);
+}

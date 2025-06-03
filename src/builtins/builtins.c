@@ -20,14 +20,14 @@ int	is_builtins(char *str, char **cmd)
 		return (ft_echo(cmd));
 	if (ft_strncmp(str, "cd", ft_strlen(str)) == 0)
 	 	return (ft_cd(cmd));
-	// if (ft_strcmp(str, "pwd") == 0)
-	// 	return (ft_pwd(cmd));
-	// if (ft_strcmp(str, "export") == 0)
-	// 	return (ft_export(cmd));
+	 if (ft_strncmp(str, "pwd", ft_strlen(str)) == 0)
+	 	return (ft_pwd());
+	 if (ft_strncmp(str, "export", ft_strlen(str)) == 0)
+	 	return (ft_export(cmd));
 	// if (ft_strcmp(str, "unset") == 0)
 	// 	return (ft_unset(cmd));
-	// if (ft_strcmp(str, "env") == 0)
-	// 	return (ft_env(cmd));
+	 if (ft_strncmp(str, "env", ft_strlen(str)) == 0)
+	 	return (ft_env());
 	// if (ft_strcmp(str, "exit") == 0)
 	// 	return (ft_exit(cmd));
 	return (0);

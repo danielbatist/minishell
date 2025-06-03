@@ -17,10 +17,8 @@ int	ft_echo(char **cmd)
 	int		i;
 	int		j;
 	int		suppress_newline;
-	int is_printed;
 
 	suppress_newline = 0;
-	is_printed = 0;
 	i = 1;
 	while (cmd[i])
 	{
@@ -33,17 +31,10 @@ int	ft_echo(char **cmd)
 				suppress_newline = 1;
 		}
 		else
-		{
-			ft_printf_fd(1, cmd[i]);
-			ft_printf_fd(1, " ");
-		}
-		is_printed = 1;
+			ft_printf_fd(1,"%s ", cmd[i]);
 		i++;
 	}
 	if (!suppress_newline)
-	{
 		ft_printf_fd(1, "\n");
-		printf("Tem newline\n");
-	}
-	return (is_printed);
+	return (1);
 }

@@ -94,6 +94,8 @@ typedef struct s_pipefd
 	int	fd[2];
 }	t_pipefd;
 
+extern 	t_list		*env_list;
+
 //token
 void		add_token(t_scanner *scanner, t_token_type token_type);
 void		add_str_token(t_scanner *scanner, t_token_type token_type);
@@ -166,7 +168,9 @@ t_command	*parser(char *input, t_list *env_list);
 int			is_builtins(char *str, char **cmd);
 int			ft_echo(char **cmd);
 int 		ft_cd(char **cmd);
-int			ft_pwd(char **cmd);
+int			ft_pwd();
+int			ft_export(char **cmd);
+int 		ft_env(void);
 
 
 #endif

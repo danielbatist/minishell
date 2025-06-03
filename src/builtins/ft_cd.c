@@ -16,9 +16,11 @@ int ft_cd(char **cmd)
 {
     char *home;
 
-    home = getenv("HOME");
-    if (!cmd && !cmd[1] && !cmd[1][0])
+    home = search_env("HOME", env_list);
+    if (!cmd[1])
         chdir(home);
-    chdir(cmd[1]);
+    else
+        chdir(cmd[1]);
+    free(home);
     return (1);
 }

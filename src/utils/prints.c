@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:56:02 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/29 17:47:14 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/03 15:24:06 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	print_token_list(t_list *tokens)
 			printf("%s", token->lexeme);
 		else
 			printf("(null)");
-		printf(" | type: %s | plus: %d\n", get_token_type(token->type), token->plus);
+		printf(" | type: %s | plus: %d | has_space: %d\n", get_token_type(token->type), token->plus, token->has_space);
 		tokens = tokens->next;
 	}
 	printf("\n");

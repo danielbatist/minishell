@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 16:38:20 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/03 10:55:19 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/03 14:29:24 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,19 @@ int	ft_echo(char **cmd)
 			while (cmd[i][j] == 'n')
 				j++;
 			if (cmd[i][j] == '\0')
+			{
 				suppress_newline = 1;
+				i++;
+				continue ;
+			}
 		}
-		else
-			ft_printf_fd(1,"%s ", cmd[i]);
+		break ;
+	}
+	while (cmd[i])
+	{
+		ft_printf_fd(1, "%s", cmd[i]);
+		if (cmd[i + 1])
+			ft_printf_fd(1, " ");
 		i++;
 	}
 	if (!suppress_newline)

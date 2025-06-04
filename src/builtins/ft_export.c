@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 16:41:09 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/03 11:33:53 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/03 21:01:31 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ int get_errors(char *cmd)
     int i;
 
     i = 0;
-    while(cmd[i])
+    while(cmd[i] != '=')
     {
-        if (!ft_isalpha(cmd[0]) || (!ft_isalpha(cmd[i]) && cmd[i] != '_' && cmd[i] != '=s'))
+        if (!ft_isalpha(cmd[0]) || (!ft_isalnum(cmd[i]) && cmd[i] != '_' && cmd[i] != '='))
         {
             ft_printf_fd(1, "export: '%s': not a valid identifier\n", cmd);
             return (1);

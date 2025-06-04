@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 19:17:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/03 11:26:46 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:41:59 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 			free_exec(envp);
 			exit(127);
 		}
-		ft_printf_fd(2, "Executando: %s\n", cmd[i].simple_command[0]);
+		//ft_printf_fd(2, "Executando: %s\n", cmd[i].simple_command[0]);
 		execve(path, cmd[i].simple_command, envp);
 		free(path);
 		free_exec(envp);
@@ -79,6 +79,7 @@ void	execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 void	execute_commands(t_command *cmd, t_exec *data, t_list *env_list)
 {
 	int	i;
+	int save_stdout;
 
 	i = 0;
 	while (cmd[i].simple_command)
@@ -95,8 +96,10 @@ void	execute_commands(t_command *cmd, t_exec *data, t_list *env_list)
 		if (data->is_pipe == 0 && is_builtins(cmd[i].simple_command[0]))
 		{
 			open_redirect(&cmd[i]);
+			save_stdout = dup(STDOUT_FILENO);
 			dup2_redirect(&cmd[i]);
 			exec_builtins(&cmd[i]);
+			dup2(save_stdout, STDOUT_FILENO);
 			clean_heredoc(&cmd[i]);
 			i++;
 			continue ;
@@ -107,7 +110,6 @@ void	execute_commands(t_command *cmd, t_exec *data, t_list *env_list)
 		else
 			clean_heredoc(&cmd[i]);
 		i++;
-		
 	}
 	execute_parent(data);
 }

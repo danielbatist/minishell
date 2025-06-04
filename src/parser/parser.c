@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 05:14:47 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/06/02 15:07:46 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:18:38 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static t_scanner	*init_and_scan(char *input, t_list *env_list)
 		return (NULL);
 	scan_tokens(scanner);
 	env_expansion(env_list, scanner);
-	print_token_list(scanner->tokens);
+	//print_token_list(scanner->tokens);
 	return (scanner);
 }
 

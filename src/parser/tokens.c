@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:37:00 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/24 17:54:23 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/03 15:53:27 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,12 @@ void	add_token(t_scanner *scanner, t_token_type token_type)
 	if (is_redirect(token_type))
 		scanner->is_command = REDIRECT;
 	set_plus(token, scanner->src[scanner->current], token_type);
-	if ((scanner->start > 0) && (scanner->src[scanner->start - 1] == ' '
-			|| scanner->src[scanner->start - 1] == '\t'
-			|| scanner->src[scanner->start - 1] == '\n'))
+	if ((scanner->start > 0) && (scanner->src[scanner->start - 2] == ' '
+			|| scanner->src[scanner->start - 2] == '\t'
+			|| scanner->src[scanner->start - 2] == '\n'
+			|| scanner->src[scanner->start - 1] == ' '))
 		token->has_space = TRUE;
 	else
-		token->has_space = FALSE;
-	if (token_type == DOUBLE_QUOTED || token_type == SINGLE_QUOTED)
 		token->has_space = FALSE;
 	token_node = ft_lstnew(token);
 	ft_lstadd_back(&scanner->tokens, token_node);

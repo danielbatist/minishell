@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/03 11:31:11 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/03 13:31:54 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,8 +158,12 @@ void		handle_exit(char *input, t_list *env_list);
 t_exec		*init_exec_data(void);
 
 //builtins
-int			ft_echo(char **cmd);
 int			ft_cd(char **cmd, t_list *env_list);
+int			ft_echo(char **cmd);
+int			ft_env(t_list *env_list);
+int			ft_export(char **cmd, t_list *env_list);
+int			ft_pwd(void);
+
 int			is_builtins(char *str);
 int			exec_builtins(t_command *cmd);
 

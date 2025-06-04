@@ -14,7 +14,7 @@ SRC =  main/minishell.c main/process_input.c\
 	   redirect/redirects_utils.c redirect/redirects.c redirect/heredoc.c redirect/heredoc_utils.c\
 	   redirect/open_file.c redirect/open_heredoc.c \
 	   pipe/pipe.c\
-	   builtins/builtins.c builtins/ft_cd.c builtins/ft_echo.c 
+	   builtins/builtins.c builtins/ft_cd.c builtins/ft_echo.c builtins/ft_env.c builtins/ft_export.c builtins/ft_pwd.c 
 
 LIB = ../lib
 

@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/03 13:31:54 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/04 12:15:27 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,13 @@ t_command	*input_and_parser(t_exec *data, char *input, t_list *env_list);
 void		process_input(char *input, t_list *env_list);
 void		handle_exit(char *input, t_list *env_list);
 t_exec		*init_exec_data(void);
+
+//signal
+void		handle_sig_readline(int sig);
+void		handle_sig_exec(int sig);
+void		set_signal_readline(void);
+void		set_signal_exec_parent(void);
+void		set_signal_child(void);
 
 //builtins
 int			ft_cd(char **cmd, t_list *env_list);

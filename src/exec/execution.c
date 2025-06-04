@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 19:17:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/03 20:41:59 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/04 13:15:59 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,15 @@ void 	close_pipes(t_pipefd *pipefd, int n_of_pipes)
 void	execute_parent(t_exec *data)
 {
 	int		j;
+	int		status;
 
 	close_pipes(data->pipefd, data->is_pipe);
 	j = 0;
 	while (j <= data->is_pipe)
 	{
-		waitpid(data->pids[j], NULL, 0);
+		waitpid(data->pids[j], &status, 0);
+		if (WIFSIGNALED(status) && WTERMSIG(status))
+			write(1, "\n", 1);
 		j++;
 	}
 }
@@ -52,6 +55,7 @@ void	execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 	char	*path;
 	char	**envp;
 
+	set_signal_child();
 	dup2_pipes(pipefd, is_pipe, &i);
 	close_pipes(pipefd, is_pipe);
 	if (open_redirect(&cmd[i]) < 0)

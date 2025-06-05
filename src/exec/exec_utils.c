@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:20:00 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/29 15:49:31 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/04 17:02:20 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ char	*get_path(char *cmd, t_list *env_list)
 	char	*full_path;
 	int		i;
 
+	if (ft_strncmp(cmd, "..", 2) == 0)
+		return (NULL);
 	if (ft_strchr(cmd, '/'))
 		return (ft_strdup(cmd));
 	path_var = get_env_value(env_list, "PATH");

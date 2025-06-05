@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 19:17:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/04 13:15:59 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/04 20:15:56 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,12 @@ void	execute_parent(t_exec *data)
 	{
 		waitpid(data->pids[j], &status, 0);
 		if (WIFSIGNALED(status) && WTERMSIG(status))
+		{
 			write(1, "\n", 1);
+			data->exit_status = WTERMSIG(status) + 128;
+		}
+		else if (WIFEXITED(status))
+			data->exit_status = WEXITSTATUS(status);
 		j++;
 	}
 }
@@ -71,7 +76,7 @@ void	execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 			free_exec(envp);
 			exit(127);
 		}
-		//ft_printf_fd(2, "Executando: %s\n", cmd[i].simple_command[0]);
+		ft_printf_fd(2, "Executando: %s\n", cmd[i].simple_command[0]);
 		execve(path, cmd[i].simple_command, envp);
 		free(path);
 		free_exec(envp);
@@ -102,7 +107,7 @@ void	execute_commands(t_command *cmd, t_exec *data, t_list *env_list)
 			open_redirect(&cmd[i]);
 			save_stdout = dup(STDOUT_FILENO);
 			dup2_redirect(&cmd[i]);
-			exec_builtins(&cmd[i]);
+			data->exit_status = exec_builtins(&cmd[i]);
 			dup2(save_stdout, STDOUT_FILENO);
 			clean_heredoc(&cmd[i]);
 			i++;

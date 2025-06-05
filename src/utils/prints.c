@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:56:02 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/03 15:24:06 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/04 20:56:25 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,25 @@ int	print_error(t_token *token)
 	{
 		ft_printf_fd(2, "-bash: syntax error");
 		ft_printf_fd(2, " near unexpected token `newline'\n");
-		return (1);
+		return (2);
 	}
 	else if (token->type == UNCLOSED)
 	{
 		ft_printf_fd(2, "bash: %c syntax error", token->lexeme[0]);
 		ft_printf_fd(2, "unexpected end of file (unclosed quote)\n");
-		return (1);
+		return (2);
+	}
+	else if (token->lexeme[0] == '.')
+	{
+		ft_printf_fd(2, "bash: %c: filename argument required\n", token->lexeme[0]);
+		ft_printf_fd(2, "%c: usage: %c filename [arguments]\n", token->lexeme[0], token->lexeme[0]);
+		return (2);
 	}
 	else
 	{
 		ft_printf_fd(2, "-bash: syntax error");
 		ft_printf_fd(2, "near unexpected token `%c'\n", token->lexeme[0]);
-		return (1);
+		return (2);
 	}
 	return (0);
 }

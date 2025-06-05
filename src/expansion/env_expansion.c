@@ -6,11 +6,35 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:02:10 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/05/26 17:04:21 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/04 20:01:40 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+static char	*replace_exit_status(char *lexeme, int i, int exit_status)
+{
+	char	*new_lexeme;
+	char	*exit_str;
+	int		len;
+
+	exit_str = ft_itoa(exit_status);
+	if (!exit_str)
+		return (NULL);
+	len = ft_strlen(lexeme) - 1 + ft_strlen(exit_str);
+	new_lexeme = malloc(len + 1);
+	if (!new_lexeme)
+	{
+		free(exit_str);
+		return (NULL);
+	}
+	ft_strlcpy(new_lexeme, lexeme, i + 1);
+	ft_strlcat(new_lexeme, exit_str, len + 1);
+	ft_strlcat(new_lexeme, lexeme + i + 2, len + 1);
+	free(lexeme);
+	free(exit_str);
+	return (new_lexeme);
+}
 
 static int	process_env_variable(t_token *token, t_list *env_list, int i)
 {
@@ -30,9 +54,10 @@ static int	process_env_variable(t_token *token, t_list *env_list, int i)
 	return (i + 1);
 }
 
-void	scan_env(t_token *token, t_list *env_list)
+void	scan_env(t_token *token, t_list *env_list, int exit_status)
 {
 	int		i;
+	char	*new_lexeme;
 
 	i = 0;
 	while (token->lexeme[i])
@@ -42,7 +67,7 @@ void	scan_env(t_token *token, t_list *env_list)
 			if (token->lexeme[i + 1] == '\0' || token->lexeme[i + 1] == ' ')
 				i++;
 			else if (token->lexeme[i + 1] == '?')
-				i += 2;
+				new_lexeme = replace_exit_status(token->lexeme, i, exit_status);
 			else
 				i = process_env_variable(token, env_list, i);
 		}
@@ -51,7 +76,7 @@ void	scan_env(t_token *token, t_list *env_list)
 	}
 }
 
-void	env_expansion(t_list *env_list, t_scanner *scanner)
+void	env_expansion(t_list *env_list, t_scanner *scanner, t_exec *data)
 {
 	t_token	*token;
 	t_list	*tmp_tokens;
@@ -61,7 +86,7 @@ void	env_expansion(t_list *env_list, t_scanner *scanner)
 	{
 		token = (t_token *)tmp_tokens->content;
 		if (token->type != SINGLE_QUOTED)
-			scan_env(token, env_list);
+			scan_env(token, env_list, data->exit_status);
 		tmp_tokens = tmp_tokens->next;
 	}
 }

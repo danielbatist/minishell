@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 16:20:25 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/04 13:06:53 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/04 17:20:12 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ void	handle_sig_readline(int sig)
 	rl_redisplay();
 }
 
-void set_signal_readline(void)
+void	set_signal_readline(void)
 {
 	signal(SIGINT, handle_sig_readline);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void set_signal_exec_parent(void)
+void	set_signal_exec_parent(void)
 {
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);

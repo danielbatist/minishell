@@ -6,7 +6,58 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 16:39:40 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/02 16:39:43 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/04 19:20:21 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../inc/minishell.h"
+
+int	ft_strisdigit(const char *str)
+{
+	int	i;
+
+	if (!str || !*str)
+		return (0);
+	i = 0;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	ft_exit(t_command *cmd)
+{
+	char	**args;
+	int		exit_code;
+
+	args = cmd->simple_command;
+	if (!args || !args[0])
+	{
+		printf("exit\n");
+		exit(0);
+	}
+	if (args[1] && args[2])
+	{
+		ft_printf_fd(2, "minishell: exit: too many arguments\n");
+		exit_code = 1;
+		return (1);
+	}
+	if (args[1])
+	{
+		if (!ft_strisdigit(args[1]))
+		{
+			ft_printf_fd(2, "minishell: exit: %s: numeric argument required\n", args[1]);
+			return (255);
+		}
+		exit_code = ft_atoi(args[1]);
+	}
+	else
+		exit_code = 0;
+	printf("exit\n");
+	exit(exit_code);
+}

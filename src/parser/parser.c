@@ -6,13 +6,13 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 05:14:47 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/06/03 20:18:38 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/04 20:26:31 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static t_scanner	*init_and_scan(char *input, t_list *env_list)
+static t_scanner	*init_and_scan(char *input, t_list *env_list, t_exec *data)
 {
 	t_scanner	*scanner;
 
@@ -20,8 +20,8 @@ static t_scanner	*init_and_scan(char *input, t_list *env_list)
 	if (!scanner)
 		return (NULL);
 	scan_tokens(scanner);
-	env_expansion(env_list, scanner);
-	//print_token_list(scanner->tokens);
+	env_expansion(env_list, scanner, data);
+	print_token_list(scanner->tokens);
 	return (scanner);
 }
 
@@ -60,7 +60,7 @@ t_command	extract_command(t_list **token_list, t_list *env_list)
 	return (cmd);
 }
 
-t_command	*parser(char *input, t_list *env_list)
+t_command	*parser(char *input, t_list *env_list, t_exec *data)
 {
 	t_scanner	*scanner;
 	t_command	*commands;
@@ -68,8 +68,8 @@ t_command	*parser(char *input, t_list *env_list)
 	int			cmds_count;
 	int			i;
 
-	scanner = init_and_scan(input, env_list);
-	if (!scanner || !scanner->tokens || handle_error(scanner->tokens))
+	scanner = init_and_scan(input, env_list, data);
+	if (!scanner || !scanner->tokens || handle_error(scanner->tokens, data))
 		return (free_and_return(scanner));
 	cmds_count = count_pipes(scanner) + 1;
 	commands = ft_calloc(cmds_count + 1, sizeof(t_command));

@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/04 12:15:27 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/04 20:26:28 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct s_pipefd
 
 typedef struct s_exec
 {
+	int			exit_status;
 	int			is_pipe;
 	int			is_builtin;
 	t_pipefd	*pipefd;
@@ -110,6 +111,7 @@ void		add_str_token(t_scanner *scanner, t_token_type token_type);
 void		add_multichar_token(t_scanner *scanner, t_token_type token_type);
 char		*get_token_type(int type);
 int			tokens_len(t_scanner *scanner);
+
 //scanner
 t_scanner	*init_scanner(char *input);
 void		scan_tokens(t_scanner *scanner);
@@ -170,6 +172,7 @@ int			ft_echo(char **cmd);
 int			ft_env(t_list *env_list);
 int			ft_export(char **cmd, t_list *env_list);
 int			ft_pwd(void);
+int			ft_unset(t_command *cmd);
 
 int			is_builtins(char *str);
 int			exec_builtins(t_command *cmd);
@@ -182,7 +185,7 @@ char		**get_envp(t_list *env_list);
 char		*get_env_value(t_list *env_list, const char *name);
 
 //env
-void		env_expansion(t_list *env_list, t_scanner *scanner);
+void		env_expansion(t_list *env_list, t_scanner *scanner, t_exec *data);
 t_list		*catch_env(char **envp);
 int			get_end(char *str);
 char		*set_env(char *str, int start, int end, t_list *env_list);
@@ -192,7 +195,7 @@ char		*search_env(char *str, t_list *env_list);
 
 //utils
 int			is_redirect(t_token_type type);
-int			handle_error(t_list *tokens);
+int			handle_error(t_list *tokens, t_exec *data);
 int			is_flag(t_scanner *scanner, char *s);
 int			is_metachar(t_token_type type);
 int			check_redirect_in(t_token *token, t_token *next);
@@ -200,6 +203,6 @@ int			check_redirect_out(t_token *token, t_token *next);
 int			check_redirects(t_token *token, t_token *next);
 void		set_signal(void);
 char		**extract_simple_cmd(t_list **token_list);
-t_command	*parser(char *input, t_list *env_list);
+t_command	*parser(char *input, t_list *env_list, t_exec *data);
 
 #endif

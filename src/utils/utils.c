@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 20:24:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/24 18:39:43 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:34:57 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,11 @@ void	redirects_token(t_list **token_list)
 	*token_list = (*token_list)->next;
 	if (*token_list)
 		*token_list = (*token_list)->next;
+}
+
+int *exit_status(void)
+{
+	static int	status = 0;
+
+	return (&status);
 }

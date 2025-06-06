@@ -6,19 +6,21 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:02:10 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/06/04 20:01:40 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:45:28 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static char	*replace_exit_status(char *lexeme, int i, int exit_status)
+static char	*replace_exit_status(char *lexeme, int i)
 {
 	char	*new_lexeme;
 	char	*exit_str;
 	int		len;
+	int		status;
 
-	exit_str = ft_itoa(exit_status);
+	status = *exit_status();
+	exit_str = ft_itoa(status);
 	if (!exit_str)
 		return (NULL);
 	len = ft_strlen(lexeme) - 1 + ft_strlen(exit_str);
@@ -54,7 +56,7 @@ static int	process_env_variable(t_token *token, t_list *env_list, int i)
 	return (i + 1);
 }
 
-void	scan_env(t_token *token, t_list *env_list, int exit_status)
+void	scan_env(t_token *token, t_list *env_list)
 {
 	int		i;
 	char	*new_lexeme;
@@ -67,7 +69,13 @@ void	scan_env(t_token *token, t_list *env_list, int exit_status)
 			if (token->lexeme[i + 1] == '\0' || token->lexeme[i + 1] == ' ')
 				i++;
 			else if (token->lexeme[i + 1] == '?')
-				new_lexeme = replace_exit_status(token->lexeme, i, exit_status);
+			{
+				new_lexeme = replace_exit_status(token->lexeme, i);
+				if (!new_lexeme)
+					return ;
+				token->lexeme = new_lexeme;
+				i++;
+			}
 			else
 				i = process_env_variable(token, env_list, i);
 		}
@@ -76,7 +84,7 @@ void	scan_env(t_token *token, t_list *env_list, int exit_status)
 	}
 }
 
-void	env_expansion(t_list *env_list, t_scanner *scanner, t_exec *data)
+void	env_expansion(t_list *env_list, t_scanner *scanner)
 {
 	t_token	*token;
 	t_list	*tmp_tokens;
@@ -86,7 +94,7 @@ void	env_expansion(t_list *env_list, t_scanner *scanner, t_exec *data)
 	{
 		token = (t_token *)tmp_tokens->content;
 		if (token->type != SINGLE_QUOTED)
-			scan_env(token, env_list, data->exit_status);
+			scan_env(token, env_list);
 		tmp_tokens = tmp_tokens->next;
 	}
 }

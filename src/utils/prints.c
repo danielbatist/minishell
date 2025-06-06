@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:56:02 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/04 20:56:25 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:01:41 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	print_error(t_token *token)
 	}
 	else if (token->type == UNCLOSED)
 	{
-		ft_printf_fd(2, "bash: %c syntax error", token->lexeme[0]);
+		ft_printf_fd(2, "bash: %c syntax error ", token->lexeme[0]);
 		ft_printf_fd(2, "unexpected end of file (unclosed quote)\n");
 		return (2);
 	}

@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:34:00 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/04 20:03:01 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:50:33 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_command	*input_and_parser(t_exec *data, char *input, t_list *env_list)
 
 	if (*input)
 		add_history(input);
-	cmd = parser(input, env_list, data);
+	cmd = parser(input, env_list);
 	if (!cmd)
 		return (NULL);
 	data->is_pipe = get_pipefd(cmd, &data->pipefd);
@@ -48,7 +48,6 @@ t_exec	*init_exec_data(void)
 	data = (t_exec *)malloc(sizeof(t_exec));
 	if (!data)
 		return (NULL);
-	data->exit_status = 0;
 	data->is_pipe = 0;
 	data->is_builtin = 0;
 	data->pipefd = NULL;
@@ -70,6 +69,7 @@ void	process_input(char *input, t_list *env_list)
 	}
 	execute_commands(cmd, data, env_list);
 	print_commands(cmd);
+	ft_printf_fd(2, "Exit status: %d\n", *exit_status());
 	free_complex_command(cmd);
 	//free_pipes(data->pipefd, data->is_pipe);
 	free(data->pipefd);

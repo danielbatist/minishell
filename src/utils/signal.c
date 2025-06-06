@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 16:20:25 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/04 17:20:12 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:24:48 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	handle_sig_readline(int sig)
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
+	*exit_status() = 130;
 }
 
 void	set_signal_readline(void)

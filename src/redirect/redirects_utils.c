@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbatista <dbatista@student.42.rio>         +#+  +:+       +#+        */
+/*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 20:18:08 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/24 23:00:24 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/05 15:51:12 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	handle_redirect_heredoc(t_token *token, t_token *next_token,
 	char	*filename;
 
 	if (!next_token || !next_token->lexeme)
-		return (print_error(next_token));
+		return (1);
 	if (handle_heredoc(cmd, &filename, next_token, env_list))
 		return (1);
 	set_redirect(token, cmd, filename);

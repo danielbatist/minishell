@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/04 20:26:28 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/06 21:17:42 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef enum e_is_command
 	REDIRECT,
 	FILE_NOT_FOUND,
 	IS_DIR,
+	NOT_IS_DIR,
 	PERM_DENIED
 }					t_is_command;
 
@@ -173,7 +174,7 @@ int			ft_env(t_list *env_list);
 int			ft_export(char **cmd, t_list *env_list);
 int			ft_pwd(void);
 int			ft_unset(t_command *cmd);
-
+int			ft_exit(t_command *cmd);
 int			is_builtins(char *str);
 int			exec_builtins(t_command *cmd);
 
@@ -185,7 +186,7 @@ char		**get_envp(t_list *env_list);
 char		*get_env_value(t_list *env_list, const char *name);
 
 //env
-void		env_expansion(t_list *env_list, t_scanner *scanner, t_exec *data);
+void		env_expansion(t_list *env_list, t_scanner *scanner);
 t_list		*catch_env(char **envp);
 int			get_end(char *str);
 char		*set_env(char *str, int start, int end, t_list *env_list);
@@ -194,8 +195,10 @@ char		*join_replacement(char *str, int start, int end, char *env_value);
 char		*search_env(char *str, t_list *env_list);
 
 //utils
+void		set_exit_status(int status);
+int			*get_exit_status(void);
 int			is_redirect(t_token_type type);
-int			handle_error(t_list *tokens, t_exec *data);
+int			handle_error(t_list *tokens);
 int			is_flag(t_scanner *scanner, char *s);
 int			is_metachar(t_token_type type);
 int			check_redirect_in(t_token *token, t_token *next);
@@ -203,6 +206,6 @@ int			check_redirect_out(t_token *token, t_token *next);
 int			check_redirects(t_token *token, t_token *next);
 void		set_signal(void);
 char		**extract_simple_cmd(t_list **token_list);
-t_command	*parser(char *input, t_list *env_list, t_exec *data);
+t_command	*parser(char *input, t_list *env_list);
 
 #endif

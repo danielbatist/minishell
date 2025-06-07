@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 16:39:40 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/04 19:20:21 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/06 23:48:27 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,9 @@ int	ft_strisdigit(const char *str)
 int	ft_exit(t_command *cmd)
 {
 	char	**args;
-	int		exit_code;
+	int		status;
 
+	status = 0;
 	args = cmd->simple_command;
 	if (!args || !args[0])
 	{
@@ -44,20 +45,19 @@ int	ft_exit(t_command *cmd)
 	if (args[1] && args[2])
 	{
 		ft_printf_fd(2, "minishell: exit: too many arguments\n");
-		exit_code = 1;
 		return (1);
 	}
 	if (args[1])
 	{
 		if (!ft_strisdigit(args[1]))
 		{
+			printf("exit\n");
 			ft_printf_fd(2, "minishell: exit: %s: numeric argument required\n", args[1]);
-			return (255);
+			exit(2);
 		}
-		exit_code = ft_atoi(args[1]);
+		set_exit_status(ft_atoi(args[1]) % 256);
 	}
-	else
-		exit_code = 0;
+	status = *get_exit_status();
 	printf("exit\n");
-	exit(exit_code);
+	exit(status);
 }

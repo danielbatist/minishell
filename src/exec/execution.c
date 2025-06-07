@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 19:17:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/05 21:43:46 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/06 23:33:59 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,17 @@ void	execute_parent(t_exec *data)
 
 	close_pipes(data->pipefd, data->is_pipe);
 	j = 0;
+	status = 0;
 	while (j <= data->is_pipe)
 	{
 		waitpid(data->pids[j], &status, 0);
 		if (WIFSIGNALED(status) && WTERMSIG(status))
 		{
 			write(1, "\n", 1);
-			*exit_status() = WTERMSIG(status);
+			set_exit_status(WTERMSIG(status));
 		}
 		else if (WIFEXITED(status))
-			*exit_status() = WTERMSIG(status);
+			set_exit_status(WEXITSTATUS(status));
 		j++;
 	}
 }
@@ -88,6 +89,7 @@ void	execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 void	execute_commands(t_command *cmd, t_exec *data, t_list *env_list)
 {
 	int	i;
+	int	status;
 	int save_stdout;
 
 	i = 0;
@@ -104,10 +106,17 @@ void	execute_commands(t_command *cmd, t_exec *data, t_list *env_list)
 		}
 		if (data->is_pipe == 0 && is_builtins(cmd[i].simple_command[0]))
 		{
+			if (ft_strcmp(cmd[i].simple_command[0], "exit") == 0)
+			{
+				status = ft_exit(&cmd[i]);
+				set_exit_status(status);
+				clean_heredoc(&cmd[i]);
+				return ;
+			}
 			open_redirect(&cmd[i]);
 			save_stdout = dup(STDOUT_FILENO);
 			dup2_redirect(&cmd[i]);
-			*exit_status() = exec_builtins(&cmd[i]);
+			set_exit_status(exec_builtins(&cmd[i]));
 			dup2(save_stdout, STDOUT_FILENO);
 			clean_heredoc(&cmd[i]);
 			i++;

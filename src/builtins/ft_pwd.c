@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 16:41:26 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/04 18:05:26 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/06 21:56:21 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	ft_pwd(void)
 	if (pwd != NULL)
 	{
 		ft_printf_fd(1, "%s\n", pwd);
+		free(pwd);
 		return (1);
 	}
 	return (0);

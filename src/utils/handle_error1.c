@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 01:20:21 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/05 19:20:25 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/06 10:38:54 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ int	check_redirect_in(t_token *token, t_token *next)
 	if ((token->type == REDIRECT_IN && next->type == REDIRECT_IN) \
 		|| (token->type == REDIRECT_IN && next->type == PIPE))
 	{
-		*exit_status() = 2;
+		set_exit_status(2);
 		return (print_error(next));
 	}
 	if (token->type == REDIRECT_IN)
 	{
-		*exit_status() = 1;
+		set_exit_status(1);
 		return (validate_file(token, next->lexeme));
 	}
 	return (0);
@@ -63,7 +63,7 @@ int	check_redirect_out(t_token *token, t_token *next)
 		return (print_error(token));
 	if (token->type == REDIRECT_OUT || token->type == APPEND)
 	{
-		*exit_status() = 1;
+		set_exit_status(1);
 		return (validate_file(token, next->lexeme));
 	}
 	return (0);
@@ -75,7 +75,7 @@ int	check_redirects(t_token *token, t_token *next)
 		return (print_error(token));
 	if (is_redirect(token->type) && is_redirect(next->type))
 	{
-		*exit_status() = 2;
+		set_exit_status(2);
 		return (print_error(next));
 	}
 	return (0);

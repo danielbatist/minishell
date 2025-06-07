@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:56:02 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/05 19:01:41 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/06 21:18:26 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,14 @@ int	print_error_direc_and_file(char *lexeme, t_is_command flag)
 		ft_printf_fd(2, "bash: %s: No such file or director\n", lexeme);
 		return (1);
 	}
-	if (flag == IS_DIR)
+	else if (flag == IS_DIR)
 	{
 		ft_printf_fd(2, "bash: %s: Is a directory\n", lexeme);
+		return (1);
+	}
+	else if (flag == NOT_IS_DIR)
+	{
+		ft_printf_fd(2, "bash: %s: Not a directory\n", lexeme);
 		return (1);
 	}
 	else if (flag == PERM_DENIED)

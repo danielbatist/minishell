@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 16:41:09 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/04 17:59:27 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/06 22:33:07 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,18 @@ int	get_errors(char *cmd)
 {
 	int	i;
 
-	i = 0;
-	while (cmd[i] != '=')
+	if (!cmd || (!ft_isalpha(cmd[0]) && cmd[0] != '_'))
 	{
-		if (!ft_isalpha(cmd[0]) || (!ft_isalnum(cmd[i])
-				&& cmd[i] != '_' && cmd[i] != '='))
+		ft_printf_fd(2, "export: '%s': not a valid identifier\n", cmd);
+		return (1);
+	}
+	i = 1;
+	while ((cmd[i]) && (cmd[i] != '='))
+	{
+		if ((!ft_isalnum(cmd[i])) && (cmd[i] != '='))
 		{
-			ft_printf_fd(1, "export: '%s': not a valid identifier\n", cmd);
-			return (1);
+		ft_printf_fd(2, "export: '%s': not a valid identifier\n", cmd);
+		return (1);
 		}
 		i++;
 	}
@@ -37,6 +41,7 @@ t_env	*is_env(char *cmd, t_list **tmp_list, t_list *env_list)
 
 	i = 0;
 	env = (t_env *)malloc(sizeof(t_env));
+	env->value = NULL;
 	while (cmd[i] && cmd[i] != '=')
 		i++;
 	env->name = ft_substr(cmd, 0, i);
@@ -66,10 +71,15 @@ int	ft_export(char **cmd, t_list *env_list)
 	t_env	*env;
 
 	i = 1;
+	env = NULL;
 	while (cmd[i])
 	{
 		if (get_errors(cmd[i]))
-			return (1);
+		{
+			set_exit_status(1);
+			i++;
+			continue ;
+		}
 		env = is_env(cmd[i], &tmp_list, env_list);
 		if (tmp_list && env->value)
 		{

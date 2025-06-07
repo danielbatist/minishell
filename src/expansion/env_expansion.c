@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:02:10 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/06/05 18:45:28 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/06 10:26:53 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	*replace_exit_status(char *lexeme, int i)
 	int		len;
 	int		status;
 
-	status = *exit_status();
+	status = *get_exit_status();
 	exit_str = ft_itoa(status);
 	if (!exit_str)
 		return (NULL);

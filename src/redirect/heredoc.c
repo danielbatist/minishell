@@ -6,22 +6,24 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 20:44:50 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/05 19:53:30 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:52:48 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static char *get_heredoc_delimiter(t_command *cmd, t_token *token)
+static char	*get_heredoc_delimiter(t_command *cmd, t_token *token)
 {
-	cmd->heredoc_quoted = (token->type == SINGLE_QUOTED || token->type == DOUBLE_QUOTED);
+	cmd->heredoc_quoted = (token->type == SINGLE_QUOTED
+			|| token->type == DOUBLE_QUOTED);
 	if (cmd->heredoc_quoted)
 		return (ft_strtrim(token->lexeme, "\"\'"));
 	else
 		return (ft_strdup(token->lexeme));
 }
 
-static int	handle_heredoc_child(t_command *cmd, char *delim, char *tmp_filename, t_list *env_list)
+static int	handle_heredoc_child(t_command *cmd, char *delim,
+		char *tmp_filename, t_list *env_list)
 {
 	signal(SIGINT, SIG_DFL);
 	if (open_heredoc(cmd, delim, tmp_filename, env_list))
@@ -30,7 +32,8 @@ static int	handle_heredoc_child(t_command *cmd, char *delim, char *tmp_filename,
 	exit(0);
 }
 
-static int	handle_heredoc_parent(pid_t pid, char *tmp_filename, char **out_file)
+static int	handle_heredoc_parent(pid_t pid, char *tmp_filename,
+		char **out_file)
 {
 	int		status;
 
@@ -54,7 +57,8 @@ static int	handle_heredoc_parent(pid_t pid, char *tmp_filename, char **out_file)
 	return (0);
 }
 
-int	handle_heredoc(t_command *cmd, char **out_file, t_token *next, t_list *env_list)
+int	handle_heredoc(t_command *cmd, char **out_file,
+		t_token *next, t_list *env_list)
 {
 	pid_t	pid;
 	char	*delim;

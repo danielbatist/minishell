@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/05 18:51:17 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/07 17:15:05 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef enum e_is_command
 	REDIRECT,
 	FILE_NOT_FOUND,
 	IS_DIR,
+	NOT_IS_DIR,
 	PERM_DENIED
 }					t_is_command;
 
@@ -194,7 +195,8 @@ char		*join_replacement(char *str, int start, int end, char *env_value);
 char		*search_env(char *str, t_list *env_list);
 
 //utils
-int			*exit_status(void);
+void		set_exit_status(int status);
+int			*get_exit_status(void);
 int			is_redirect(t_token_type type);
 int			handle_error(t_list *tokens);
 int			is_flag(t_scanner *scanner, char *s);

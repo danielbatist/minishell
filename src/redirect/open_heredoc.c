@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:00:22 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/05 18:51:46 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:53:27 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static void	print_warning(char *delim)
 	ft_printf_fd(2, "delimited by end-of-file (wanted `%s')\n", delim);
 }
 
-static int	process_heredoc_line(int fd, t_command *cmd, char *line, t_list *env_list)
+static int	process_heredoc_line(int fd, t_command *cmd,
+		char *line, t_list *env_list)
 {
 	char	*expanded;
 
@@ -39,7 +40,8 @@ static int	process_heredoc_line(int fd, t_command *cmd, char *line, t_list *env_
 	return (0);
 }
 
-static int	read_heredoc_loop(int fd, t_command *cmd, char *delim, t_list *env_list)
+static int	read_heredoc_loop(int fd, t_command *cmd,
+		char *delim, t_list *env_list)
 {
 	char	*line;
 
@@ -62,7 +64,8 @@ static int	read_heredoc_loop(int fd, t_command *cmd, char *delim, t_list *env_li
 	return (0);
 }
 
-int	open_heredoc(t_command *cmd, char *delim, char *tmp_filename, t_list *env_list)
+int	open_heredoc(t_command *cmd, char *delim,
+		char *tmp_filename, t_list *env_list)
 {
 	int		fd;
 

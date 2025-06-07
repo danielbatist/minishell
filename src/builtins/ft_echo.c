@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 16:38:20 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/03 14:29:24 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:08:48 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,20 @@
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+#include "../../inc/minishell.h"
+
+void	print_echo(char **cmd, int *i, int suppress_newline)
+{
+	while (cmd[*i])
+	{
+		ft_printf_fd(1, "%s", cmd[*i]);
+		if (cmd[*i + 1])
+			ft_printf_fd(1, " ");
+		(*i)++;
+	}
+	if (!suppress_newline)
+		ft_printf_fd(1, "\n");
+}
 
 int	ft_echo(char **cmd)
 {
@@ -48,14 +62,7 @@ int	ft_echo(char **cmd)
 		}
 		break ;
 	}
-	while (cmd[i])
-	{
-		ft_printf_fd(1, "%s", cmd[i]);
-		if (cmd[i + 1])
-			ft_printf_fd(1, " ");
-		i++;
-	}
-	if (!suppress_newline)
-		ft_printf_fd(1, "\n");
+	print_echo(cmd, &i, suppress_newline);
 	return (1);
 }
+

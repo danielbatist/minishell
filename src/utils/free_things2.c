@@ -6,11 +6,24 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:32:48 by dbatista          #+#    #+#             */
-/*   Updated: 2025/05/29 15:33:05 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:56:08 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+void	free_env(t_env **env)
+{
+	free((*env)->name);
+	free(*env);
+}
+
+void	free_list_and_env(t_list *tmp_list, t_env *env)
+{
+	free(((t_env *)(tmp_list->content))->value);
+	((t_env *)(tmp_list->content))->value = env->value;
+	free(env);
+}
 
 void	free_token(void *content)
 {

@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 05:14:47 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/06/05 18:49:34 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:49:45 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_command	*parser(char *input, t_list *env_list)
 	scanner = init_and_scan(input, env_list);
 	if (!scanner || !scanner->tokens || handle_error(scanner->tokens))
 	{
-		ft_printf_fd(2, "status: %d\n", *exit_status());
+		ft_printf_fd(2, "status: %d\n", *get_exit_status());
 		return (free_and_return(scanner));
 	}
 	cmds_count = count_pipes(scanner) + 1;

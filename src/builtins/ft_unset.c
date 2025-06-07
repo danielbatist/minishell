@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 16:41:04 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/04 18:26:23 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:48:26 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	ft_unset(t_command *cmd)
 	i = 1;
 	while (cmd->simple_command[i])
 	{
-		if (is_valid_var(cmd->simple_command[i]) == 0)
+		if (is_valid_var(cmd->simple_command[i]))
 			remove_env_var(&cmd->env_list, cmd->simple_command[i]);
 		i++;
 	}

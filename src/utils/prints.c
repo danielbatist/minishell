@@ -6,11 +6,19 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:56:02 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/05 19:01:41 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/07 19:32:40 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+void	print_dot_error(char *lexeme)
+{
+	ft_printf_fd(2, "bash: %c: filename argument required\n", lexeme[0]);
+	ft_printf_fd(2, "%c: usage: %c ", lexeme[0], lexeme[0]);
+	ft_printf_fd(2, "filename [arguments]\n");
+	*get_exit_status() = 2;
+}
 
 int	print_error_direc_and_file(char *lexeme, t_is_command flag)
 {
@@ -19,9 +27,14 @@ int	print_error_direc_and_file(char *lexeme, t_is_command flag)
 		ft_printf_fd(2, "bash: %s: No such file or director\n", lexeme);
 		return (1);
 	}
-	if (flag == IS_DIR)
+	else if (flag == IS_DIR)
 	{
 		ft_printf_fd(2, "bash: %s: Is a directory\n", lexeme);
+		return (1);
+	}
+	else if (flag == NOT_IS_DIR)
+	{
+		ft_printf_fd(2, "bash: %s: Not a directory\n", lexeme);
 		return (1);
 	}
 	else if (flag == PERM_DENIED)
@@ -46,12 +59,6 @@ int	print_error(t_token *token)
 		ft_printf_fd(2, "unexpected end of file (unclosed quote)\n");
 		return (2);
 	}
-	else if (token->lexeme[0] == '.')
-	{
-		ft_printf_fd(2, "bash: %c: filename argument required\n", token->lexeme[0]);
-		ft_printf_fd(2, "%c: usage: %c filename [arguments]\n", token->lexeme[0], token->lexeme[0]);
-		return (2);
-	}
 	else
 	{
 		ft_printf_fd(2, "-bash: syntax error");
@@ -64,7 +71,7 @@ void	print_token_list(t_list *tokens)
 {
 	t_token	*token;
 	int		i;
-	
+
 	printf("Token List:\n");
 	i = 0;
 	while (tokens)

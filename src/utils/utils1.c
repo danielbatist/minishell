@@ -1,17 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/20 20:24:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/06 10:28:23 by dbatista         ###   ########.fr       */
+/*   Created: 2025/06/08 22:36:28 by dbatista          #+#    #+#             */
+/*   Updated: 2025/06/08 23:03:25 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "../../inc/minishell.h"
 
+int	is_flag(t_scanner *scanner, char *s)
+{
+	if (*s != '-')
+		return (0);
+	if (scanner->src[scanner->current] == '-')
+		return (1);
+	if (scanner->src[scanner->current] != '\0' && ft_isalnum(scanner->src[scanner->current]))
+		return (1);
+	return (0);
+}
+
+int	is_metachar(t_token_type type)
+{
+	return (type == PIPE || type ==  REDIRECT_IN || type == REDIRECT_OUT
+		|| type == APPEND || type == HEREDOC || type == UNCLOSED);
+}
+
+int	is_redirect(t_token_type type)
+{
+	return (type == REDIRECT_IN || type == REDIRECT_OUT \
+	|| type == APPEND || type == HEREDOC);
+}
+
+void	redirects_token(t_list **token_list)
+{
+	*token_list = (*token_list)->next;
+	if (*token_list)
+		*token_list = (*token_list)->next;
+}
 char	*get_token_type(int type)
 {
 	if (type == COMMAND)
@@ -41,60 +71,4 @@ char	*get_token_type(int type)
 	if (type == EOF_TOKEN)
 		return ("EOF_TOKEN");
 	return ("UNKNOWN");	
-}
-
-int	is_flag(t_scanner *scanner, char *s)
-{
-	if (*s != '-')
-		return (0);
-	if (scanner->src[scanner->current] == '-')
-		return (1);
-	if (scanner->src[scanner->current] != '\0' && ft_isalnum(scanner->src[scanner->current]))
-		return (1);
-	return (0);
-}
-
-int	is_metachar(t_token_type type)
-{
-	return (type == PIPE || type ==  REDIRECT_IN || type == REDIRECT_OUT
-		|| type == APPEND || type == HEREDOC || type == UNCLOSED);
-}
-
-int	is_redirect(t_token_type type)
-{
-	return (type == REDIRECT_IN || type == REDIRECT_OUT \
-	|| type == APPEND || type == HEREDOC);
-}
-
-int	tokens_len(t_scanner *scanner)
-{
-	t_list	*tmp;
-	int		i;
-
-	tmp = scanner->tokens;
-	i = 0;
-	while (tmp)
-	{
-		tmp = tmp->next;
-		i++;
-	}
-	return (i);
-}
-
-void	redirects_token(t_list **token_list)
-{
-	*token_list = (*token_list)->next;
-	if (*token_list)
-		*token_list = (*token_list)->next;
-}
-
-void	set_exit_status(int status)
-{
-	*get_exit_status() = (unsigned char)status;
-}
-
-int *get_exit_status(void)
-{
-	static int	status = 0; 
-	return (&status);
 }

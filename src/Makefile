@@ -7,10 +7,10 @@ CFLAGS = -Wall -Wextra -Werror -g
 NAME = minishell
 
 SRC =  main/minishell.c main/process_input.c\
-       exec/execution.c exec/exec_utils.c\
+       exec/execution.c exec/exec_child.c exec/exec_parent.c\
 	   parser/extract_cmd.c parser/parser.c parser/scanner.c parser/tokens.c\
 	   expansion/env_expansion.c expansion/catch_env.c expansion/env_utils.c\
-	   utils/handle_error1.c utils/handle_error2.c utils/free_things1.c utils/free_things2.c utils/utils.c utils/prints.c utils/signal.c\
+	   utils/handle_error1.c utils/handle_error2.c utils/free_things1.c utils/free_things2.c utils/utils1.c utils/utils2.c utils/prints.c utils/signal.c\
 	   redirect/redirects_utils.c redirect/redirects.c redirect/heredoc.c redirect/heredoc_utils.c\
 	   redirect/open_file.c redirect/open_heredoc.c \
 	   pipe/pipe.c\

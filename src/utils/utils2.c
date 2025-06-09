@@ -1,35 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/14 13:34:40 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/06/09 00:14:46 by dbatista         ###   ########.fr       */
+/*   Created: 2025/06/08 22:36:43 by dbatista          #+#    #+#             */
+/*   Updated: 2025/06/08 22:37:38 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	main(int ac, char **av, char **envp)
+void	set_exit_status(int status)
 {
-	char		*input;
-	t_list		*env_list;
+	*get_exit_status() = (unsigned char)status;
+}
 
-	(void)ac;
-	(void)av;
-	env_list = catch_env(envp);
-	while (1)
+int *get_exit_status(void)
+{
+	static int	status = 0; 
+	return (&status);
+}
+
+int	check_error_flag(t_command *cmd, int *i)
+{
+	if (cmd[*i].error_flag)
 	{
-		set_signal_readline();
-		input = readline("minishell> ");
-		if (!input)
-			handle_exit(NULL, env_list);
-		set_signal_exec_parent();
-		process_input(input, env_list);
-		//ft_printf_fd(2, "Exit status: %d\n", *get_exit_status());
-		free(input);
+		clean_heredoc(&cmd[*i]);
+		(*i)++;
+		return (1);
 	}
 	return (0);
 }

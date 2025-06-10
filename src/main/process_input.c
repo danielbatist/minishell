@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:34:00 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/09 15:23:46 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/10 18:13:35 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	handle_exit(char *input, t_list *env_list)
 	printf("exit\n");
 	if (input)
 		free(input);
-	redirects_token(&env_list);
+	free_env_list(env_list);
 	exit(0);
 }
 
@@ -38,6 +38,7 @@ t_command	*input_and_parser(t_exec *data, char *input, t_list *env_list)
 		return (NULL);
 	}
 	ft_bzero(data->pids, sizeof(pid_t) * (data->is_pipe + 1));
+	cmd->data = data;
 	return (cmd);
 }
 
@@ -70,6 +71,7 @@ void	process_input(char *input, t_list *env_list)
 	execute_commands(cmd, data, env_list);
 	//print_commands(cmd);
 	free_complex_command(cmd);
+	//free_env_list(env_list);
 	free(data->pipefd);
 	free(data->pids);
 	free(data);

@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 20:44:50 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/10 11:24:56 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/10 19:13:27 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,12 @@ static char	*get_heredoc_delimiter(t_command *cmd, t_token *token)
 static int	handle_heredoc_child(t_command *cmd, char *delim,
 		char *tmp_filename, t_list *env_list)
 {
+	int	error_heredoc;
+
 	signal(SIGINT, SIG_DFL);
-	if (open_heredoc(cmd, delim, tmp_filename, env_list))
+	error_heredoc = open_heredoc(cmd, delim, tmp_filename, env_list);
+	free_env_list(cmd->env_list);
+	if (error_heredoc)
 		exit(1);
 	free(delim);
 	exit(0);

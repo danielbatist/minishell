@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:32:48 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/10 10:33:04 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/10 18:34:40 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,13 @@ void	free_complex_command(t_command *cmds)
 		free(cmds[i].outfile);
 		free(cmds[i].append_file);
 		free(cmds[i].heredoc_delim);
+		free(cmds[i].heredoc_file);
+		// free(cmds[i].data->pids);
+		//free(cmds[i].data);
 		i++;
 	}
 	free (cmds);
+
 }
 
 void	free_env_list(t_list *env_list)

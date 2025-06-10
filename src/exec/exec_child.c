@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 22:20:43 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/10 10:14:29 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/10 19:31:16 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,11 @@ void	execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 		{
 			ft_printf_fd(2, "%s: command not found\n", cmd[i].simple_command[0]);
 			free_exec(envp);
+			free(path);
+			free_env_list(cmd->env_list);
+			free(cmd->data->pids);
+			free(cmd->data);
+			free_complex_command(cmd);
 			exit(127);
 		}
 		//ft_printf_fd(2, "Executando: %s\n", cmd[i].simple_command[0]);
@@ -114,5 +119,9 @@ void	execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 		free_exec(envp);
 		exit(1);
 	}
+	free_env_list(cmd->env_list);
+	free(cmd->data->pids);
+	free(cmd->data);
+	free_complex_command(cmd);
 	exit(0);
 }

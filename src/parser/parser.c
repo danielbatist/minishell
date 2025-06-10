@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 05:14:47 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/06/09 15:23:38 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/10 18:43:47 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ t_command	extract_command(t_list **token_list, t_list *env_list)
 	cmd.error_flag = FALSE;
 	cmd.fd_in = STDIN_FILENO;
 	cmd.fd_out = STDOUT_FILENO;
+	cmd.env_list = env_list;
 	cmd.simple_command = extract_simple_cmd(token_list);
 	if (handle_redirects(start, &cmd, env_list))
 			cmd.error_flag = TRUE;

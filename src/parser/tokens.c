@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:37:00 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/06/07 18:50:16 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/10 19:41:26 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,12 @@ void	add_token(t_scanner *scanner, t_token_type token_type)
 	if (is_redirect(token_type))
 		scanner->is_command = REDIRECT;
 	set_plus(token, scanner->src[scanner->current], token_type);
-	if ((scanner->start > 0) && (scanner->src[scanner->start - 2] == ' '
-			|| scanner->src[scanner->start - 2] == '\t'
-			|| scanner->src[scanner->start - 2] == '\n'
-			|| scanner->src[scanner->start - 1] == ' '))
+	if ((scanner->start > 0) 
+	&& (scanner->src[scanner->start - 1]
+	//&& scanner->src[scanner->start - 2]
+	//&& (scanner->src[scanner->start - 2] == ' '
+	//|| scanner->src[scanner->start - 2] == '\t'
+	|| scanner->src[scanner->start - 1] == ' '))
 		token->has_space = TRUE;
 	else
 		token->has_space = FALSE;

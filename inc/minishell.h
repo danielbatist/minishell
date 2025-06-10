@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/07 17:15:05 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/07 19:33:09 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,12 +125,15 @@ void		free_complex_command(t_command *cmds);
 t_command	*free_and_return(t_scanner *scanner);
 void		free_exec(char **exec);
 void		free_pipes(t_pipefd *pipefd, int n_of_pipes);
+void		free_env(t_env **env);
+void		free_list_and_env(t_list *tmp_list, t_env *env);
 
 //print
 int			print_error(t_token *token);
 int			print_error_direc_and_file(char *lexeme, t_is_command flag);
 void		print_commands(t_command *cmd);
 void		print_token_list(t_list *tokens);
+void		print_dot_error(char *lexeme);
 
 //redirects
 void		clean_heredoc(t_command *cmd);

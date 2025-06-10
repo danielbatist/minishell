@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 22:40:09 by dbatista          #+#    #+#             */
-/*   Updated: 2025/04/03 16:38:07 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/10 10:09:58 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	if (start >= s_len)
 	{
 		sub = malloc(1 * sizeof(char));
-		if (sub == NULL)
+		if (!sub)
 			return (NULL);
 		sub[0] = '\0';
 		return ((char *)sub);
@@ -46,7 +46,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	if (len > s_len - start)
 		len = s_len - start;
 	sub = malloc((len + 1) * sizeof(char));
-	if (sub == NULL)
+	if (!sub)
 		return (NULL);
 	ft_subcpy(sub, s, start, len);
 	return (sub);

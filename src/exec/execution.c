@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 19:17:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/08 22:24:49 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:20:39 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,23 @@ void 	close_pipes(t_pipefd *pipefd, int n_of_pipes)
 	}
 }
 
+int	check_error_heredoc(t_command *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd[i].simple_command)
+	{
+		if (cmd[i].error_flag)
+		{
+			set_exit_status(130);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 void	execute_commands(t_command *cmd, t_exec *data, t_list *env_list)
 {
 	int	i;
@@ -40,6 +57,8 @@ void	execute_commands(t_command *cmd, t_exec *data, t_list *env_list)
 	i = 0;
 	while (cmd[i].simple_command)
 		cmd[i++].env_list = env_list;
+	if (check_error_heredoc(cmd))
+		return ;
 	i = 0;
 	while ((cmd[i].simple_command))
 	{

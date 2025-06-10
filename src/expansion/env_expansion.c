@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:02:10 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/06/06 10:26:53 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/09 12:26:22 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,17 @@ void	scan_env(t_token *token, t_list *env_list)
 void	env_expansion(t_list *env_list, t_scanner *scanner)
 {
 	t_token	*token;
+	t_token	*prev_token;
 	t_list	*tmp_tokens;
 
+	prev_token = NULL;
 	tmp_tokens = scanner->tokens;
 	while (tmp_tokens)
 	{
 		token = (t_token *)tmp_tokens->content;
-		if (token->type != SINGLE_QUOTED)
+		if (token->type != SINGLE_QUOTED && !(prev_token && prev_token->type == HEREDOC))
 			scan_env(token, env_list);
+		prev_token = token;
 		tmp_tokens = tmp_tokens->next;
 	}
 }

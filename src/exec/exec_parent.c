@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 22:22:50 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/08 22:24:00 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/09 22:13:14 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	execute_parent(t_exec *data)
 		if (WIFSIGNALED(status) && WTERMSIG(status))
 		{
 			write(1, "\n", 1);
-			set_exit_status(WTERMSIG(status));
+			set_exit_status(128 + WTERMSIG(status));
 		}
 		else if (WIFEXITED(status))
 			set_exit_status(WEXITSTATUS(status));
@@ -53,7 +53,7 @@ int	execute_builtins_in_parent(t_command *cmd, t_exec *data, int *i)
 		dup2_redirect(&cmd[*i]);
 		set_exit_status(exec_builtins(&cmd[*i]));
 		dup2(save_stdout, STDOUT_FILENO);
-		//close(save_stdout);
+		close(save_stdout);
 		clean_heredoc(&cmd[*i]);
 		(*i)++;
 		return (1);

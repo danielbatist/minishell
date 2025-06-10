@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 20:18:08 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/07 18:53:46 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:28:52 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	handle_redirects(t_list *start, t_command *cmd, t_list *env_list)
 			start = start->next;
 			next_token = (t_token *)start->content;
 			if (token->type == HEREDOC)
-			{
+			{	
 				if (handle_redirect_heredoc(token, next_token, cmd, env_list))
 					return (1);
 			}

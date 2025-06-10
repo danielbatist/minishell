@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 16:41:09 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/07 18:56:01 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/10 10:21:30 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ static t_env	*is_env(char *cmd, t_list **tmp_list, t_list *env_list)
 
 	i = 0;
 	env = (t_env *)malloc(sizeof(t_env));
+	if (!env)
+		return (NULL);
 	env->value = NULL;
 	while (cmd[i] && cmd[i] != '=')
 		i++;

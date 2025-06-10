@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/07 17:15:05 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/09 00:13:16 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,13 +111,14 @@ void		add_token(t_scanner *scanner, t_token_type token_type);
 void		add_str_token(t_scanner *scanner, t_token_type token_type);
 void		add_multichar_token(t_scanner *scanner, t_token_type token_type);
 char		*get_token_type(int type);
-int			tokens_len(t_scanner *scanner);
 
 //scanner
 t_scanner	*init_scanner(char *input);
 void		scan_tokens(t_scanner *scanner);
 
 //free
+void		free_env(t_env **env);
+void		free_list_and_env(t_list *tmp_list, t_env *env);
 void		free_token(void *content);
 void		free_scanner(t_scanner *scanner);
 void		free_env_list(t_list *env_list);
@@ -129,6 +130,7 @@ void		free_pipes(t_pipefd *pipefd, int n_of_pipes);
 //print
 int			print_error(t_token *token);
 int			print_error_direc_and_file(char *lexeme, t_is_command flag);
+void		print_dot_error(char *lexeme);
 void		print_commands(t_command *cmd);
 void		print_token_list(t_list *tokens);
 
@@ -180,10 +182,15 @@ int			exec_builtins(t_command *cmd);
 
 //execution
 void		execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd);
+int			execute_builtins_in_parent(t_command *cmd, t_exec *data, int *i);
+void		execute_parent(t_exec *data);
 void		execute_commands(t_command *cmd, t_exec *data, t_list *env_list);
+char		*search_in_path(char *cmd, char *path_var);
 char		*get_path(char *cmd, t_list *env_list);
 char		**get_envp(t_list *env_list);
 char		*get_env_value(t_list *env_list, const char *name);
+void 		close_pipes(t_pipefd *pipefd, int n_of_pipes);
+void 		dup2_pipes(t_pipefd *pipefd, int is_pipe, int *i);
 
 //env
 void		env_expansion(t_list *env_list, t_scanner *scanner);
@@ -196,6 +203,7 @@ char		*search_env(char *str, t_list *env_list);
 
 //utils
 void		set_exit_status(int status);
+int			check_error_flag(t_command *cmd, int *i);
 int			*get_exit_status(void);
 int			is_redirect(t_token_type type);
 int			handle_error(t_list *tokens);
@@ -207,5 +215,6 @@ int			check_redirects(t_token *token, t_token *next);
 void		set_signal(void);
 char		**extract_simple_cmd(t_list **token_list);
 t_command	*parser(char *input, t_list *env_list);
+
 
 #endif

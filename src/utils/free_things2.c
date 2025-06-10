@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:32:48 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/07 18:56:08 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/10 10:33:04 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,19 @@
 
 void	free_env(t_env **env)
 {
+	if (!env || !*env)
+		return ;
 	free((*env)->name);
+	free((*env)->value);
 	free(*env);
+	*env = NULL;
 }
 
 void	free_list_and_env(t_list *tmp_list, t_env *env)
 {
 	free(((t_env *)(tmp_list->content))->value);
 	((t_env *)(tmp_list->content))->value = env->value;
+	free(env->name);
 	free(env);
 }
 

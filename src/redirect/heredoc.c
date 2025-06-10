@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 20:44:50 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/07 18:52:48 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/10 11:24:56 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ static int	handle_heredoc_parent(pid_t pid, char *tmp_filename,
 		unlink(tmp_filename);
 		free(tmp_filename);
 		*out_file = NULL;
-		return (130);
+		set_exit_status(130);
+		return (1);
 	}
 	if (WEXITSTATUS(status) != 0)
 	{

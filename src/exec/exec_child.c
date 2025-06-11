@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 22:20:43 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/10 22:23:26 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/11 10:38:30 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ char	**get_envp(t_list *env_list)
 	return (envp);
 }
 
+
 void	execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 {
 	char	*path;
@@ -102,7 +103,6 @@ void	execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 	{
 		envp = get_envp(cmd[i].env_list);
 		path = get_path(cmd[i].simple_command[0], cmd[i].env_list);
-		ft_printf_fd(2, "Path: %s\n", path);
 		if (!path)
 		{
 			ft_printf_fd(2, "%s: command not found\n", cmd[i].simple_command[0]);
@@ -114,7 +114,6 @@ void	execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 			free_complex_command(cmd);
 			exit(127);
 		}
-		//ft_printf_fd(2, "Executando: %s\n", cmd[i].simple_command[0]);
 		execve(path, cmd[i].simple_command, envp);
 		free(path);
 		free_exec(envp);

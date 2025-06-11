@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 16:39:40 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/07 18:23:13 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/11 11:00:56 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,9 @@ int	ft_exit(t_command *cmd)
 	validate_status(args);
 	status = *get_exit_status();
 	printf("exit\n");
+	free_env_list(cmd->env_list);
+	free(cmd->data->pids);
+	free(cmd->data);
+	free_complex_command(cmd);
 	exit(status);
 }

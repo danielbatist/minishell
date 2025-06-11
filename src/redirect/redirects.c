@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 20:22:24 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/09 22:01:53 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/11 10:37:06 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	dup2_redirect(t_command *cmd)
 {
-	if (cmd->fd_in > 0 && cmd->fd_in != STDIN_FILENO)
+	if (cmd->fd_in >= 0 && cmd->fd_in != STDIN_FILENO)
 	{
 		dup2(cmd->fd_in, STDIN_FILENO);
 		close(cmd->fd_in);
 	}
-	if (cmd->fd_out > 0 && cmd->fd_out != STDOUT_FILENO)
+	if (cmd->fd_out >= 0 && cmd->fd_out != STDOUT_FILENO)
 	{
 		dup2(cmd->fd_out, STDOUT_FILENO);
 		close(cmd->fd_out);

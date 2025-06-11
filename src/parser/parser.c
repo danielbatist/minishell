@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 05:14:47 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/06/10 22:18:48 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/10 23:56:16 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ t_command	*parser(char *input, t_list *env_list)
 	t_command	*commands;
 	t_list		*current;
 	int			cmds_count;
-	int			i;
 
 
 	scanner = init_and_scan(input, env_list);
@@ -83,7 +82,6 @@ t_command	*parser(char *input, t_list *env_list)
 		return (free_and_return(scanner));
 	cmds_count = count_pipes(scanner) + 1;
 	current = scanner->tokens;
-	i = 0;
 	commands = extract_command(&current, env_list, scanner, cmds_count);
 	free_scanner(scanner);
 	return (commands);

@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 22:20:43 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/10 19:31:16 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/10 22:23:26 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ void	execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 	{
 		envp = get_envp(cmd[i].env_list);
 		path = get_path(cmd[i].simple_command[0], cmd[i].env_list);
+		ft_printf_fd(2, "Path: %s\n", path);
 		if (!path)
 		{
 			ft_printf_fd(2, "%s: command not found\n", cmd[i].simple_command[0]);

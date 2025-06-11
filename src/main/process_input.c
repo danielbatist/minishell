@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:34:00 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/10 18:13:35 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/10 21:51:00 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	handle_exit(char *input, t_list *env_list)
 	exit(0);
 }
 
-t_command	*input_and_parser(t_exec *data, char *input, t_list *env_list)
+
+t_command	*input_and_parser(char *input, t_list *env_list)
 {
 	t_command	*cmd;
 
@@ -30,19 +31,10 @@ t_command	*input_and_parser(t_exec *data, char *input, t_list *env_list)
 	cmd = parser(input, env_list);
 	if (!cmd)
 		return (NULL);
-	data->is_pipe = get_pipefd(cmd, &data->pipefd);
-	data->pids = malloc(sizeof(pid_t) * (data->is_pipe + 1));
-	if (!data->pids)
-	{
-		free(data);
-		return (NULL);
-	}
-	ft_bzero(data->pids, sizeof(pid_t) * (data->is_pipe + 1));
-	cmd->data = data;
 	return (cmd);
 }
 
-t_exec	*init_exec_data(void)
+t_exec	*init_exec_data(t_command *cmd)
 {
 	t_exec		*data;
 
@@ -53,6 +45,14 @@ t_exec	*init_exec_data(void)
 	data->is_builtin = 0;
 	data->pipefd = NULL;
 	data->pids = NULL;
+	data->is_pipe = get_pipefd(cmd, &data->pipefd);
+	data->pids = malloc(sizeof(pid_t) * (data->is_pipe + 1));
+	if (!data->pids)
+	{
+		free(data);
+		return (NULL);
+	}
+	ft_bzero(data->pids, sizeof(pid_t) * (data->is_pipe + 1));
 	return (data);
 }
 
@@ -61,13 +61,11 @@ void	process_input(char *input, t_list *env_list)
 	t_command	*cmd;
 	t_exec		*data;
 
-	data = init_exec_data();
-	cmd = input_and_parser(data, input, env_list);
+	cmd = input_and_parser(input, env_list);
 	if (!cmd)
-	{
-		free(data);
 		return ;
-	}
+	data = init_exec_data(cmd);
+	cmd->data = data;
 	execute_commands(cmd, data, env_list);
 	//print_commands(cmd);
 	free_complex_command(cmd);

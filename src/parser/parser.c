@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 05:14:47 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/06/10 18:43:47 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/10 22:18:48 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,21 +43,29 @@ int	count_pipes(t_scanner *scanner)
 	return (count);
 }
 
-t_command	extract_command(t_list **token_list, t_list *env_list)
+t_command	*extract_command(t_list **token_list, t_list *env_list, t_scanner *scanner, int cmds_count)
 {
-	t_command	cmd;
+	t_command	*cmd;
 	t_list		*start;
+	int			i;
 
-	ft_bzero(&cmd, sizeof(t_command));
-	start = *token_list;
-	cmd.is_heredoc = FALSE;
-	cmd.error_flag = FALSE;
-	cmd.fd_in = STDIN_FILENO;
-	cmd.fd_out = STDOUT_FILENO;
-	cmd.env_list = env_list;
-	cmd.simple_command = extract_simple_cmd(token_list);
-	if (handle_redirects(start, &cmd, env_list))
-			cmd.error_flag = TRUE;
+	cmd = ft_calloc(cmds_count + 1, sizeof(t_command));
+	if (!cmd)
+		return (free_and_return(scanner));
+	i = 0;
+	while (i < cmds_count)
+	{
+		start = *token_list;
+		cmd[i].is_heredoc = FALSE;
+		cmd[i].error_flag = FALSE;
+		cmd[i].fd_in = STDIN_FILENO;
+		cmd[i].fd_out = STDOUT_FILENO;
+		cmd[i].env_list = env_list;
+		cmd[i].simple_command = extract_simple_cmd(token_list);
+		if (handle_redirects(start, cmd, scanner))
+			cmd[i].error_flag = TRUE;
+		i++;
+	}
 	return (cmd);
 }
 
@@ -69,17 +77,14 @@ t_command	*parser(char *input, t_list *env_list)
 	int			cmds_count;
 	int			i;
 
+
 	scanner = init_and_scan(input, env_list);
 	if (!scanner || !scanner->tokens || handle_error(scanner->tokens))
 		return (free_and_return(scanner));
 	cmds_count = count_pipes(scanner) + 1;
-	commands = ft_calloc(cmds_count + 1, sizeof(t_command));
-	if (!commands)
-		return (free_and_return(scanner));
 	current = scanner->tokens;
 	i = 0;
-	while (current && i < cmds_count)
-		commands[i++] = extract_command(&current, env_list);
+	commands = extract_command(&current, env_list, scanner, cmds_count);
 	free_scanner(scanner);
 	return (commands);
 }

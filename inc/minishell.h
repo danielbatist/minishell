@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/10 15:27:06 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/10 21:49:49 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,10 +140,10 @@ void		print_dot_error(char *lexeme);
 //redirects
 void		clean_heredoc(t_command *cmd);
 void		redirects_token(t_list **token_list);
-int			handle_redirects(t_list *start, t_command *cmd, t_list *env_list);
+int			handle_redirects(t_list *start, t_command *cmd, t_scanner *scanner);
 int			handle_redirect_file(t_token *token, t_token *next_token, t_command *cmd);
-int			handle_redirect_heredoc(t_token *token, t_token *next_token, t_command *cmd, t_list *env_list);
-int			handle_heredoc(t_command *cmd, char **out_file, t_token *next, t_list *env_list);
+int			handle_redirect_heredoc(t_token *token, t_token *next_token, t_command *cmd, t_scanner *scanner);
+int			handle_heredoc(t_command *cmd, char **out_file, t_token *next, t_scanner *scanner);
 int			open_redirect(t_command *cmd);
 int			open_infile(char *infile);
 int			open_outfile(char *outfile);
@@ -151,7 +151,7 @@ int			open_append(char *append);
 int			open_herefile(char *heredoc);
 char		*create_tmp_file(void);
 char		*here_exp(char *line, t_list *env_list);
-int			open_heredoc(t_command *cmd, char *delim, char *tmp_filename, t_list *env_list);
+int			open_heredoc(t_command *cmd, char *delim, char *tmp_filename);
 int			validate_file(t_token *token, char *lexeme);
 void		dup2_redirect(t_command *cmd);
 
@@ -160,10 +160,10 @@ int			get_pipefd(t_command *complex_command, t_pipefd **pipefd);
 
 //main
 int			main(int ac, char **av, char **envp);
-t_command	*input_and_parser(t_exec *data, char *input, t_list *env_list);
+t_command	*input_and_parser(char *input, t_list *env_list);
 void		process_input(char *input, t_list *env_list);
 void		handle_exit(char *input, t_list *env_list);
-t_exec		*init_exec_data(void);
+t_exec		*init_exec_data(t_command *cmd);
 
 //signal
 void		handle_sig_readline(int sig);

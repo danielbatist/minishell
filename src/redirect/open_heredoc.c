@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:00:22 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/10 18:41:04 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/10 20:04:48 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ static void	print_warning(char *delim)
 }
 
 static int	process_heredoc_line(int fd, t_command *cmd,
-		char *line, t_list *env_list)
+		char *line)
 {
 	char	*expanded;
 
 	if (cmd->heredoc_quoted == FALSE)
 	{
-		expanded = here_exp(line, env_list);
+		expanded = here_exp(line, cmd->env_list);
 		free(line);
 		if (!expanded)
 			return (1);
@@ -41,7 +41,7 @@ static int	process_heredoc_line(int fd, t_command *cmd,
 }
 
 static int	read_heredoc_loop(int fd, t_command *cmd,
-		char *delim, t_list *env_list)
+		char *delim)
 {
 	char	*line;
 
@@ -58,14 +58,14 @@ static int	read_heredoc_loop(int fd, t_command *cmd,
 			free(line);
 			return (0);
 		}
-		if (process_heredoc_line(fd, cmd, line, env_list))
+		if (process_heredoc_line(fd, cmd, line))
 			return (1);
 	}
 	return (0);
 }
 
 int	open_heredoc(t_command *cmd, char *delim,
-		char *tmp_filename, t_list *env_list)
+		char *tmp_filename)
 {
 	int		fd;
 
@@ -76,7 +76,7 @@ int	open_heredoc(t_command *cmd, char *delim,
 		free(tmp_filename);
 		return (1);
 	}
-	if (read_heredoc_loop(fd, cmd, delim, env_list))
+	if (read_heredoc_loop(fd, cmd, delim))
 	{
 		close(fd);
 		return (1);

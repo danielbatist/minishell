@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 20:18:08 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/10 19:19:21 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/10 20:10:27 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,19 +81,19 @@ int	handle_redirect_file(t_token *token, t_token *next_token, t_command *cmd)
 }
 
 int	handle_redirect_heredoc(t_token *token, t_token *next_token,
-	t_command *cmd, t_list *env_list)
+	t_command *cmd, t_scanner *scanner)
 {
 	char	*filename;
 
 	if (!next_token || !next_token->lexeme)
 		return (1);
-	if (handle_heredoc(cmd, &filename, next_token, env_list))
+	if (handle_heredoc(cmd, &filename, next_token, scanner))
 		return (1);
 	set_redirect(token, cmd, filename);
 	return (0);
 }
 
-int	handle_redirects(t_list *start, t_command *cmd, t_list *env_list)
+int	handle_redirects(t_list *start, t_command *cmd, t_scanner *scanner)
 {
 	t_token	*token;
 	t_token	*next_token;
@@ -107,7 +107,7 @@ int	handle_redirects(t_list *start, t_command *cmd, t_list *env_list)
 			next_token = (t_token *)start->content;
 			if (token->type == HEREDOC)
 			{	
-				if (handle_redirect_heredoc(token, next_token, cmd, env_list))
+				if (handle_redirect_heredoc(token, next_token, cmd, scanner))
 					return (1);
 			}
 			else if (handle_redirect_file(token, next_token, cmd))

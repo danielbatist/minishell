@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 20:44:50 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/10 19:13:27 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/10 22:38:57 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,23 @@ static char	*get_heredoc_delimiter(t_command *cmd, t_token *token)
 }
 
 static int	handle_heredoc_child(t_command *cmd, char *delim,
-		char *tmp_filename, t_list *env_list)
+		char *tmp_filename, t_scanner *scanner)
 {
 	int	error_heredoc;
+	int	i;
 
+	i = 0;
 	signal(SIGINT, SIG_DFL);
-	error_heredoc = open_heredoc(cmd, delim, tmp_filename, env_list);
+	error_heredoc = open_heredoc(cmd, delim, tmp_filename);
 	free_env_list(cmd->env_list);
+	free(tmp_filename);
+	while (cmd->simple_command[i])
+	{
+		free(cmd->simple_command[i++]);
+	}
+	free(cmd->simple_command);
+	free(cmd);
+	free_scanner(scanner);
 	if (error_heredoc)
 		exit(1);
 	free(delim);
@@ -63,7 +73,7 @@ static int	handle_heredoc_parent(pid_t pid, char *tmp_filename,
 }
 
 int	handle_heredoc(t_command *cmd, char **out_file,
-		t_token *next, t_list *env_list)
+		t_token *next, t_scanner *scanner)
 {
 	pid_t	pid;
 	char	*delim;
@@ -87,7 +97,7 @@ int	handle_heredoc(t_command *cmd, char **out_file,
 		return (1);
 	}
 	if (pid == 0)
-		handle_heredoc_child(cmd, delim, tmp_filename, env_list);
+		handle_heredoc_child(cmd, delim, tmp_filename, scanner);
 	free(delim);
 	return (handle_heredoc_parent(pid, tmp_filename, out_file));
 }

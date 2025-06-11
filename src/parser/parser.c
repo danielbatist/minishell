@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 05:14:47 by eteofilo          #+#    #+#             */
-/*   Updated: 2025/06/10 23:56:16 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/11 18:03:45 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int	count_pipes(t_scanner *scanner)
 	return (count);
 }
 
-t_command	*extract_command(t_list **token_list, t_list *env_list, t_scanner *scanner, int cmds_count)
+t_command	*extract_command(t_list **token_list, t_list *env_list,
+		t_scanner *scanner, int cmds_count)
 {
 	t_command	*cmd;
 	t_list		*start;
@@ -62,7 +63,7 @@ t_command	*extract_command(t_list **token_list, t_list *env_list, t_scanner *sca
 		cmd[i].fd_out = STDOUT_FILENO;
 		cmd[i].env_list = env_list;
 		cmd[i].simple_command = extract_simple_cmd(token_list);
-		if (handle_redirects(start, cmd, scanner))
+		if (handle_redirects(start, &cmd[i], scanner))
 			cmd[i].error_flag = TRUE;
 		i++;
 	}
@@ -83,6 +84,7 @@ t_command	*parser(char *input, t_list *env_list)
 	cmds_count = count_pipes(scanner) + 1;
 	current = scanner->tokens;
 	commands = extract_command(&current, env_list, scanner, cmds_count);
+	//print_commands(commands);
 	free_scanner(scanner);
 	return (commands);
 }

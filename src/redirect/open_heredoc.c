@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:00:22 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/11 11:30:41 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/11 19:00:18 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int	open_heredoc(t_command *cmd, char *delim,
 	{
 		ft_printf_fd(2, "Error creating heredoc\n");
 		free(tmp_filename);
+		tmp_filename = NULL;
 		return (1);
 	}
 	if (read_heredoc_loop(fd, cmd, delim))

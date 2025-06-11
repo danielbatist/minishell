@@ -6,13 +6,13 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 19:17:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/09 15:20:39 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/11 18:02:20 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void 	dup2_pipes(t_pipefd *pipefd, int is_pipe, int *i)
+void	dup2_pipes(t_pipefd *pipefd, int is_pipe, int *i)
 {
 	if (*i > 0 && is_pipe > 0)
 		dup2(pipefd[*i - 1].fd[0], STDIN_FILENO);
@@ -20,7 +20,7 @@ void 	dup2_pipes(t_pipefd *pipefd, int is_pipe, int *i)
 		dup2(pipefd[*i].fd[1], STDOUT_FILENO);
 }
 
-void 	close_pipes(t_pipefd *pipefd, int n_of_pipes)
+void	close_pipes(t_pipefd *pipefd, int n_of_pipes)
 {
 	int	i;
 

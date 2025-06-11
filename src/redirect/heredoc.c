@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 20:44:50 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/11 01:08:45 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/11 19:11:06 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static int	handle_heredoc_child(t_command *cmd, char *delim,
 	error_heredoc = open_heredoc(cmd, delim, tmp_filename);
 	free_env_list(cmd->env_list);
 	free(tmp_filename);
+	tmp_filename = NULL;
 	while (cmd->simple_command[i])
 	{
 		free(cmd->simple_command[i++]);
@@ -57,6 +58,7 @@ static int	handle_heredoc_parent(pid_t pid, char *tmp_filename,
 		write(STDOUT_FILENO, "\n", 1);
 		unlink(tmp_filename);
 		free(tmp_filename);
+		tmp_filename = NULL;
 		*out_file = NULL;
 		set_exit_status(130);
 		return (1);
@@ -65,6 +67,7 @@ static int	handle_heredoc_parent(pid_t pid, char *tmp_filename,
 	{
 		unlink(tmp_filename);
 		free(tmp_filename);
+		tmp_filename = NULL;
 		*out_file = NULL;
 		return (1);
 	}

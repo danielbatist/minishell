@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 22:20:43 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/11 10:38:30 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:59:49 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*get_env_value(t_list *env_list, const char *name)
 	return (NULL);
 }
 
-char *search_in_path(char *cmd, char *path_var)
+char	*search_in_path(char *cmd, char *path_var)
 {
 	char	**paths;
 	char	*full_path;
@@ -87,7 +87,6 @@ char	**get_envp(t_list *env_list)
 	return (envp);
 }
 
-
 void	execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 {
 	char	*path;
@@ -104,16 +103,7 @@ void	execute_child(t_command *cmd, int i, int is_pipe, t_pipefd *pipefd)
 		envp = get_envp(cmd[i].env_list);
 		path = get_path(cmd[i].simple_command[0], cmd[i].env_list);
 		if (!path)
-		{
-			ft_printf_fd(2, "%s: command not found\n", cmd[i].simple_command[0]);
-			free_exec(envp);
-			free(path);
-			free_env_list(cmd->env_list);
-			free(cmd->data->pids);
-			free(cmd->data);
-			free_complex_command(cmd);
-			exit(127);
-		}
+			free_child_not_found(path, envp, cmd, &i);
 		execve(path, cmd[i].simple_command, envp);
 		free(path);
 		free_exec(envp);

@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 22:36:43 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/09 15:12:15 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/11 18:06:07 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ void	set_exit_status(int status)
 	*get_exit_status() = (unsigned char)status;
 }
 
-int *get_exit_status(void)
+int	*get_exit_status(void)
 {
-	static int	status = 0; 
+	static int	status = 0;
+
 	return (&status);
 }
 

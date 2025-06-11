@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 20:02:51 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/07 18:54:26 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:59:56 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,16 @@ void	free_exec(char **exec)
 	while (exec[i])
 		free(exec[i++]);
 	free(exec);
+}
+
+void	free_child_not_found(char *path, char **envp, t_command *cmd, int *i)
+{
+	ft_printf_fd(2, "%s: command not found\n", cmd[*i].simple_command[0]);
+	free_exec(envp);
+	free(path);
+	free_env_list(cmd->env_list);
+	free(cmd->data->pids);
+	free(cmd->data);
+	free_complex_command(cmd);
+	exit(127);
 }

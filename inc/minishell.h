@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/11 10:10:03 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/11 18:00:09 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ void		free_exec(char **exec);
 void		free_pipes(t_pipefd *pipefd, int n_of_pipes);
 void		free_env(t_env **env);
 void		free_list_and_env(t_list *tmp_list, t_env *env);
+void		free_child_not_found(char *path, char **envp, t_command *cmd, int *i);
 
 //print
 int			print_error(t_token *token);

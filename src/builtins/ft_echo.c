@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 16:38:20 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/07 18:08:48 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/11 20:23:07 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,3 @@ int	ft_echo(char **cmd)
 	print_echo(cmd, &i, suppress_newline);
 	return (1);
 }
-

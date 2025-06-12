@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:34:00 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/11 18:03:12 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/11 20:23:37 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	handle_exit(char *input, t_list *env_list)
 	free_env_list(env_list);
 	exit(0);
 }
-
 
 t_command	*input_and_parser(char *input, t_list *env_list)
 {
@@ -67,7 +66,6 @@ void	process_input(char *input, t_list *env_list)
 	data = init_exec_data(cmd);
 	cmd->data = data;
 	execute_commands(cmd, data, env_list);
-	//print_commands(cmd);
 	free_complex_command(cmd);
 	free(data->pipefd);
 	free(data->pids);

@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:50:41 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/11 20:20:33 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/11 20:22:37 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,8 +197,8 @@ char		*search_in_path(char *cmd, char *path_var);
 char		*get_path(char *cmd, t_list *env_list);
 char		**get_envp(t_list *env_list);
 char		*get_env_value(t_list *env_list, const char *name);
-void 		close_pipes(t_pipefd *pipefd, int n_of_pipes);
-void 		dup2_pipes(t_pipefd *pipefd, int is_pipe, int *i);
+void		close_pipes(t_pipefd *pipefd, int n_of_pipes);
+void		dup2_pipes(t_pipefd *pipefd, int is_pipe, int *i);
 
 //env
 void		env_expansion(t_list *env_list, t_scanner *scanner);
@@ -223,6 +223,4 @@ int			check_redirects(t_token *token, t_token *next);
 void		set_signal(void);
 char		**extract_simple_cmd(t_list **token_list);
 t_command	*parser(char *input, t_list *env_list);
-
-
 #endif

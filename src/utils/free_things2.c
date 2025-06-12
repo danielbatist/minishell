@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:32:48 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/11 18:04:46 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/11 20:24:58 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	free_complex_command(t_command *cmds)
 		i++;
 	}
 	free (cmds);
-
 }
 
 void	free_env_list(t_list *env_list)

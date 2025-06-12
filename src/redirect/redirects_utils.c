@@ -6,7 +6,7 @@
 /*   By: dbatista <dbatista@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 20:18:08 by dbatista          #+#    #+#             */
-/*   Updated: 2025/06/10 20:10:27 by dbatista         ###   ########.fr       */
+/*   Updated: 2025/06/11 21:26:23 by dbatista         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,10 @@ int	handle_redirect_heredoc(t_token *token, t_token *next_token,
 	if (!next_token || !next_token->lexeme)
 		return (1);
 	if (handle_heredoc(cmd, &filename, next_token, scanner))
+	{
+		free(filename);
 		return (1);
+	}
 	set_redirect(token, cmd, filename);
 	return (0);
 }
